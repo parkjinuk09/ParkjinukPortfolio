@@ -95,3 +95,20 @@ Notion 기준으로 내용을 바꾸고 다크 테마로 화면을 다시 구성
 - "서비스 화면 및 구현 증빙"(스크린샷 자리)과 FocusOn "예상 문제와 검증 계획 — SAMPLE" 표는 작성 예정 항목이라 제외했습니다.
 - Contact의 이메일 오타(`pakrjinuk09`)는 Closing에 적힌 `parkjinuk09@gmail.com`으로 통일했습니다.
 - Notion 아키텍처 이미지 2장은 작업 환경에서 내려받을 수 없어 넣지 못했습니다(이미지 추가 방법은 README 참고).
+
+## 7. 전체 폭 레이아웃 · 프로젝트 상세 페이지 추가 후 재검증 (2026-11-10)
+
+| 항목 | 결과 |
+| --- | --- |
+| `pnpm typecheck` / `pnpm lint` / `pnpm build` | 통과 (`/projects/capteam`, `/projects/focuson` 정적 생성) |
+| `pnpm test` / `pnpm test:db` | 18건 / 8건 통과 |
+| `GET /` · `/projects/capteam` · `/projects/focuson` · `/api/health` | 200 |
+| `GET /projects/nope` (없는 프로젝트) | 404 |
+| 메인 · 상세 화면 1440×900 / 390×844 | 콘솔 오류 없음, 가로 스크롤 없음 |
+
+### 발견해 수정한 문제
+
+| 문제 | 원인 | 수정 |
+| --- | --- | --- |
+| 빌드 실패: `dynamicParams` 사용 불가 | Cache Components 환경에서는 route segment config `dynamicParams`를 지원하지 않음 | 설정을 제거하고, 목록에 없는 slug는 `notFound()`로 404 처리 |
+| 상세 페이지에서 "맨 위로" 버튼이 동작하지 않을 수 있음 | 메인 표지의 `#top` 앵커에 의존 | 앵커 대신 `window.scrollTo`로 이동 (모션 줄이기 설정 시 즉시 이동) |
