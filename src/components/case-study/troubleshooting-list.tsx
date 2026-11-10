@@ -22,7 +22,7 @@ function BeforeAfterTable({ before, after }: { before: string; after: string }) 
 /** 트러블슈팅(P04, P06): 증상 → 원인 → 해결 순서의 문단과 전/후 비교, 마지막에 배운 점 */
 export function TroubleshootingList({ cases, lesson }: { cases: TroubleshootingCase[]; lesson: RichTextValue }) {
   return (
-    <div>
+    <div id="troubleshooting" className="scroll-mt-24">
       <Reveal>
         <h3 className="text-xl font-bold text-fg md:text-2xl">트러블슈팅</h3>
       </Reveal>

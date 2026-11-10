@@ -5,15 +5,17 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { AboutSection } from "@/components/sections/about-section";
 import { AchievementsSection, AchievementsSectionSkeleton } from "@/components/sections/achievements-section";
-import { ClosingSection } from "@/components/sections/closing-section";
-import { ContactSection } from "@/components/sections/contact-section";
-import { HeroSection } from "@/components/sections/hero-section";
+import { ContactSection } from "@/components/sections/contact/contact-section";
+import { HeroSection } from "@/components/sections/hero/hero-section";
 import { ProjectsSection } from "@/components/sections/projects/projects-section";
+import { TroubleshootingSection } from "@/components/sections/troubleshooting-section";
 import { navItems } from "@/content/navigation";
 import { profile } from "@/content/profile";
-import { projects } from "@/content/projects";
+import { projects, projectsDescription } from "@/content/projects";
+import { troubleshootingHighlights, troubleshootingLesson } from "@/content/troubleshooting";
+import { achievementsSeed } from "@/features/achievements/seed-data";
 
-/** 섹션 순서는 Notion 포트폴리오와 같다: 소개 → 프로젝트 → Closing → 수상·활동, 마지막에 연락 폼 */
+/** 참고 사이트와 같은 순서: 표지 → 소개 → 프로젝트 → 글(트러블슈팅) 카드 → (수상·활동) → 연락 */
 export default function HomePage() {
   return (
     <>
@@ -23,11 +25,11 @@ export default function HomePage() {
         githubHref={profile.github.href}
         email={profile.email}
       />
-      <main>
+      <main className="relative overflow-hidden bg-charcoal">
         <HeroSection profile={profile} projects={projects} />
-        <AboutSection profile={profile} />
-        <ProjectsSection projects={projects} />
-        <ClosingSection profile={profile} />
+        <AboutSection profile={profile} awardCount={achievementsSeed.awards.length} />
+        <ProjectsSection projects={projects} description={projectsDescription} />
+        <TroubleshootingSection items={troubleshootingHighlights} lesson={troubleshootingLesson} />
         <Suspense fallback={<AchievementsSectionSkeleton />}>
           <AchievementsSection />
         </Suspense>

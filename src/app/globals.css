@@ -80,10 +80,10 @@ body {
   color: var(--color-charcoal);
 }
 
-/* 스크롤 진입 애니메이션: Reveal 컴포넌트가 화면에 들어오면 data-visible을 true로 바꾼다. */
+/* 스크롤 진입 애니메이션: Reveal 컴포넌트가 화면에 들어오면 data-visible을 true로 바꾼다. (참고 사이트와 같은 50px 상승) */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
+  transform: translateY(50px);
   transition:
     opacity 1s var(--ease-out-expo),
     transform 1s var(--ease-out-expo);
@@ -95,33 +95,72 @@ body {
   transform: none;
 }
 
-/* 표지 대제목: 글자 단위로 아래에서 올라온다. */
+/* 표지 글자: 글자 단위로 아래에서 흐릿하게 올라오며 선명해진다. */
 .letter-rise {
   display: inline-block;
   opacity: 0;
-  transform: translateY(110%);
-  animation: letter-rise 1s var(--ease-out-expo) forwards;
+  filter: blur(8px);
+  transform: translateY(60%);
+  animation: letter-rise 0.9s var(--ease-out-expo) forwards;
   animation-delay: var(--letter-delay, 0ms);
 }
 
 @keyframes letter-rise {
   to {
     opacity: 1;
+    filter: blur(0);
     transform: none;
   }
 }
 
-/* 표지 배경 사진: 처음에 살짝 확대된 상태에서 천천히 원래 크기로 돌아오며 밝아진다. */
+/* 표지 배경 사진: 어둡게 시작해 서서히 나타난다. 스크롤 시 이동·확대는 HeroBackground가 transform으로 처리한다. */
 .hero-photo {
   opacity: 0;
-  transform: scale(1.12);
-  animation: hero-photo-in 2.4s var(--ease-out-expo) forwards;
+  animation: fade-in 2.4s ease-out 0.2s forwards;
 }
 
-@keyframes hero-photo-in {
+@keyframes fade-in {
   to {
     opacity: 1;
+  }
+}
+
+/* 표지 하늘의 별: 각자 다른 주기로 깜빡인다. */
+.star {
+  opacity: 0;
+  animation: twinkle var(--twinkle-duration, 3s) ease-in-out var(--twinkle-delay, 0s) infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* 연락 영역 팝업: 배경이 흐려지고 창이 아래에서 올라온다. */
+.popup-backdrop {
+  animation: fade-in 0.3s ease-out forwards;
+  opacity: 0;
+}
+
+.popup-panel {
+  animation: popup-rise 0.5s var(--ease-out-expo) forwards;
+}
+
+@keyframes popup-rise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -132,10 +171,21 @@ body {
 
   .reveal,
   .letter-rise,
-  .hero-photo {
+  .hero-photo,
+  .popup-backdrop {
     opacity: 1;
+    filter: none;
     transform: none;
     transition: none;
+    animation: none;
+  }
+
+  .star {
+    opacity: 0.6;
+    animation: none;
+  }
+
+  .popup-panel {
     animation: none;
   }
 }
