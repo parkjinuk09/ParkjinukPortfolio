@@ -4,12 +4,14 @@ import { PAGE_GUTTER } from "./container";
 
 export function SiteFooter({ profile }: { profile: Profile }) {
   return (
-    <footer className="border-t border-line">
-      <div className={`${PAGE_GUTTER} flex flex-col gap-2 py-10 text-xs text-subtle md:flex-row md:justify-between`}>
-        <span>
-          © {profile.name} · {profile.role}
-        </span>
-        <span>{profile.contacts[0]?.value}</span>
+    <footer className="bg-charcoal pt-20 pb-10 text-xs">
+      <div className={`${PAGE_GUTTER} border-t border-zinc-50/5 pt-10`}>
+        <p className="my-3 leading-6 opacity-75">
+          {profile.name} · {profile.role}
+          <br />
+          {profile.contacts[0]?.value}
+        </p>
+        <p>Copyright ⓒ {profile.englishName}</p>
       </div>
     </footer>
   );

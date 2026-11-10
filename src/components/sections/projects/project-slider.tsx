@@ -1,101 +1,105 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 import type { Project } from "@/content/types";
 
 /** 프로젝트 카드 슬라이더에 필요한 최소 정보만 받는다. */
-export type ProjectCard = Pick<Project, "slug" | "number" | "name" | "tag" | "oneLiner" | "teamType" | "period" | "stack">;
+export type ProjectCard = Pick<Project, "slug" | "name" | "tag" | "oneLiner" | "teamType" | "period" | "imageSrc">;
 
-/** 카드 왼쪽 영역. 서비스 화면 이미지가 없으므로 프로젝트 이름과 기술을 크게 배치한 표지로 대신한다. */
-function CardCover({ card }: { card: ProjectCard }) {
+function ChevronIcon({ direction }: { direction: "left" | "right" }) {
   return (
-    <div className="relative flex aspect-[16/10] flex-col justify-between overflow-hidden rounded-xl border border-indigo/20 bg-gradient-to-br from-raised to-surface p-6 transition-[border-color,box-shadow] duration-300 group-hover:border-indigo/70 group-hover:shadow-[0_5px_30px_rgb(99_102_241/0.25)] md:p-8">
-      <span className="font-mono text-xs text-subtle">PROJECT {card.number}</span>
-      <p className="font-display text-4xl font-bold tracking-tight text-fg md:text-5xl">{card.name}</p>
-      <p className="truncate text-xs text-subtle">{card.stack.join(" · ")}</p>
-      <span aria-hidden className="absolute -right-10 -bottom-16 h-48 w-48 rounded-full bg-mint/10 blur-3xl" />
-    </div>
+    <svg aria-hidden viewBox="0 0 24 24" className="h-10 w-10 text-zinc-50/80" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d={direction === "left" ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
+    </svg>
   );
 }
 
-function ArrowButton({ direction, onClick, disabled }: { direction: "prev" | "next"; onClick: () => void; disabled: boolean }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={direction === "prev" ? "이전 프로젝트" : "다음 프로젝트"}
-      className="grid h-11 w-11 place-items-center rounded-full border border-line text-lg text-muted transition-colors duration-300 hover:border-mint hover:text-mint disabled:pointer-events-none disabled:opacity-30"
-    >
-      <span aria-hidden>{direction === "prev" ? "‹" : "›"}</span>
-    </button>
-  );
-}
-
-/** 프로젝트를 한 장씩 넘겨 보는 카드. 각 카드를 누르면 Figma 형식의 프로젝트 상세 페이지로 이동한다. */
+/**
+ * 참고 사이트의 프로젝트 슬라이더: 왼쪽 이미지 + 오른쪽 설명, 현재 카드 외에는 흑백·반투명,
+ * 좌우 화살표는 본문 밖에 두고 아래에 "현재 / 전체" 번호를 표시한다. 카드를 누르면 상세 페이지로 이동한다.
+ */
 export function ProjectSlider({ cards }: { cards: ProjectCard[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const lastIndex = cards.length - 1;
 
-  return (
-    <div>
-      <div className="overflow-hidden" aria-roledescription="carousel" aria-label="프로젝트 목록">
-        <ul
-          className="flex transition-transform duration-700 ease-out-expo"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {cards.map((card, index) => (
-            <li
-              key={card.slug}
-              aria-roledescription="slide"
-              aria-label={`${index + 1} / ${cards.length}`}
-              aria-hidden={index !== currentIndex}
-              className="w-full shrink-0"
-            >
-              <Link
-                href={`/projects/${card.slug}`}
-                tabIndex={index === currentIndex ? 0 : -1}
-                className="group grid grid-cols-1 items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-12"
-              >
-                <div className="transition-transform duration-700 ease-out-expo group-hover:scale-[1.02]">
-                  <CardCover card={card} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm text-pink">{card.tag}</p>
-                  <h3 className="mt-2 text-3xl font-bold text-fg transition-colors group-hover:text-mint md:text-4xl">
-                    {card.name}
-                  </h3>
-                  <p className="mt-4 text-sm leading-relaxed text-muted">{card.oneLiner}</p>
-                  <p className="mt-6 text-xs text-subtle">
-                    {card.teamType} · {card.period}
-                  </p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-sm text-fg">
-                    자세히 보기
-                    <span aria-hidden className="transition-transform duration-500 ease-out-expo group-hover:translate-x-1">
-                      →
-                    </span>
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+  const goTo = (index: number) => setCurrentIndex(Math.min(Math.max(index, 0), lastIndex));
 
-      <div className="mt-10 flex items-center justify-between">
-        <p className="font-display text-fg" aria-live="polite">
-          <span className="text-3xl font-semibold">{currentIndex + 1}</span>
-          <span className="ml-1 text-sm text-subtle">/ {cards.length}</span>
-        </p>
-        <div className="flex gap-3">
-          <ArrowButton direction="prev" disabled={currentIndex === 0} onClick={() => setCurrentIndex((index) => Math.max(index - 1, 0))} />
-          <ArrowButton
-            direction="next"
-            disabled={currentIndex === lastIndex}
-            onClick={() => setCurrentIndex((index) => Math.min(index + 1, lastIndex))}
-          />
+  return (
+    <div className="relative items-start gap-20 lg:flex" aria-roledescription="carousel" aria-label="프로젝트 목록">
+      <button
+        type="button"
+        onClick={() => goTo(currentIndex - 1)}
+        disabled={currentIndex === 0}
+        aria-label="이전 프로젝트"
+        className="absolute top-[40%] -left-5 z-20 hidden -translate-x-1/2 -translate-y-1/2 rounded-full p-2 transition-opacity hover:opacity-100 disabled:pointer-events-none disabled:opacity-30 md:block md:opacity-60 lg:-left-12"
+      >
+        <ChevronIcon direction="left" />
+      </button>
+      <button
+        type="button"
+        onClick={() => goTo(currentIndex + 1)}
+        disabled={currentIndex === lastIndex}
+        aria-label="다음 프로젝트"
+        className="absolute top-[40%] -right-5 z-20 hidden translate-x-1/2 -translate-y-1/2 rounded-full p-2 transition-opacity hover:opacity-100 disabled:pointer-events-none disabled:opacity-30 md:block md:opacity-60 lg:-right-12"
+      >
+        <ChevronIcon direction="right" />
+      </button>
+
+      <div className="w-full overflow-hidden">
+        <ul className="flex gap-5 transition-transform duration-700 ease-out-expo" style={{ transform: `translateX(calc(-${currentIndex * 100}% - ${currentIndex * 1.25}rem))` }}>
+          {cards.map((card, index) => {
+            const isActive = index === currentIndex;
+            return (
+              <li key={card.slug} aria-roledescription="slide" aria-label={`${index + 1} / ${cards.length}`} aria-hidden={!isActive} className="w-full shrink-0">
+                <Link
+                  href={`/projects/${card.slug}`}
+                  tabIndex={isActive ? 0 : -1}
+                  className={`group grid w-full gap-10 rounded-xl transition-all duration-500 md:grid-cols-2 ${isActive ? "opacity-100 grayscale-0" : "opacity-50 grayscale"}`}
+                >
+                  <div className="relative aspect-[9/8] overflow-hidden rounded-lg lg:aspect-[8/5]">
+                    <Image
+                      src={card.imageSrc}
+                      alt={`${card.name} 대표 이미지`}
+                      fill
+                      sizes="(min-width: 1100px) 530px, (min-width: 768px) 45vw, 100vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/30" />
+                    <p className="absolute bottom-5 left-6 font-display text-3xl font-bold text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.5)]">
+                      {card.name}
+                    </p>
+                  </div>
+                  <div className={`flex flex-col gap-2 transition-opacity md:py-15 ${isActive ? "opacity-100" : "opacity-0"}`}>
+                    <span className="text-xs text-pink">{card.tag}</span>
+                    <h3 className="text-3xl font-semibold text-zinc-50 group-hover:underline">{card.name}</h3>
+                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-zinc-400">{card.oneLiner}</p>
+                    <p className="mt-6 flex gap-2 text-[0.85rem] text-zinc-400">
+                      <span>{card.teamType}</span>
+                      <span aria-hidden>•</span>
+                      <span>{card.period}</span>
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="mt-5 flex items-end gap-1 text-zinc-50" aria-live="polite">
+          <span className="text-3xl">{currentIndex + 1}</span>
+          <span className="pb-1 text-sm text-zinc-400">/ {cards.length}</span>
+        </div>
+
+        <div className="mt-4 flex gap-3 md:hidden">
+          <button type="button" onClick={() => goTo(currentIndex - 1)} disabled={currentIndex === 0} aria-label="이전 프로젝트" className="rounded-full border border-zinc-50/15 p-1 disabled:opacity-30">
+            <ChevronIcon direction="left" />
+          </button>
+          <button type="button" onClick={() => goTo(currentIndex + 1)} disabled={currentIndex === lastIndex} aria-label="다음 프로젝트" className="rounded-full border border-zinc-50/15 p-1 disabled:opacity-30">
+            <ChevronIcon direction="right" />
+          </button>
         </div>
       </div>
     </div>

@@ -16,8 +16,12 @@ export interface Profile {
   name: string;
   englishName: string;
   role: string;
+  /** 표지 대제목 위의 짧은 수식어 */
+  heroEyebrow: string;
   /** 표지 대제목(영문). 글자 단위 애니메이션을 위해 한 줄 문자열로 둔다. */
   heroTitle: string;
+  /** About 영역의 강점 카드 (Notion 「배운 점」 문장 기준) */
+  strengths: { title: string; description: string }[];
   /** Notion 상단 인용 문구. 표지 설명으로 쓴다. */
   motto: string;
   summary: RichText;
@@ -45,4 +49,15 @@ export interface Project {
   role: string;
   stack: string[];
   link: LinkItem;
+  /** 카드 이미지 (사용자가 제공한 사진을 잘라 만든 public 경로) */
+  imageSrc: string;
+}
+
+/** 메인 페이지 트러블슈팅 카드 (Notion 트러블슈팅 항목의 제목·문제 요약) */
+export interface TroubleshootingHighlight {
+  title: string;
+  excerpt: string;
+  projectName: string;
+  href: string;
+  imageSrc: string;
 }

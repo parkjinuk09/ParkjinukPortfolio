@@ -5,7 +5,23 @@ export const profile: Profile = {
   name: "박진욱",
   englishName: "Park Jinuk",
   role: "Backend · Software Engineer",
-  heroTitle: "Backend Software Engineer",
+  heroEyebrow: "판단과 검증을 책임지는 개발자",
+  heroTitle: "Back-end Developer",
+  strengths: [
+    {
+      title: "데이터 정합성",
+      description:
+        "동시 요청에 대한 정합성은 서비스 검증뿐 아니라 데이터베이스 제약과 잠금, 실제 PostgreSQL 검증까지 함께 살핍니다.",
+    },
+    {
+      title: "인증·인가",
+      description: "JWT 검증만으로 리소스 접근 권한이 보장되지 않기 때문에, 요청 대상의 소속과 소유를 별도로 확인합니다.",
+    },
+    {
+      title: "운영 환경",
+      description: "배포 문제는 브라우저, 프록시, 애플리케이션, 데이터베이스의 책임을 구분해 진단합니다.",
+    },
+  ],
   motto: "AI는 도구로 활용하되, 기술적 판단과 검증은 스스로 책임지는 개발자입니다.",
   summary: [
     "요구사항을 API로 옮기는 과정에서 ",

@@ -1,6 +1,5 @@
 import { PAGE_GUTTER } from "@/components/layout/container";
 import { Reveal } from "@/components/motion/reveal";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { getAchievements } from "@/features/achievements/queries";
 import type { Activity, Award } from "@/features/achievements/types";
 
@@ -8,7 +7,7 @@ function AwardsTable({ awards }: { awards: Award[] }) {
   return (
     <table className="w-full min-w-[560px] text-left text-sm">
       <thead>
-        <tr className="border-b border-subtle text-xs text-subtle">
+        <tr className="border-b border-zinc-50/20 text-xs text-zinc-500">
           <th scope="col" className="w-36 py-3 pr-4 font-normal">시기</th>
           <th scope="col" className="py-3 pr-4 font-normal">수상 내역</th>
           <th scope="col" className="w-36 py-3 font-normal">프로젝트 / 활동</th>
@@ -16,10 +15,10 @@ function AwardsTable({ awards }: { awards: Award[] }) {
       </thead>
       <tbody>
         {awards.map((award) => (
-          <tr key={award.displayOrder} className="border-b border-line transition-colors duration-300 hover:bg-surface">
-            <td className="py-4 pr-4 font-mono text-xs text-subtle">{award.periodLabel}</td>
-            <th scope="row" className="py-4 pr-4 font-semibold text-fg">{award.title}</th>
-            <td className="py-4 text-muted">{award.project}</td>
+          <tr key={award.displayOrder} className="border-b border-zinc-50/5 transition-colors duration-300 hover:bg-zinc-50/[0.03]">
+            <td className="py-4 pr-4 text-xs text-zinc-500">{award.periodLabel}</td>
+            <th scope="row" className="py-4 pr-4 font-medium text-zinc-100">{award.title}</th>
+            <td className="py-4 text-zinc-400">{award.project}</td>
           </tr>
         ))}
       </tbody>
@@ -31,7 +30,7 @@ function ActivitiesTable({ activities }: { activities: Activity[] }) {
   return (
     <table className="w-full min-w-[560px] text-left text-sm">
       <thead>
-        <tr className="border-b border-subtle text-xs text-subtle">
+        <tr className="border-b border-zinc-50/20 text-xs text-zinc-500">
           <th scope="col" className="w-36 py-3 pr-4 font-normal">시기</th>
           <th scope="col" className="w-32 py-3 pr-4 font-normal">분류</th>
           <th scope="col" className="py-3 font-normal">활동</th>
@@ -39,10 +38,10 @@ function ActivitiesTable({ activities }: { activities: Activity[] }) {
       </thead>
       <tbody>
         {activities.map((activity) => (
-          <tr key={activity.displayOrder} className="border-b border-line transition-colors duration-300 hover:bg-surface">
-            <td className="py-4 pr-4 font-mono text-xs text-subtle">{activity.periodLabel}</td>
-            <td className="py-4 pr-4 text-muted">{activity.category}</td>
-            <th scope="row" className="py-4 font-medium text-fg">{activity.title}</th>
+          <tr key={activity.displayOrder} className="border-b border-zinc-50/5 transition-colors duration-300 hover:bg-zinc-50/[0.03]">
+            <td className="py-4 pr-4 text-xs text-zinc-500">{activity.periodLabel}</td>
+            <td className="py-4 pr-4 text-zinc-400">{activity.category}</td>
+            <th scope="row" className="py-4 font-medium text-zinc-100">{activity.title}</th>
           </tr>
         ))}
       </tbody>
@@ -51,7 +50,7 @@ function ActivitiesTable({ activities }: { activities: Activity[] }) {
 }
 
 function EmptyRow({ message }: { message: string }) {
-  return <p className="border-y border-line py-8 text-center text-sm text-subtle">{message}</p>;
+  return <p className="border-y border-zinc-50/10 py-8 text-center text-sm text-zinc-500">{message}</p>;
 }
 
 /** 수상·활동(P07). Supabase에서 조회하며, 조회 실패와 빈 목록을 각각 다른 문구로 안내한다. */
@@ -60,12 +59,15 @@ export async function AchievementsSection() {
 
   return (
     <section id="awards">
-      <div className={`${PAGE_GUTTER} py-28 md:py-40`}>
-        <SectionHeading title="Awards & Activities" description="교내 수상·활동과 해외 견학·교류를 한곳에 정리했습니다" />
+      <div className={`${PAGE_GUTTER} py-20 md:py-21`}>
+        <Reveal className="mb-16">
+          <h2 className="mb-4 font-display text-3xl leading-relaxed font-semibold text-zinc-50">Awards &amp; Activities</h2>
+          <p className="max-w-[600px] leading-relaxed text-zinc-400">교내 수상·활동과 해외 견학·교류를 한곳에 정리했습니다</p>
+        </Reveal>
 
         {result.status === "error" ? (
           <Reveal>
-            <p role="status" className="rounded-2xl border border-line bg-surface px-6 py-10 text-center text-sm text-muted">
+            <p role="status" className="rounded-lg border border-zinc-50/10 px-6 py-10 text-center text-sm text-zinc-400">
               수상 · 활동 목록을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.
             </p>
           </Reveal>
@@ -73,7 +75,7 @@ export async function AchievementsSection() {
           <div className="space-y-20">
             <div>
               <Reveal>
-                <h3 className="mb-6 text-xl font-bold text-fg md:text-2xl">수상</h3>
+                <h3 className="mb-6 text-xl font-semibold text-zinc-100">수상</h3>
               </Reveal>
               <Reveal delay={80} className="overflow-x-auto">
                 {result.data.awards.length > 0 ? (
@@ -85,7 +87,7 @@ export async function AchievementsSection() {
             </div>
             <div>
               <Reveal>
-                <h3 className="mb-6 text-xl font-bold text-fg md:text-2xl">교내·대외 활동 및 해외 경험</h3>
+                <h3 className="mb-6 text-xl font-semibold text-zinc-100">교내·대외 활동 및 해외 경험</h3>
               </Reveal>
               <Reveal delay={80} className="overflow-x-auto">
                 {result.data.activities.length > 0 ? (
@@ -106,7 +108,7 @@ export async function AchievementsSection() {
 export function AchievementsSectionSkeleton() {
   return (
     <section id="awards" aria-busy="true">
-      <div className={`${PAGE_GUTTER} py-28 md:py-40`}>
+      <div className={`${PAGE_GUTTER} py-20 md:py-21`}>
         <div className="h-28 w-2/3 animate-pulse rounded bg-raised" />
         <div className="mt-16 space-y-3">
           {Array.from({ length: 6 }, (_, rowIndex) => (
