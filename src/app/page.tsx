@@ -14,6 +14,13 @@ import { profile } from "@/content/profile";
 import { projects, projectsDescription } from "@/content/projects";
 import { achievementsSeed } from "@/features/achievements/seed-data";
 
+/** 표지에 보여줄 대표 수상 프로젝트. 최근 수상이 위에 오도록 순서를 지정한다. */
+const FEATURED_AWARD_PROJECTS = ["발주콕", "CapTeam"];
+
+const featuredAwards = FEATURED_AWARD_PROJECTS.flatMap((project) =>
+  achievementsSeed.awards.filter((award) => award.project === project),
+);
+
 /** 참고 사이트와 같은 순서: 표지 → 소개 → 프로젝트 → 프로젝트 카드 목록 → (수상·활동) → 연락 */
 export default function HomePage() {
   return (
@@ -24,7 +31,7 @@ export default function HomePage() {
         socials={profile.socials}
       />
       <main className="relative overflow-hidden bg-charcoal">
-        <HeroSection profile={profile} projects={projects} />
+        <HeroSection profile={profile} projects={projects} featuredAwards={featuredAwards} />
         <AboutSection profile={profile} awardCount={achievementsSeed.awards.length} />
         <ProjectsSection projects={projects} description={projectsDescription} />
         <ProjectGridSection projects={projects} />
