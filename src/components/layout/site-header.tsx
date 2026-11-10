@@ -6,6 +6,7 @@ import { SocialLinks } from "@/components/ui/social-links";
 import type { SocialLink } from "@/content/types";
 
 import { PAGE_GUTTER } from "./container";
+import { MobileMenu } from "./mobile-menu";
 
 /** 표지 섹션의 id. 페이지 맨 위로 이동하는 링크의 대상이기도 하다. */
 export const TOP_ANCHOR = "top";
@@ -73,7 +74,7 @@ export function SiteHeader({ title, items, socials, linkPrefix = "" }: SiteHeade
           {title}
         </a>
 
-        <nav aria-label="섹션 이동" className="min-w-0 flex-1 overflow-x-auto">
+        <nav aria-label="섹션 이동" className="hidden min-w-0 flex-1 overflow-x-auto md:block">
           <ul className="flex items-center gap-8 text-sm whitespace-nowrap">
             {items.map((item) => {
               const isActive = activeAnchor === item.anchor;
@@ -94,6 +95,10 @@ export function SiteHeader({ title, items, socials, linkPrefix = "" }: SiteHeade
 
         <div className="hidden shrink-0 lg:block">
           <SocialLinks links={socials} />
+        </div>
+
+        <div className="ml-auto md:hidden">
+          <MobileMenu items={items} socials={socials} linkPrefix={linkPrefix} />
         </div>
       </div>
     </header>

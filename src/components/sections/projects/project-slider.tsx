@@ -59,7 +59,7 @@ export function ProjectSlider({ cards }: { cards: ProjectCard[] }) {
                   tabIndex={isActive ? 0 : -1}
                   className={`group grid w-full gap-10 rounded-xl transition-all duration-500 md:grid-cols-2 ${isActive ? "opacity-100 grayscale-0" : "opacity-50 grayscale"}`}
                 >
-                  <div className="relative aspect-[9/8] overflow-hidden rounded-lg lg:aspect-[8/5]">
+                  <div className="relative aspect-[8/5] overflow-hidden rounded-lg">
                     <Image
                       src={card.imageSrc}
                       alt={`${card.name} 대표 이미지`}

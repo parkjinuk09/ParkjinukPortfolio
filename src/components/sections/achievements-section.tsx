@@ -5,20 +5,20 @@ import type { Activity, Award } from "@/features/achievements/types";
 
 function AwardsTable({ awards }: { awards: Award[] }) {
   return (
-    <table className="w-full min-w-[560px] text-left text-sm">
-      <thead>
+    <table className="block w-full text-left text-sm md:table md:min-w-[560px]">
+      <thead className="hidden md:table-header-group">
         <tr className="border-b border-zinc-50/20 text-xs text-zinc-500">
           <th scope="col" className="w-36 py-3 pr-4 font-normal">시기</th>
           <th scope="col" className="py-3 pr-4 font-normal">수상 내역</th>
           <th scope="col" className="w-36 py-3 font-normal">프로젝트 / 활동</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="block md:table-row-group">
         {awards.map((award) => (
-          <tr key={award.displayOrder} className="border-b border-zinc-50/5 transition-colors duration-300 hover:bg-zinc-50/[0.03]">
-            <td className="py-4 pr-4 text-xs text-zinc-500">{award.periodLabel}</td>
-            <th scope="row" className="py-4 pr-4 font-medium text-zinc-100">{award.title}</th>
-            <td className="py-4 text-zinc-400">{award.project}</td>
+          <tr key={award.displayOrder} className="flex flex-col gap-1 border-b border-zinc-50/5 py-4 transition-colors duration-300 hover:bg-zinc-50/[0.03] md:table-row md:py-0">
+            <td className="block text-xs text-zinc-500 md:table-cell md:py-4 md:pr-4">{award.periodLabel}</td>
+            <th scope="row" className="block font-medium text-zinc-100 md:table-cell md:py-4 md:pr-4">{award.title}</th>
+            <td className="block text-zinc-400 md:table-cell md:py-4">{award.project}</td>
           </tr>
         ))}
       </tbody>
@@ -28,20 +28,20 @@ function AwardsTable({ awards }: { awards: Award[] }) {
 
 function ActivitiesTable({ activities }: { activities: Activity[] }) {
   return (
-    <table className="w-full min-w-[560px] text-left text-sm">
-      <thead>
+    <table className="block w-full text-left text-sm md:table md:min-w-[560px]">
+      <thead className="hidden md:table-header-group">
         <tr className="border-b border-zinc-50/20 text-xs text-zinc-500">
           <th scope="col" className="w-36 py-3 pr-4 font-normal">시기</th>
           <th scope="col" className="w-32 py-3 pr-4 font-normal">분류</th>
           <th scope="col" className="py-3 font-normal">활동</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="block md:table-row-group">
         {activities.map((activity) => (
-          <tr key={activity.displayOrder} className="border-b border-zinc-50/5 transition-colors duration-300 hover:bg-zinc-50/[0.03]">
-            <td className="py-4 pr-4 text-xs text-zinc-500">{activity.periodLabel}</td>
-            <td className="py-4 pr-4 text-zinc-400">{activity.category}</td>
-            <th scope="row" className="py-4 font-medium text-zinc-100">{activity.title}</th>
+          <tr key={activity.displayOrder} className="flex flex-col gap-1 border-b border-zinc-50/5 py-4 transition-colors duration-300 hover:bg-zinc-50/[0.03] md:table-row md:py-0">
+            <td className="block text-xs text-zinc-500 md:table-cell md:py-4 md:pr-4">{activity.periodLabel}</td>
+            <td className="block text-xs text-zinc-400 md:table-cell md:py-4 md:pr-4 md:text-sm">{activity.category}</td>
+            <th scope="row" className="block font-medium text-zinc-100 md:table-cell md:py-4">{activity.title}</th>
           </tr>
         ))}
       </tbody>
@@ -53,7 +53,7 @@ function EmptyRow({ message }: { message: string }) {
   return <p className="border-y border-zinc-50/10 py-8 text-center text-sm text-zinc-500">{message}</p>;
 }
 
-/** 수상·활동(P07). Supabase에서 조회하며, 조회 실패와 빈 목록을 각각 다른 문구로 안내한다. */
+/** 수상·활동(P07). 휴대폰에서는 표를 행마다 세로로 쌓아 가로 스크롤 없이 읽히게 한다. Supabase에서 조회하며, 조회 실패와 빈 목록을 각각 다른 문구로 안내한다. */
 export async function AchievementsSection() {
   const result = await getAchievements();
 

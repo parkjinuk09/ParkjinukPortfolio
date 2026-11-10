@@ -51,7 +51,7 @@ export function SocialLinks({ links }: { links: SocialLink[] }) {
               rel={isExternal ? "noreferrer" : undefined}
               aria-label={link.label}
               title={link.label}
-              className="group relative grid h-9 w-9 place-items-center rounded-lg border border-zinc-50/10 transition-colors duration-100 hover:border-zinc-50/40"
+              className="group relative grid h-11 w-11 place-items-center md:h-9 md:w-9 rounded-lg border border-zinc-50/10 transition-colors duration-100 hover:border-zinc-50/40"
             >
               <svg
                 aria-hidden

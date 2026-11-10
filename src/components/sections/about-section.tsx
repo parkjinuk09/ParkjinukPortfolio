@@ -48,7 +48,7 @@ export function AboutSection({ profile, awardCount }: AboutSectionProps) {
         </h2>
       </Reveal>
 
-      <div className="mt-16 grid gap-20 lg:grid-cols-[1fr_3fr] lg:gap-16">
+      <div className="mt-12 grid gap-14 md:mt-16 md:gap-20 lg:grid-cols-[1fr_3fr] lg:gap-16">
         <div className="lg:sticky lg:top-40 lg:self-start">
           <Reveal>
             <SummaryGroup lead={profile.summary.considerationLead} items={profile.summary.considerations} emphasized />
@@ -67,7 +67,7 @@ export function AboutSection({ profile, awardCount }: AboutSectionProps) {
           </Reveal>
         </div>
 
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-16 md:gap-24">
           <div className="grid gap-12 md:grid-cols-2">
             <Reveal>
               <ValueLabel index={1} />
