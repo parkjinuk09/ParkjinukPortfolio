@@ -81,6 +81,9 @@ export interface CaseStudy {
   screenshotLabel: string;
   /** 서비스 화면 이미지 경로. 없으면 이미지 영역을 렌더링하지 않는다. */
   screenshotSrc?: string;
+  /** next/image가 레이아웃 이동 없이 공간을 잡도록 원본 크기를 함께 둔다. */
+  screenshotWidth?: number;
+  screenshotHeight?: number;
   service: { title: string; description: string; link: ProfileLink };
   period: string;
   periodNote?: string;

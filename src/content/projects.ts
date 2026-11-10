@@ -13,7 +13,7 @@ export const projects: Project[] = [
     role: "백엔드 개발",
     stack: ["Java 21", "Spring Boot 3", "MySQL", "STOMP", "Docker", "AWS EC2", "Nginx"],
     link: { label: "capteam.choies.kr", href: "https://capteam.choies.kr/" },
-    imageSrc: "/images/project-capteam.webp",
+    imageSrc: "/images/project-capteam-thumb.webp",
   },
   {
     slug: "focuson",
@@ -26,7 +26,7 @@ export const projects: Project[] = [
     role: "백엔드 개발",
     stack: ["Java", "Spring Boot", "Spring Security", "PostgreSQL", "Spring Data JPA", "Flyway", "Swagger", "Docker"],
     link: { label: "FocusOn GitHub", href: "https://github.com/What-a-move/FocusOn" },
-    imageSrc: "/images/project-focuson.webp",
+    imageSrc: "/images/project-focuson-thumb.webp",
   },
 ];
 
