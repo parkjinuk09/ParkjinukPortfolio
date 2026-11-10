@@ -152,3 +152,22 @@ Notion 기준으로 내용을 바꾸고 다크 테마로 화면을 다시 구성
 - 원인: Cache Components는 목록에 없는 경로에 정적 셸을 먼저 스트리밍(`x-nextjs-postponed: 1`)하므로, 페이지의 `notFound()`가 실행되기 전에 상태 코드 200이 이미 전송됨
 - 수정: `src/proxy.ts`에서 렌더링 전에 slug를 확인하고, 목록에 없으면 존재하지 않는 경로로 rewrite해 not-found 화면을 404로 응답
 - 확인: `/projects/abc` 첫 요청·재요청 모두 404, `/projects/capteam` · `/projects/focuson` 200, `/` · `/api/health` 200
+
+## 10. 링크 · 기술 로고 · 소개 문구 · 프로젝트 카드 수정 (2026-11-11)
+
+| 요청 | 반영 |
+| --- | --- |
+| Tistory · Instagram · LinkedIn 링크 | 헤더 · 표지 아이콘, 표지 Contact 목록, 연락 영역에 추가 |
+| Java · Redis · AWS EC2 로고 | Devicon 컬러 SVG로 교체 (AWS는 어두운 배경에서 보이도록 글자색만 흰색으로 변경) |
+| 2026 → 2023 | About 두 번째 수치를 `2023 ~`로 변경 |
+| 소개 문장 가독성 | "고려하는 것 / 경험한 것" 두 묶음의 키워드로 분리 |
+| 기술 스택 호버 | 평소 흑백(`grayscale(1)`) → 호버 시 원래 색(`grayscale(0)`) |
+| 트러블슈팅 카드 | 메인에서 제거하고 같은 자리에 프로젝트 카드(Main Projects) 배치. 트러블슈팅은 프로젝트 상세에 그대로 있음 |
+
+| 항목 | 결과 |
+| --- | --- |
+| typecheck / lint / build | 통과 |
+| `pnpm test` / `pnpm test:db` | 18건 / 8건 통과 |
+| 헤더 링크 5개 href | GitHub · Blog · Instagram · LinkedIn · Email 확인 |
+| 기술 로고 9개 | 모두 로드(naturalWidth 150) |
+| 1440×900 / 390×844 | 콘솔 오류 없음, 가로 스크롤 없음 |
