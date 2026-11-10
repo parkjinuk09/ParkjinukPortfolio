@@ -39,9 +39,13 @@ export function ContactSection({ profile }: { profile: Profile }) {
               <a href={`mailto:${profile.email}`} className="hover:text-zinc-50">
                 {profile.email}
               </a>
-              <a href={profile.github.href} target="_blank" rel="noreferrer" className="hover:text-zinc-50">
-                {profile.github.label}
-              </a>
+              {profile.socials
+                .filter((social) => social.kind !== "email")
+                .map((social) => (
+                  <a key={social.kind} href={social.href} target="_blank" rel="noreferrer" className="hover:text-zinc-50">
+                    {social.label}
+                  </a>
+                ))}
             </div>
             <div className="mt-20">
               <ContactPopup />
