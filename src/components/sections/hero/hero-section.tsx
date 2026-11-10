@@ -6,6 +6,7 @@ import { TOP_ANCHOR } from "@/components/layout/site-header";
 import { Reveal } from "@/components/motion/reveal";
 import { SocialLinks } from "@/components/ui/social-links";
 import type { Profile, Project } from "@/content/types";
+import type { Award } from "@/features/achievements/types";
 
 import { HeroBackground } from "./hero-background";
 
@@ -69,7 +70,14 @@ function HeroList({ title, href, items }: { title: string; href: string; items: 
 }
 
 /** 표지: 참고 사이트와 같은 구성 (작은 수식어 → 영문 대제목 → 소개 → 기술, 하단에 아이콘 · 프로젝트 · 연락처 목록) */
-export function HeroSection({ profile, projects }: { profile: Profile; projects: Project[] }) {
+interface HeroSectionProps {
+  profile: Profile;
+  projects: Project[];
+  /** 표지 오른쪽에 보여줄 대표 수상. 링크는 왼쪽 아이콘에 이미 있으므로 이 자리는 성과를 보여준다. */
+  featuredAwards: Award[];
+}
+
+export function HeroSection({ profile, projects, featuredAwards }: HeroSectionProps) {
   const titleStart = EYEBROW_START_MS + profile.heroEyebrow.length * LETTER_STAGGER_MS;
   const afterTitle = titleStart + profile.heroTitle.length * LETTER_STAGGER_MS;
 
@@ -112,17 +120,14 @@ export function HeroSection({ profile, projects }: { profile: Profile; projects:
               }))}
             />
             <HeroList
-              title="Contact"
-              href="#contact"
-              items={profile.contacts
-                .filter((contact) => contact.href)
-                .map((contact) => ({
-                  key: contact.label,
-                  label: contact.label,
-                  description: contact.value,
-                  href: contact.href ?? "#contact",
-                  external: true,
-                }))}
+              title="Awards"
+              href="#awards"
+              items={featuredAwards.map((award) => ({
+                key: award.title,
+                label: award.title,
+                description: `${award.project} · ${award.periodLabel}`,
+                href: "#awards",
+              }))}
             />
           </div>
         </Reveal>
