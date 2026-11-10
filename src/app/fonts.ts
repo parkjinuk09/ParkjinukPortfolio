@@ -8,15 +8,11 @@ export const sansFont = localFont({
   display: "swap",
 });
 
-export const serifFont = localFont({
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2",
-      style: "normal",
-    },
-  ],
-  variable: "--font-source-serif",
-  weight: "200 900",
+/** 영문 대제목 전용. 한글은 포함하지 않으므로 한글 제목에는 쓰지 않는다. */
+export const displayFont = localFont({
+  src: "../../node_modules/@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2",
+  variable: "--font-montserrat",
+  weight: "100 900",
   display: "swap",
 });
 

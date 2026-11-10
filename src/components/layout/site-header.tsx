@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 
 /** 표지 섹션의 id. 페이지 맨 위로 이동하는 링크의 대상이기도 하다. */
-const TOP_ANCHOR = "top";
+export const TOP_ANCHOR = "top";
+
+/** 이 높이(px)보다 내려가면 헤더 배경을 채워 본문 위에서도 글자가 읽히게 한다. */
+const SOLID_HEADER_OFFSET = 24;
 
 export interface NavItem {
   label: string;
@@ -11,18 +14,20 @@ export interface NavItem {
 }
 
 interface SiteHeaderProps {
-  name: string;
+  title: string;
   items: NavItem[];
+  githubHref: string;
+  email: string;
 }
 
 /**
  * 상단 고정 내비게이션.
  * - 현재 보고 있는 섹션을 강조해 긴 페이지에서 위치를 알 수 있게 한다.
- * - 상단의 얇은 선으로 전체 스크롤 진행률을 보여준다.
+ * - 표지 위에서는 투명, 스크롤하면 반투명 배경으로 바뀐다.
  */
-export function SiteHeader({ name, items }: SiteHeaderProps) {
+export function SiteHeader({ title, items, githubHref, email }: SiteHeaderProps) {
   const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
+  const [isSolid, setIsSolid] = useState(false);
 
   useEffect(() => {
     // 표지(top)도 함께 관찰해, 표지로 돌아오면 강조를 해제한다.
@@ -42,33 +47,28 @@ export function SiteHeader({ name, items }: SiteHeaderProps) {
     );
     sections.forEach((section) => observer.observe(section));
 
-    let frame = 0;
-    const updateProgress = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-        setProgress(scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0);
-      });
-    };
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
+    const updateSolid = () => setIsSolid(window.scrollY > SOLID_HEADER_OFFSET);
+    updateSolid();
+    window.addEventListener("scroll", updateSolid, { passive: true });
 
     return () => {
       observer.disconnect();
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
+      window.removeEventListener("scroll", updateSolid);
     };
   }, [items]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line/70 bg-paper/85 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 px-5 md:px-10">
-        <a href={`#${TOP_ANCHOR}`} className="shrink-0 font-serif text-lg font-medium tracking-tight text-ink">
-          {name}
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+        isSolid ? "bg-charcoal/80 backdrop-blur-md" : "bg-transparent"
+      }`}
+    >
+      <div className="mx-auto flex h-16 max-w-5xl items-center gap-6 px-5 md:gap-10 md:px-8">
+        <a href={`#${TOP_ANCHOR}`} className="shrink-0 text-[15px] font-medium tracking-tight text-fg">
+          {title}
         </a>
-        <nav aria-label="섹션 이동" className="-mr-2 min-w-0 overflow-x-auto">
+
+        <nav aria-label="섹션 이동" className="min-w-0 flex-1 overflow-x-auto">
           <ul className="flex items-center gap-1 text-sm whitespace-nowrap">
             {items.map((item) => {
               const isActive = activeAnchor === item.anchor;
@@ -77,29 +77,37 @@ export function SiteHeader({ name, items }: SiteHeaderProps) {
                   <a
                     href={`#${item.anchor}`}
                     aria-current={isActive ? "location" : undefined}
-                    className={`relative rounded-full px-3 py-1.5 transition-colors duration-300 ${
-                      isActive ? "text-ink" : "text-muted hover:text-ink"
+                    className={`rounded-full px-3 py-1.5 transition-colors duration-300 ${
+                      isActive ? "text-mint" : "text-muted hover:text-fg"
                     }`}
                   >
                     {item.label}
-                    <span
-                      aria-hidden
-                      className={`absolute inset-x-3 -bottom-0.5 h-px bg-accent transition-transform duration-500 ease-out-expo ${
-                        isActive ? "scale-x-100" : "scale-x-0"
-                      }`}
-                    />
                   </a>
                 </li>
               );
             })}
           </ul>
         </nav>
+
+        <div className="hidden shrink-0 items-center gap-2 sm:flex">
+          <a
+            href={githubHref}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            className="grid h-9 w-9 place-items-center rounded-full border border-line text-xs font-semibold text-muted transition-colors duration-300 hover:border-mint hover:text-mint"
+          >
+            git
+          </a>
+          <a
+            href={`mailto:${email}`}
+            aria-label="이메일 보내기"
+            className="grid h-9 w-9 place-items-center rounded-full border border-line text-sm text-muted transition-colors duration-300 hover:border-mint hover:text-mint"
+          >
+            @
+          </a>
+        </div>
       </div>
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-[-1px] h-0.5 origin-left bg-accent"
-        style={{ transform: `scaleX(${progress})` }}
-      />
     </header>
   );
 }

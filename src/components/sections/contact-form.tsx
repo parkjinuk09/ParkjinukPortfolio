@@ -8,14 +8,14 @@ import { CONTACT_LIMITS, contactMessageSchema, toFieldErrors, type ContactFieldE
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
 const inputClassName =
-  "mt-2 w-full rounded-md border bg-surface px-4 py-3 text-sm text-ink outline-none transition-colors duration-300 placeholder:text-subtle focus:border-accent";
+  "mt-2 w-full rounded-md border bg-charcoal px-4 py-3 text-sm text-fg outline-none transition-colors duration-300 placeholder:text-subtle focus:border-mint";
 
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) {
     return null;
   }
   return (
-    <p id={id} className="mt-2 text-xs text-red-700">
+    <p id={id} className="mt-2 text-xs text-pink">
       {message}
     </p>
   );
@@ -78,7 +78,7 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6" aria-describedby="contact-form-status">
       <div className="grid gap-6 md:grid-cols-2">
-        <label className="block text-sm font-semibold text-ink">
+        <label className="block text-sm font-semibold text-fg">
           이름
           <input
             name="name"
@@ -86,11 +86,11 @@ export function ContactForm() {
             maxLength={CONTACT_LIMITS.nameMax}
             aria-invalid={Boolean(fieldErrors.name)}
             aria-describedby="contact-name-error"
-            className={`${inputClassName} ${fieldErrors.name ? "border-red-700" : "border-line"}`}
+            className={`${inputClassName} ${fieldErrors.name ? "border-pink" : "border-line"}`}
           />
           <FieldError id="contact-name-error" message={fieldErrors.name} />
         </label>
-        <label className="block text-sm font-semibold text-ink">
+        <label className="block text-sm font-semibold text-fg">
           이메일
           <input
             name="email"
@@ -99,13 +99,13 @@ export function ContactForm() {
             maxLength={CONTACT_LIMITS.emailMax}
             aria-invalid={Boolean(fieldErrors.email)}
             aria-describedby="contact-email-error"
-            className={`${inputClassName} ${fieldErrors.email ? "border-red-700" : "border-line"}`}
+            className={`${inputClassName} ${fieldErrors.email ? "border-pink" : "border-line"}`}
           />
           <FieldError id="contact-email-error" message={fieldErrors.email} />
         </label>
       </div>
 
-      <label className="block text-sm font-semibold text-ink">
+      <label className="block text-sm font-semibold text-fg">
         메시지
         <textarea
           name="message"
@@ -114,7 +114,7 @@ export function ContactForm() {
           placeholder={`${CONTACT_LIMITS.messageMin}자 이상 입력해 주세요.`}
           aria-invalid={Boolean(fieldErrors.message)}
           aria-describedby="contact-message-error"
-          className={`${inputClassName} resize-y ${fieldErrors.message ? "border-red-700" : "border-line"}`}
+          className={`${inputClassName} resize-y ${fieldErrors.message ? "border-pink" : "border-line"}`}
         />
         <FieldError id="contact-message-error" message={fieldErrors.message} />
       </label>
@@ -129,13 +129,13 @@ export function ContactForm() {
 
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <p id="contact-form-status" role="status" aria-live="polite" className="text-sm">
-          {status === "success" && <span className="text-accent">메시지를 보냈습니다. 확인 후 이메일로 답장드리겠습니다.</span>}
-          {status === "error" && errorMessage && <span className="text-red-700">{errorMessage}</span>}
+          {status === "success" && <span className="text-mint">메시지를 보냈습니다. 확인 후 이메일로 답장드리겠습니다.</span>}
+          {status === "error" && errorMessage && <span className="text-pink">{errorMessage}</span>}
         </p>
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-7 py-3 text-sm font-semibold text-paper transition-colors duration-300 hover:bg-accent disabled:cursor-wait disabled:opacity-60"
+          className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-fg px-7 py-3 text-sm font-semibold text-charcoal transition-colors duration-300 hover:bg-mint disabled:cursor-wait disabled:opacity-60"
         >
           {status === "submitting" ? "보내는 중…" : "메시지 보내기"}
           <span aria-hidden className="transition-transform duration-500 ease-out-expo group-hover:translate-x-1">

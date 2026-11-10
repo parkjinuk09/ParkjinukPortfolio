@@ -1,76 +1,100 @@
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 
+import { TOP_ANCHOR } from "@/components/layout/site-header";
 import { Reveal } from "@/components/motion/reveal";
-import type { IndexEntry, Profile } from "@/content/types";
+import type { Profile, Project } from "@/content/types";
 
-const COVER_TITLE = "Portfolio";
-const LETTER_STAGGER_MS = 45;
+const LETTER_STAGGER_MS = 35;
+const TITLE_START_DELAY_MS = 250;
 
-interface HeroSectionProps {
-  profile: Profile;
-  index: IndexEntry[];
-}
+/** 표지: 영문 대제목이 글자 단위로 올라오고, 아래에 프로젝트 바로가기와 연락처를 둔다. */
+export function HeroSection({ profile, projects }: { profile: Profile; projects: Project[] }) {
+  const titleWords = profile.heroTitle.split(" ");
+  // 단어가 바뀌어도 등장 순서가 이어지도록 각 단어의 시작 글자 위치를 미리 계산한다.
+  const wordOffsets = titleWords.map((_, index) =>
+    titleWords.slice(0, index).reduce((total, word) => total + word.length, 0),
+  );
+  const letterCount = titleWords.reduce((total, word) => total + word.length, 0);
+  const afterTitleDelay = TITLE_START_DELAY_MS + letterCount * LETTER_STAGGER_MS;
 
-/** 표지(P00): 제목, 소개 한 줄, 목차. 목차 항목은 해당 섹션으로 이동하는 링크다. */
-export function HeroSection({ profile, index }: HeroSectionProps) {
   return (
-    <section id="top" className="mx-auto max-w-6xl px-5 pt-32 pb-24 md:px-10 md:pt-44 md:pb-32">
-      <Reveal className="font-mono text-xs tracking-[0.2em] text-accent uppercase">Backend Developer</Reveal>
+    <section id={TOP_ANCHOR} className="relative flex min-h-dvh flex-col overflow-hidden">
+      <div aria-hidden className="hero-glow pointer-events-none absolute -inset-[10%]" />
 
-      <h1 aria-label={COVER_TITLE} className="mt-6 overflow-hidden pb-2 font-serif text-[clamp(4.5rem,17vw,13rem)] leading-[0.9] font-medium tracking-[-0.045em] text-ink">
-        {COVER_TITLE.split("").map((letter, letterIndex) => (
-          <span
-            key={letterIndex}
-            aria-hidden
-            className="letter-rise"
-            style={{ "--letter-delay": `${letterIndex * LETTER_STAGGER_MS}ms` } as CSSProperties}
-          >
-            {letter}
-          </span>
-        ))}
-      </h1>
+      <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-5 pt-28 md:px-8">
+        <Reveal className="text-lg font-semibold text-muted md:text-2xl">{profile.name}</Reveal>
 
-      <Reveal delay={450} className="mt-10 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <p className="text-3xl font-bold tracking-tight text-ink md:text-4xl">{profile.name}</p>
-        <p className="max-w-xl text-sm leading-relaxed text-muted md:text-right md:text-base">{profile.tagline}</p>
-      </Reveal>
-
-      <Reveal bare delay={600} className="mt-14">
-        <div className="rule-draw h-0.5 bg-ink" />
-      </Reveal>
-
-      <ol className="mt-2">
-        {index.map((entry, entryIndex) => (
-          <Reveal as="li" key={entry.anchor} delay={650 + entryIndex * 90} className="border-b border-line">
-            <a
-              href={`#${entry.anchor}`}
-              className="group grid grid-cols-[3rem_1fr_auto] items-baseline gap-4 py-5 md:grid-cols-[5rem_1fr_1fr_auto] md:py-6"
-            >
-              <span className="font-mono text-sm text-accent">{entry.number}</span>
-              <span className="font-serif text-2xl text-ink transition-transform duration-500 ease-out-expo group-hover:translate-x-2 md:text-3xl">
-                {entry.title}
+        <h1
+          aria-label={profile.heroTitle}
+          className="mt-3 overflow-hidden pb-1 font-display text-[clamp(2.6rem,8.2vw,5.6rem)] leading-[1.05] font-bold tracking-[-0.02em] text-fg"
+        >
+          {titleWords.map((word, wordIndex) => (
+            // 글자마다 inline-block이라 단어 중간에서 줄이 바뀌지 않도록 단어 단위로 묶고, 단어 사이에만 공백을 둔다.
+            <Fragment key={wordIndex}>
+              {wordIndex > 0 && " "}
+              <span className="inline-block whitespace-nowrap">
+              {word.split("").map((letter, letterIndex) => (
+                <span
+                  key={letterIndex}
+                  aria-hidden
+                  className="letter-rise"
+                  style={
+                    {
+                      "--letter-delay": `${TITLE_START_DELAY_MS + (wordOffsets[wordIndex] + letterIndex) * LETTER_STAGGER_MS}ms`,
+                    } as CSSProperties
+                  }
+                >
+                  {letter}
+                </span>
+              ))}
               </span>
-              <span className="col-span-2 col-start-2 row-start-2 text-sm text-muted md:col-span-1 md:col-start-3 md:row-start-1">
-                {entry.description}
-              </span>
-              <span
-                aria-hidden
-                className="col-start-3 row-start-1 -translate-x-2 text-accent opacity-0 transition-all duration-500 ease-out-expo group-hover:translate-x-0 group-hover:opacity-100 md:col-start-4"
-              >
-                →
-              </span>
-            </a>
-          </Reveal>
-        ))}
-      </ol>
+            </Fragment>
+          ))}
+        </h1>
 
-      <Reveal delay={1100} className="mt-10 flex flex-col gap-2 text-xs text-subtle md:flex-row md:justify-between">
-        <span>
-          {profile.school} {profile.department}
-        </span>
-        <span>
-          {profile.github.label} · {profile.email}
-        </span>
+        <Reveal delay={afterTitleDelay} className="mt-8 space-y-3">
+          <p className="text-base text-fg md:text-lg">{profile.motto}</p>
+          <p className="text-sm text-subtle md:text-base">{profile.primaryStack.join("  ·  ")}</p>
+        </Reveal>
+      </div>
+
+      <Reveal
+        delay={afterTitleDelay + 200}
+        className="relative mx-auto grid w-full max-w-5xl gap-10 px-5 pt-16 pb-14 sm:grid-cols-2 md:grid-cols-[1fr_14rem_14rem] md:px-8"
+      >
+        <p className="hidden text-sm leading-relaxed text-subtle md:block">{profile.role}</p>
+        <div>
+          <a href="#projects" className="text-sm text-muted transition-colors hover:text-fg">
+            Projects
+          </a>
+          <ul className="mt-4 space-y-3 border-l border-line pl-4">
+            {projects.map((project) => (
+              <li key={project.slug}>
+                <a href={`#${project.slug}`} className="group block">
+                  <span className="block text-sm text-fg transition-colors group-hover:text-mint">{project.name}</span>
+                  <span className="mt-0.5 block truncate text-xs text-subtle">{project.oneLiner}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <a href="#contact" className="text-sm text-muted transition-colors hover:text-fg">
+            Contact
+          </a>
+          <ul className="mt-4 space-y-3 border-l border-line pl-4 text-sm">
+            {profile.contacts
+              .filter((contact) => contact.href)
+              .map((contact) => (
+                <li key={contact.label}>
+                  <a href={contact.href} className="block text-fg transition-colors hover:text-mint">
+                    {contact.label}
+                  </a>
+                  <span className="mt-0.5 block truncate text-xs text-subtle">{contact.value}</span>
+                </li>
+              ))}
+          </ul>
+        </div>
       </Reveal>
     </section>
   );
