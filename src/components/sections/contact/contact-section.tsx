@@ -30,7 +30,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
           <h2 className="text-[clamp(1.5rem,2vw,1.9rem)] leading-normal font-semibold text-zinc-50">{profile.closing.headline}</h2>
           <p className="max-w-[500px] leading-relaxed text-zinc-400">{profile.closing.body}</p>
           <div>
-            <div className="mb-10 flex flex-col gap-1 border-l border-zinc-50/20 pl-5 text-sm text-zinc-300">
+            <div className="mb-10 flex flex-col border-l border-zinc-50/20 pl-5 text-sm text-zinc-300 md:gap-1 [&>a]:py-1.5 md:[&>a]:py-0">
               {phone?.href && (
                 <a href={phone.href} className="hover:text-zinc-50">
                   {phone.value}
