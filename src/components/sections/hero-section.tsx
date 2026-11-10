@@ -1,4 +1,5 @@
 import { PAGE_GUTTER } from "@/components/layout/container";
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment, type CSSProperties } from "react";
 
@@ -6,6 +7,8 @@ import { TOP_ANCHOR } from "@/components/layout/site-header";
 import { Reveal } from "@/components/motion/reveal";
 import type { Profile, Project } from "@/content/types";
 
+/** 사용자가 제공한 표지 사진 (원본 HEIC를 2400px WebP로 변환) */
+const HERO_PHOTO_SRC = "/images/hero-dome.webp";
 const LETTER_STAGGER_MS = 35;
 const TITLE_START_DELAY_MS = 250;
 
@@ -21,7 +24,19 @@ export function HeroSection({ profile, projects }: { profile: Profile; projects:
 
   return (
     <section id={TOP_ANCHOR} className="relative flex min-h-dvh flex-col overflow-hidden">
-      <div aria-hidden className="hero-glow pointer-events-none absolute -inset-[10%]" />
+      {/* 배경 사진은 장식이라 대체 텍스트를 비우고, 아래쪽을 배경색으로 덮어 다음 섹션과 자연스럽게 이어지게 한다. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <Image
+          src={HERO_PHOTO_SRC}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="hero-photo object-cover object-[50%_45%]"
+        />
+        <div className="absolute inset-0 bg-charcoal/70" />
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-b from-transparent to-charcoal" />
+      </div>
 
       <div className={`${PAGE_GUTTER} relative flex flex-1 flex-col justify-center pt-28`}>
         <Reveal className="text-lg font-semibold text-muted md:text-2xl">{profile.name}</Reveal>

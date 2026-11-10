@@ -11,7 +11,7 @@ export type ProjectCard = Pick<Project, "slug" | "number" | "name" | "tag" | "on
 /** 카드 왼쪽 영역. 서비스 화면 이미지가 없으므로 프로젝트 이름과 기술을 크게 배치한 표지로 대신한다. */
 function CardCover({ card }: { card: ProjectCard }) {
   return (
-    <div className="relative flex aspect-[16/10] flex-col justify-between overflow-hidden rounded-xl border border-line bg-gradient-to-br from-raised to-surface p-6 md:p-8">
+    <div className="relative flex aspect-[16/10] flex-col justify-between overflow-hidden rounded-xl border border-indigo/20 bg-gradient-to-br from-raised to-surface p-6 transition-[border-color,box-shadow] duration-300 group-hover:border-indigo/70 group-hover:shadow-[0_5px_30px_rgb(99_102_241/0.25)] md:p-8">
       <span className="font-mono text-xs text-subtle">PROJECT {card.number}</span>
       <p className="font-display text-4xl font-bold tracking-tight text-fg md:text-5xl">{card.name}</p>
       <p className="truncate text-xs text-subtle">{card.stack.join(" · ")}</p>
