@@ -1,3 +1,4 @@
+import { PAGE_GUTTER } from "@/components/layout/container";
 import { Reveal } from "@/components/motion/reveal";
 import { ChipList } from "@/components/ui/chip-list";
 import { RichText } from "@/components/ui/rich-text";
@@ -14,7 +15,7 @@ function ValueLabel({ index }: { index: number }) {
  */
 export function AboutSection({ profile }: { profile: Profile }) {
   return (
-    <section id="about" className="mx-auto max-w-5xl px-5 py-28 md:px-8 md:py-40">
+    <section id="about" className={`${PAGE_GUTTER} py-28 md:py-40`}>
       <SectionHeading title="About" />
 
       <div className="grid grid-cols-1 gap-14 md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] md:gap-20">

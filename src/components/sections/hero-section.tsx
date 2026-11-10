@@ -1,3 +1,5 @@
+import { PAGE_GUTTER } from "@/components/layout/container";
+import Link from "next/link";
 import { Fragment, type CSSProperties } from "react";
 
 import { TOP_ANCHOR } from "@/components/layout/site-header";
@@ -21,7 +23,7 @@ export function HeroSection({ profile, projects }: { profile: Profile; projects:
     <section id={TOP_ANCHOR} className="relative flex min-h-dvh flex-col overflow-hidden">
       <div aria-hidden className="hero-glow pointer-events-none absolute -inset-[10%]" />
 
-      <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-5 pt-28 md:px-8">
+      <div className={`${PAGE_GUTTER} relative flex flex-1 flex-col justify-center pt-28`}>
         <Reveal className="text-lg font-semibold text-muted md:text-2xl">{profile.name}</Reveal>
 
         <h1
@@ -60,7 +62,7 @@ export function HeroSection({ profile, projects }: { profile: Profile; projects:
 
       <Reveal
         delay={afterTitleDelay + 200}
-        className="relative mx-auto grid w-full max-w-5xl gap-10 px-5 pt-16 pb-14 sm:grid-cols-2 md:grid-cols-[1fr_14rem_14rem] md:px-8"
+        className={`${PAGE_GUTTER} relative grid gap-10 pt-16 pb-14 sm:grid-cols-2 md:grid-cols-[1fr_16rem_16rem]`}
       >
         <p className="hidden text-sm leading-relaxed text-subtle md:block">{profile.role}</p>
         <div>
@@ -70,10 +72,10 @@ export function HeroSection({ profile, projects }: { profile: Profile; projects:
           <ul className="mt-4 space-y-3 border-l border-line pl-4">
             {projects.map((project) => (
               <li key={project.slug}>
-                <a href={`#${project.slug}`} className="group block">
+                <Link href={`/projects/${project.slug}`} className="group block">
                   <span className="block text-sm text-fg transition-colors group-hover:text-mint">{project.name}</span>
                   <span className="mt-0.5 block truncate text-xs text-subtle">{project.oneLiner}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

@@ -29,44 +29,10 @@ export interface Profile {
   closing: { headline: string; body: string };
 }
 
-/** 핵심 구현처럼 "라벨: 설명" 형태의 항목 */
-export interface LabeledItem {
-  label?: string;
-  text: RichText;
-}
-
-export interface DesignDecision {
-  title: RichText;
-  background: RichText;
-  choice: RichText;
-  code?: string;
-  reasons?: string[];
-  verification?: RichText;
-  followUp?: string;
-}
-
-export interface Troubleshooting {
-  title: string;
-  problem: RichText[];
-  problemCode?: string;
-  cause: RichText[];
-  solution: RichText[];
-  solutionCode?: string;
-  /** 문단 하나 또는 목록 */
-  result?: RichText[];
-  resultAsList?: boolean;
-  lesson?: RichText[];
-}
-
-export interface ProjectArchitecture {
-  title: string;
-  /** public 기준 이미지 경로. 없으면 코드로 그린 구성도 또는 설명만 표시한다. */
-  imageSrc?: string;
-  /** 코드로 그린 구성도를 쓸지 여부 (CapTeam) */
-  showDiagram?: boolean;
-  note?: RichText;
-}
-
+/**
+ * 메인 페이지 프로젝트 카드 정보 (Notion 「Main Projects」 머리말 기준).
+ * 카드를 누르면 보이는 상세 내용은 Figma 형식을 따르는 case-studies.ts에 있다.
+ */
 export interface Project {
   slug: string;
   number: string;
@@ -79,10 +45,4 @@ export interface Project {
   role: string;
   stack: string[];
   link: LinkItem;
-  summary: { lead: string; items: string[] };
-  architecture: ProjectArchitecture;
-  coreImplementation: LabeledItem[];
-  designDecision: DesignDecision;
-  troubleshooting: Troubleshooting[];
-  lessons: RichText[];
 }

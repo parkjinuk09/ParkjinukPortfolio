@@ -1,3 +1,4 @@
+import { PAGE_GUTTER } from "@/components/layout/container";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getAchievements } from "@/features/achievements/queries";
@@ -59,7 +60,7 @@ export async function AchievementsSection() {
 
   return (
     <section id="awards">
-      <div className="mx-auto max-w-5xl px-5 py-28 md:px-8 md:py-40">
+      <div className={`${PAGE_GUTTER} py-28 md:py-40`}>
         <SectionHeading title="Awards & Activities" description="교내 수상·활동과 해외 견학·교류를 한곳에 정리했습니다" />
 
         {result.status === "error" ? (
@@ -105,7 +106,7 @@ export async function AchievementsSection() {
 export function AchievementsSectionSkeleton() {
   return (
     <section id="awards" aria-busy="true">
-      <div className="mx-auto max-w-5xl px-5 py-28 md:px-8 md:py-40">
+      <div className={`${PAGE_GUTTER} py-28 md:py-40`}>
         <div className="h-28 w-2/3 animate-pulse rounded bg-raised" />
         <div className="mt-16 space-y-3">
           {Array.from({ length: 6 }, (_, rowIndex) => (

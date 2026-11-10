@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { PAGE_GUTTER } from "./container";
+
 /** 표지 섹션의 id. 페이지 맨 위로 이동하는 링크의 대상이기도 하다. */
 export const TOP_ANCHOR = "top";
 
@@ -18,6 +20,8 @@ interface SiteHeaderProps {
   items: NavItem[];
   githubHref: string;
   email: string;
+  /** 메인이 아닌 페이지(프로젝트 상세)에서는 "/"를 넘겨 메인 페이지의 섹션으로 이동하게 한다. */
+  linkPrefix?: string;
 }
 
 /**
@@ -25,7 +29,7 @@ interface SiteHeaderProps {
  * - 현재 보고 있는 섹션을 강조해 긴 페이지에서 위치를 알 수 있게 한다.
  * - 표지 위에서는 투명, 스크롤하면 반투명 배경으로 바뀐다.
  */
-export function SiteHeader({ title, items, githubHref, email }: SiteHeaderProps) {
+export function SiteHeader({ title, items, githubHref, email, linkPrefix = "" }: SiteHeaderProps) {
   const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
   const [isSolid, setIsSolid] = useState(false);
 
@@ -63,8 +67,8 @@ export function SiteHeader({ title, items, githubHref, email }: SiteHeaderProps)
         isSolid ? "bg-charcoal/80 backdrop-blur-md" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-5xl items-center gap-6 px-5 md:gap-10 md:px-8">
-        <a href={`#${TOP_ANCHOR}`} className="shrink-0 text-[15px] font-medium tracking-tight text-fg">
+      <div className={`${PAGE_GUTTER} flex h-16 items-center gap-6 md:gap-10`}>
+        <a href={`${linkPrefix}#${TOP_ANCHOR}`} className="shrink-0 text-[15px] font-medium tracking-tight text-fg">
           {title}
         </a>
 
@@ -75,7 +79,7 @@ export function SiteHeader({ title, items, githubHref, email }: SiteHeaderProps)
               return (
                 <li key={item.anchor}>
                   <a
-                    href={`#${item.anchor}`}
+                    href={`${linkPrefix}#${item.anchor}`}
                     aria-current={isActive ? "location" : undefined}
                     className={`rounded-full px-3 py-1.5 transition-colors duration-300 ${
                       isActive ? "text-mint" : "text-muted hover:text-fg"

@@ -1,3 +1,4 @@
+import { PAGE_GUTTER } from "@/components/layout/container";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import type { Profile } from "@/content/types";
@@ -5,7 +6,7 @@ import type { Profile } from "@/content/types";
 /** Notion 「Closing」 */
 export function ClosingSection({ profile }: { profile: Profile }) {
   return (
-    <section id="closing" className="mx-auto max-w-5xl px-5 py-28 md:px-8 md:py-40">
+    <section id="closing" className={`${PAGE_GUTTER} py-28 md:py-40`}>
       <SectionHeading title="Closing" />
       <Reveal>
         <p className="max-w-4xl text-[clamp(1.4rem,3vw,2.2rem)] leading-[1.45] font-bold tracking-tight text-fg">

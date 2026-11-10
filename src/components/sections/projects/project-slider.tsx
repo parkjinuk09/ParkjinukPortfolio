@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import type { Project } from "@/content/types";
 
-/** 프로젝트 카드 슬라이더에 필요한 최소 정보만 받는다. 상세 내용은 서버 컴포넌트가 아래에 렌더링한다. */
+/** 프로젝트 카드 슬라이더에 필요한 최소 정보만 받는다. */
 export type ProjectCard = Pick<Project, "slug" | "number" | "name" | "tag" | "oneLiner" | "teamType" | "period" | "stack">;
 
 /** 카드 왼쪽 영역. 서비스 화면 이미지가 없으므로 프로젝트 이름과 기술을 크게 배치한 표지로 대신한다. */
@@ -33,7 +34,7 @@ function ArrowButton({ direction, onClick, disabled }: { direction: "prev" | "ne
   );
 }
 
-/** 프로젝트를 한 장씩 넘겨 보는 카드. 각 카드는 아래 상세 섹션으로 이동하는 링크다. */
+/** 프로젝트를 한 장씩 넘겨 보는 카드. 각 카드를 누르면 Figma 형식의 프로젝트 상세 페이지로 이동한다. */
 export function ProjectSlider({ cards }: { cards: ProjectCard[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const lastIndex = cards.length - 1;
@@ -53,8 +54,8 @@ export function ProjectSlider({ cards }: { cards: ProjectCard[] }) {
               aria-hidden={index !== currentIndex}
               className="w-full shrink-0"
             >
-              <a
-                href={`#${card.slug}`}
+              <Link
+                href={`/projects/${card.slug}`}
                 tabIndex={index === currentIndex ? 0 : -1}
                 className="group grid grid-cols-1 items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-12"
               >
@@ -77,7 +78,7 @@ export function ProjectSlider({ cards }: { cards: ProjectCard[] }) {
                     </span>
                   </span>
                 </div>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
