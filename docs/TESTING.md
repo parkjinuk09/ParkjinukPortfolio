@@ -112,3 +112,16 @@ Notion 기준으로 내용을 바꾸고 다크 테마로 화면을 다시 구성
 | --- | --- | --- |
 | 빌드 실패: `dynamicParams` 사용 불가 | Cache Components 환경에서는 route segment config `dynamicParams`를 지원하지 않음 | 설정을 제거하고, 목록에 없는 slug는 `notFound()`로 404 처리 |
 | 상세 페이지에서 "맨 위로" 버튼이 동작하지 않을 수 있음 | 메인 표지의 `#top` 앵커에 의존 | 앵커 대신 `window.scrollTo`로 이동 (모션 줄이기 설정 시 즉시 이동) |
+
+## 8. 참고 사이트 색상·표지 사진 반영 후 재검증 (2026-11-10)
+
+- 색상: 참고 사이트의 실제 계산값(배경 `#171717`, zinc 계열 본문, 민트 `#46edd5` 4px 스크롤바, pink-400 태그, indigo-300 카드 강조)으로 맞춤
+- 기준 글자 크기: 14 → 15(640px~) → 16px(768px~)
+- 표지: 사용자 제공 사진(HEIC 6016px → WebP 2400px, 약 430KB)을 배경으로 넣고 어둡게 덮어 글자 대비 확보
+
+| 항목 | 결과 |
+| --- | --- |
+| typecheck / lint / build | 통과 |
+| `pnpm test` / `pnpm test:db` | 18건 / 8건 통과 |
+| `/`, `/projects/capteam`, `/projects/focuson`, `/images/hero-dome.webp` | 200 |
+| 화면 1440×900 / 390×844 | 콘솔 오류 없음, 가로 스크롤 없음 |
