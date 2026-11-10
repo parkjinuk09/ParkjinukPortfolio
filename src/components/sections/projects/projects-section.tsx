@@ -18,9 +18,9 @@ export function ProjectsSection({ projects, description }: { projects: Project[]
 
   return (
     <section id="projects" className={`${PAGE_GUTTER} py-20 md:py-21`}>
-      <div className="flex flex-col gap-10 pt-20">
+      <div className="flex flex-col gap-10 md:pt-20">
         <Reveal>
-          <h2 className="mb-4 text-5xl leading-relaxed font-semibold text-zinc-50">Projects</h2>
+          <h2 className="mb-4 text-4xl leading-relaxed md:text-5xl font-semibold text-zinc-50">Projects</h2>
           <p className="max-w-[600px] leading-relaxed text-zinc-400">{description}</p>
         </Reveal>
         <Reveal delay={100}>

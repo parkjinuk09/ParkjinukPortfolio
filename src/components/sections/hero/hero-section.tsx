@@ -44,7 +44,7 @@ function AnimatedLetters({ text, startDelay, className }: { text: string; startD
 
 function HeroList({ title, href, items }: { title: string; href: string; items: { key: string; label: string; description: string; href: string; external?: boolean }[] }) {
   return (
-    <div>
+    <div className="min-w-0">
       <a href={href} className="text-sm text-zinc-50 transition-opacity hover:opacity-70">
         {title}
       </a>
@@ -53,13 +53,13 @@ function HeroList({ title, href, items }: { title: string; href: string; items: 
           <li key={item.key} className="min-w-0">
             {item.external ? (
               <a href={item.href} className="group block" target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-                <span className="block text-xs text-zinc-50 group-hover:underline">{item.label}</span>
-                <span className="mt-1 block truncate text-xs text-zinc-400">{item.description}</span>
+                <span className="block text-[13px] text-zinc-50 group-hover:underline md:text-xs">{item.label}</span>
+                <span className="mt-1 block truncate text-[13px] text-zinc-400 md:text-xs">{item.description}</span>
               </a>
             ) : (
               <Link href={item.href} className="group block">
-                <span className="block text-xs text-zinc-50 group-hover:underline">{item.label}</span>
-                <span className="mt-1 block truncate text-xs text-zinc-400">{item.description}</span>
+                <span className="block text-[13px] text-zinc-50 group-hover:underline md:text-xs">{item.label}</span>
+                <span className="mt-1 block truncate text-[13px] text-zinc-400 md:text-xs">{item.description}</span>
               </Link>
             )}
           </li>
@@ -104,11 +104,11 @@ export function HeroSection({ profile, projects, featuredAwards }: HeroSectionPr
           <p className="text-zinc-500">{profile.primaryStack.join(" ㆍ ")}</p>
         </Reveal>
 
-        <Reveal delay={afterTitle + 150} className="grid gap-10 py-10 md:grid-cols-2">
+        <Reveal delay={afterTitle + 150} className="grid grid-cols-1 gap-10 py-10 md:grid-cols-2">
           <div className="pt-10">
             <SocialLinks links={profile.socials} />
           </div>
-          <div className="grid gap-10 md:mt-auto md:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-10 md:mt-auto md:grid-cols-2">
             <HeroList
               title="Projects"
               href="#projects"

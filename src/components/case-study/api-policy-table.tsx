@@ -8,20 +8,20 @@ export function ApiPolicyTable({ rows }: { rows: ApiPolicyRow[] }) {
         <h3 className="text-xl font-bold text-fg md:text-2xl">API 정책 요약</h3>
       </Reveal>
       <Reveal delay={80} className="mt-6 overflow-x-auto">
-        <table className="w-full min-w-[560px] text-left text-sm">
-          <thead>
+        <table className="block w-full text-left text-sm md:table md:min-w-[560px]">
+          <thead className="hidden md:table-header-group">
             <tr className="border-b border-subtle text-xs text-subtle">
               <th scope="col" className="py-3 pr-4 font-normal">도메인</th>
               <th scope="col" className="py-3 pr-4 font-normal">API</th>
               <th scope="col" className="py-3 font-normal">검증 · 제약</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="block md:table-row-group">
             {rows.map((row) => (
-              <tr key={row.domain} className="border-b border-line transition-colors duration-300 hover:bg-raised">
-                <th scope="row" className="py-4 pr-4 font-semibold text-fg">{row.domain}</th>
-                <td className="py-4 pr-4 text-muted">{row.api}</td>
-                <td className="py-4 text-muted">{row.constraint}</td>
+              <tr key={row.domain} className="flex flex-col gap-1 border-b border-line py-4 transition-colors duration-300 hover:bg-raised md:table-row md:py-0">
+                <th scope="row" className="block font-semibold text-fg md:table-cell md:py-4 md:pr-4">{row.domain}</th>
+                <td className="block text-muted md:table-cell md:py-4 md:pr-4">{row.api}</td>
+                <td className="block text-muted md:table-cell md:py-4">{row.constraint}</td>
               </tr>
             ))}
           </tbody>

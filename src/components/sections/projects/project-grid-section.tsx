@@ -12,7 +12,7 @@ import type { Project } from "@/content/types";
 export function ProjectGridSection({ projects }: { projects: Project[] }) {
   return (
     <section id="main-projects" className={`${PAGE_GUTTER} py-20 md:py-21`}>
-      <div className="flex flex-col gap-10 py-20">
+      <div className="flex flex-col gap-10 md:py-20">
         <Reveal>
           <h2 className="mb-5 text-3xl leading-relaxed font-semibold text-zinc-50">Main Projects</h2>
           <p className="max-w-[600px] leading-relaxed text-zinc-400">
@@ -20,7 +20,7 @@ export function ProjectGridSection({ projects }: { projects: Project[] }) {
           </p>
         </Reveal>
 
-        <div className="relative grid gap-20 xl:grid-cols-[1fr_3fr] xl:gap-30">
+        <div className="relative grid gap-8 md:gap-20 xl:grid-cols-[1fr_3fr] xl:gap-30">
           <div className="xl:mb-9">
             <div className="flex flex-wrap items-start gap-3 xl:sticky xl:top-40 xl:flex-col">
               <span className="border border-zinc-50/15 px-5 py-4 text-sm text-zinc-50">Projects {projects.length}</span>
