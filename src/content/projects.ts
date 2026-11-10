@@ -13,6 +13,7 @@ export const projects: Project[] = [
     role: "백엔드 개발",
     stack: ["Java 21", "Spring Boot 3", "MySQL", "STOMP", "Docker", "AWS EC2", "Nginx"],
     link: { label: "capteam.choies.kr", href: "https://capteam.choies.kr/" },
+    imageSrc: "/images/project-capteam.webp",
   },
   {
     slug: "focuson",
@@ -25,5 +26,9 @@ export const projects: Project[] = [
     role: "백엔드 개발",
     stack: ["Java", "Spring Boot", "Spring Security", "PostgreSQL", "Spring Data JPA", "Flyway", "Swagger", "Docker"],
     link: { label: "FocusOn GitHub", href: "https://github.com/What-a-move/FocusOn" },
+    imageSrc: "/images/project-focuson.webp",
   },
 ];
+
+/** Projects 영역 설명 (Notion 상단 요약 문장) */
+export const projectsDescription = "Spring Boot 중심의 팀 프로젝트에서 ERD · API 명세 · JWT 인증 · 채팅 · 배포를 경험했습니다.";
