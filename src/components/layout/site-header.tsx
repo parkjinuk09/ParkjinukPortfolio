@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { SocialLinks } from "@/components/ui/social-links";
+import type { SocialLink } from "@/content/types";
 
 import { PAGE_GUTTER } from "./container";
 
@@ -20,8 +21,7 @@ export interface NavItem {
 interface SiteHeaderProps {
   title: string;
   items: NavItem[];
-  githubHref: string;
-  email: string;
+  socials: SocialLink[];
   /** 메인이 아닌 페이지(프로젝트 상세)에서는 "/"를 넘겨 메인 페이지의 섹션으로 이동하게 한다. */
   linkPrefix?: string;
 }
@@ -30,7 +30,7 @@ interface SiteHeaderProps {
  * 상단 고정 헤더 (참고 사이트 구성: 로고 · 흐린 텍스트 메뉴 · 오른쪽 아이콘 버튼).
  * 현재 보고 있는 섹션의 메뉴는 불투명하게 표시한다.
  */
-export function SiteHeader({ title, items, githubHref, email, linkPrefix = "" }: SiteHeaderProps) {
+export function SiteHeader({ title, items, socials, linkPrefix = "" }: SiteHeaderProps) {
   const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
   const [isSolid, setIsSolid] = useState(false);
 
@@ -92,8 +92,8 @@ export function SiteHeader({ title, items, githubHref, email, linkPrefix = "" }:
           </ul>
         </nav>
 
-        <div className="hidden shrink-0 sm:block">
-          <SocialLinks githubHref={githubHref} email={email} />
+        <div className="hidden shrink-0 lg:block">
+          <SocialLinks links={socials} />
         </div>
       </div>
     </header>

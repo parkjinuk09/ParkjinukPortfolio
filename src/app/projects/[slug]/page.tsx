@@ -49,8 +49,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       <SiteHeader
         title={`${profile.englishName}' Portfolio`}
         items={navItems}
-        githubHref={profile.github.href}
-        email={profile.email}
+        socials={profile.socials}
         linkPrefix="/"
       />
       <main>
