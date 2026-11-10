@@ -1,11 +1,31 @@
 import { PAGE_GUTTER } from "@/components/layout/container";
 import { Reveal } from "@/components/motion/reveal";
-import { RichText } from "@/components/ui/rich-text";
 import { TechChipList } from "@/components/ui/tech-chip";
 import type { Profile } from "@/content/types";
 
 function ValueLabel({ index }: { index: number }) {
   return <span className="text-[10px] text-zinc-500">value {String(index).padStart(2, "0")}</span>;
+}
+
+/** 요약 한 묶음: 짧은 안내 문장 + 키워드 목록. 긴 문장을 키워드로 나눠 한눈에 읽히게 한다. */
+function SummaryGroup({ lead, items, emphasized = false }: { lead: string; items: string[]; emphasized?: boolean }) {
+  return (
+    <div>
+      <p className="text-sm text-zinc-500">{lead}</p>
+      <ul className="mt-3 flex flex-wrap gap-2">
+        {items.map((item) => (
+          <li
+            key={item}
+            className={`rounded-full border px-3 py-1 text-sm ${
+              emphasized ? "border-zinc-50/30 font-semibold text-zinc-50" : "border-zinc-50/10 text-zinc-300"
+            }`}
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 interface AboutSectionProps {
@@ -15,7 +35,7 @@ interface AboutSectionProps {
 
 /**
  * About: 참고 사이트와 같이 인사말 → 왼쪽(요약 + 버튼 고정) / 오른쪽(수치 · 강점 · Stack) 3:1 구성.
- * 수치는 Notion 내용(수상 목록 수, 첫 팀 프로젝트 연도)에서 가져온다.
+ * 수치는 수상 목록 수와 개발을 시작한 연도(2023)를 쓴다.
  */
 export function AboutSection({ profile, awardCount }: AboutSectionProps) {
   return (
@@ -31,9 +51,10 @@ export function AboutSection({ profile, awardCount }: AboutSectionProps) {
       <div className="mt-16 grid gap-20 lg:grid-cols-[1fr_3fr] lg:gap-16">
         <div className="lg:sticky lg:top-40 lg:self-start">
           <Reveal>
-            <p className="leading-relaxed text-zinc-400">
-              <RichText value={profile.summary} />
-            </p>
+            <SummaryGroup lead={profile.summary.considerationLead} items={profile.summary.considerations} emphasized />
+            <div className="mt-8">
+              <SummaryGroup lead={profile.summary.experienceLead} items={profile.summary.experiences} />
+            </div>
           </Reveal>
           <Reveal delay={100}>
             <a
@@ -60,9 +81,9 @@ export function AboutSection({ profile, awardCount }: AboutSectionProps) {
             </Reveal>
             <Reveal delay={100}>
               <ValueLabel index={2} />
-              <p className="mt-2 text-5xl leading-none font-semibold text-zinc-100">2026 ~</p>
+              <p className="mt-2 text-5xl leading-none font-semibold text-zinc-100">2023 ~</p>
               <p className="mt-6 leading-relaxed text-zinc-400">
-                CapTeam · FocusOn 팀 프로젝트에서 백엔드를 맡아 ERD · API 명세 · JWT 인증 · 채팅 · 배포를 경험했습니다.
+                2023년 개발을 시작해, 지금은 CapTeam · FocusOn 팀 프로젝트에서 Spring Boot 백엔드를 맡고 있습니다.
               </p>
             </Reveal>
           </div>

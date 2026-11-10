@@ -4,7 +4,7 @@ import type { NavItem } from "@/components/layout/site-header";
 export const navItems: NavItem[] = [
   { label: "About", anchor: "about" },
   { label: "Work", anchor: "projects" },
-  { label: "Troubleshooting", anchor: "troubleshooting" },
+  { label: "Main Projects", anchor: "main-projects" },
   { label: "Awards", anchor: "awards" },
   { label: "Contact", anchor: "contact" },
 ];

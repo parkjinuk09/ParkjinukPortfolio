@@ -98,7 +98,7 @@ export function HeroSection({ profile, projects }: { profile: Profile; projects:
 
         <Reveal delay={afterTitle + 150} className="grid gap-10 py-10 md:grid-cols-2">
           <div className="pt-10">
-            <SocialLinks githubHref={profile.github.href} email={profile.email} />
+            <SocialLinks links={profile.socials} />
           </div>
           <div className="grid gap-10 md:mt-auto md:grid-cols-2">
             <HeroList
