@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/*
+ * 참고 사이트와 같은 다크 팔레트(neutral/zinc 계열). 색상 비율 60:30:10
+ * - 60 charcoal(#171717): 페이지 배경과 넓은 면
+ * - 30 zinc 계열: 본문, 보조 텍스트, 카드, 구분선
+ * - 10 mint / pink / indigo: 스크롤바·링크, 기술 태그, 카드 강조처럼 시선을 끌어야 하는 요소에만 사용
+ */
+@theme {
+  --color-charcoal: #171717;
+  --color-surface: #18181b;
+  --color-raised: #27272a;
+  --color-line: #27272a;
+  --color-fg: #fafafa;
+  --color-muted: #d4d4d8;
+  --color-subtle: #71717b;
+  --color-mint: #46edd5;
+  --color-pink: oklch(0.718 0.202 349.761);
+  --color-indigo: oklch(0.785 0.115 274.713);
+
+  --font-sans: var(--font-pretendard), "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-display: var(--font-montserrat), var(--font-pretendard), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 화면 폭에 따라 기준 글자 크기를 14 → 15 → 16px로 키워 모든 rem 값이 함께 커지게 한다. */
+html {
+  font-size: 14px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  color-scheme: dark;
+}
+
+@media (min-width: 40rem) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 48rem) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* 얇은 민트 스크롤바 (Chromium·Safari) */
+body::-webkit-scrollbar {
+  width: 4px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--color-mint);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: rgb(255 255 255 / 0.05);
+}
+
+/* Firefox는 ::-webkit-scrollbar를 지원하지 않아 표준 속성으로 같은 색을 지정한다. */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--color-mint) rgb(255 255 255 / 0.05);
+    scrollbar-width: thin;
+  }
+}
+
+body {
+  background: var(--color-charcoal);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-mint);
+  color: var(--color-charcoal);
+}
+
+/* 스크롤 진입 애니메이션: Reveal 컴포넌트가 화면에 들어오면 data-visible을 true로 바꾼다. */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 1s var(--ease-out-expo),
+    transform 1s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* 표지 대제목: 글자 단위로 아래에서 올라온다. */
+.letter-rise {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%);
+  animation: letter-rise 1s var(--ease-out-expo) forwards;
+  animation-delay: var(--letter-delay, 0ms);
+}
+
+@keyframes letter-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 표지 배경 사진: 처음에 살짝 확대된 상태에서 천천히 원래 크기로 돌아오며 밝아진다. */
+.hero-photo {
+  opacity: 0;
+  transform: scale(1.12);
+  animation: hero-photo-in 2.4s var(--ease-out-expo) forwards;
+}
+
+@keyframes hero-photo-in {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .letter-rise,
+  .hero-photo {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+}
