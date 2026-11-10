@@ -1,92 +1,54 @@
 @import "tailwindcss";
 
 /*
- * 참고 사이트와 같은 다크 팔레트(neutral/zinc 계열). 색상 비율 60:30:10
- * - 60 charcoal(#171717): 페이지 배경과 넓은 면
- * - 30 zinc 계열: 본문, 보조 텍스트, 카드, 구분선
- * - 10 mint / pink / indigo: 스크롤바·링크, 기술 태그, 카드 강조처럼 시선을 끌어야 하는 요소에만 사용
+ * 색상 비율 60:30:10
+ * - 60 paper: 페이지 배경과 넓은 면
+ * - 30 ink / muted / line: 본문, 보조 텍스트, 구분선
+ * - 10 accent: 번호, 링크, 강조 단계 등 시선을 끌어야 하는 요소에만 사용
  */
 @theme {
-  --color-charcoal: #171717;
-  --color-surface: #18181b;
-  --color-raised: #27272a;
-  --color-line: #27272a;
-  --color-fg: #fafafa;
-  --color-muted: #d4d4d8;
-  --color-subtle: #71717b;
-  --color-mint: #46edd5;
-  --color-pink: oklch(0.718 0.202 349.761);
-  --color-indigo: oklch(0.785 0.115 274.713);
+  --color-paper: #f7f6f2;
+  --color-surface: #ffffff;
+  --color-sunken: #efeee9;
+  --color-ink: #16161a;
+  --color-muted: #6a6a72;
+  --color-subtle: #9a9aa2;
+  --color-line: #dedcd5;
+  --color-accent: #3a4fd6;
+  --color-accent-soft: #e8ebfb;
 
   --font-sans: var(--font-pretendard), "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  --font-display: var(--font-montserrat), var(--font-pretendard), system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), "Times New Roman", serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 화면 폭에 따라 기준 글자 크기를 14 → 15 → 16px로 키워 모든 rem 값이 함께 커지게 한다. */
 html {
-  font-size: 14px;
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
-  color-scheme: dark;
-}
-
-@media (min-width: 40rem) {
-  html {
-    font-size: 15px;
-  }
-}
-
-@media (min-width: 48rem) {
-  html {
-    font-size: 16px;
-  }
-}
-
-/* 얇은 민트 스크롤바 (Chromium·Safari) */
-body::-webkit-scrollbar {
-  width: 4px;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: var(--color-mint);
-  border-radius: 10px;
-}
-
-body::-webkit-scrollbar-track {
-  background: rgb(255 255 255 / 0.05);
-}
-
-/* Firefox는 ::-webkit-scrollbar를 지원하지 않아 표준 속성으로 같은 색을 지정한다. */
-@supports not selector(::-webkit-scrollbar) {
-  html {
-    scrollbar-color: var(--color-mint) rgb(255 255 255 / 0.05);
-    scrollbar-width: thin;
-  }
 }
 
 body {
-  background: var(--color-charcoal);
-  color: var(--color-fg);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   word-break: keep-all;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-mint);
-  color: var(--color-charcoal);
+  background: var(--color-accent);
+  color: var(--color-surface);
 }
 
-/* 스크롤 진입 애니메이션: Reveal 컴포넌트가 화면에 들어오면 data-visible을 true로 바꾼다. (참고 사이트와 같은 50px 상승) */
+/* 스크롤 진입 애니메이션: Reveal 컴포넌트가 화면에 들어오면 data-visible을 true로 바꾼다. */
 .reveal {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(28px);
   transition:
-    opacity 1s var(--ease-out-expo),
-    transform 1s var(--ease-out-expo);
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -95,73 +57,43 @@ body {
   transform: none;
 }
 
-/* 표지 글자: 글자 단위로 아래에서 흐릿하게 올라오며 선명해진다. */
+/* 표지 제목: 글자 단위로 아래에서 올라온다. */
 .letter-rise {
   display: inline-block;
-  opacity: 0;
-  filter: blur(8px);
-  transform: translateY(60%);
-  animation: letter-rise 0.9s var(--ease-out-expo) forwards;
+  transform: translateY(105%);
+  animation: letter-rise 1.1s var(--ease-out-expo) forwards;
   animation-delay: var(--letter-delay, 0ms);
 }
 
 @keyframes letter-rise {
   to {
-    opacity: 1;
-    filter: blur(0);
     transform: none;
   }
 }
 
-/* 표지 배경 사진: 어둡게 시작해 서서히 나타난다. 스크롤 시 이동·확대는 HeroBackground가 transform으로 처리한다. */
-.hero-photo {
-  opacity: 0;
-  animation: fade-in 2.4s ease-out 0.2s forwards;
+/* 구분선이 왼쪽에서 오른쪽으로 그려진다. */
+.rule-draw {
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.2s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-@keyframes fade-in {
-  to {
-    opacity: 1;
-  }
+[data-visible="true"] .rule-draw,
+.rule-draw[data-visible="true"] {
+  transform: scaleX(1);
 }
 
-/* 표지 하늘의 별: 각자 다른 주기로 깜빡인다. */
-.star {
-  opacity: 0;
-  animation: twinkle var(--twinkle-duration, 3s) ease-in-out var(--twinkle-delay, 0s) infinite;
+/* 아키텍처·흐름도의 연결선: 단계별로 순서대로 그려진다. */
+.flow-line {
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.7s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* 연락 영역 팝업: 배경이 흐려지고 창이 아래에서 올라온다. */
-.popup-backdrop {
-  animation: fade-in 0.3s ease-out forwards;
-  opacity: 0;
-}
-
-.popup-panel {
-  animation: popup-rise 0.5s var(--ease-out-expo) forwards;
-}
-
-@keyframes popup-rise {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -40%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
+[data-visible="true"] .flow-line {
+  transform: scaleX(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -171,21 +103,11 @@ body {
 
   .reveal,
   .letter-rise,
-  .hero-photo,
-  .popup-backdrop {
+  .rule-draw,
+  .flow-line {
     opacity: 1;
-    filter: none;
     transform: none;
     transition: none;
-    animation: none;
-  }
-
-  .star {
-    opacity: 0.6;
-    animation: none;
-  }
-
-  .popup-panel {
     animation: none;
   }
 }

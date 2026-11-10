@@ -14,7 +14,7 @@ export const achievementsSeed: Achievements = {
     {
       displayOrder: 5,
       periodLabel: "2026년 2학기",
-      title: "여수 해커톤 정보통신기획평가원장상(최우수상)",
+      title: "여수 해커톤 정보통신기획평가원장상",
       project: "발주콕",
     },
   ],

@@ -76,7 +76,7 @@ export function AboutSection({ profile, awardCount }: AboutSectionProps) {
                 <span className="ml-1 text-2xl">회 수상</span>
               </p>
               <p className="mt-6 leading-relaxed text-zinc-400">
-                교내 캡스톤 프로젝트 대상, 여수 해커톤 정보통신기획평가원장상(최우수상) 등 해커톤·프로젝트 대회에서 수상했습니다.
+                교내 캡스톤 프로젝트 대상, 여수 해커톤 정보통신기획평가원장상 등 해커톤·프로젝트 대회에서 수상했습니다.
               </p>
             </Reveal>
             <Reveal delay={100}>
