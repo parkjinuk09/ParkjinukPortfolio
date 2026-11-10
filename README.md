@@ -69,6 +69,15 @@ Supabase 값이 없으면 수상·활동은 `seed-data.ts` 기준 데이터로 �
 
 `service_role` 키는 사용하지 않습니다. 앱은 `anon` 키로만 접근하고 권한은 RLS로 제한합니다.
 
+## 배포 (Vercel)
+
+- 주소: https://parkjinuk-portfolio.vercel.app
+- Vercel 프로젝트 `parkjinuk-portfolio`가 이 저장소와 연결되어 있습니다.
+  - `main`에 머지하면 프로덕션에 배포됩니다.
+  - 다른 브랜치에 푸시하면 Preview로 배포됩니다.
+- 빌드 설정은 Next.js 자동 감지값을 그대로 씁니다. pnpm은 `packageManager` 필드 기준입니다.
+- Supabase를 연결할 때는 Vercel 프로젝트 환경 변수에 `SUPABASE_URL`, `SUPABASE_ANON_KEY`를 Production·Preview로 추가하고 재배포합니다. 값이 없으면 연락 폼은 `503`을 반환합니다.
+
 ## API
 
 | 메서드 | 경로 | 설명 |

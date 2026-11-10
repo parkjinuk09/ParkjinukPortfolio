@@ -177,3 +177,37 @@ Notion 기준으로 내용을 바꾸고 다크 테마로 화면을 다시 구성
 - 문제: 표지 왼쪽 아이콘과 오른쪽 Contact 목록이 같은 링크 5개를 중복 표시하고, 목록이 6줄로 길어 Projects 목록과 균형이 맞지 않음
 - 수정: 링크는 왼쪽 아이콘에만 두고, 오른쪽은 대표 수상 2건(여수 해커톤 최우수상 · 교내 캡스톤 대상)으로 교체. 전화번호·이메일은 하단 Contact 영역에 그대로 있음
 - 확인: typecheck / lint / build 통과, 단위 18건 · DB 8건 통과, 1440×900 · 390×844 콘솔 오류 · 가로 스크롤 없음
+
+## 12. Vercel 배포 검증 (2026-11-11)
+
+- 대상: https://parkjinuk-portfolio.vercel.app (프로덕션, `main` @ `8cd55d1`, PR #8)
+- 연결 방식: Vercel 프로젝트를 GitHub 저장소에 연결했습니다. `main` 머지는 프로덕션, 그 외 브랜치 푸시는 Preview로 자동 배포됩니다.
+  - PR #7(`dev`)과 PR #8(`main`) 머지 후 각각 Preview와 프로덕션 배포가 자동으로 생성된 것을 확인했습니다.
+- 빌드: Vercel 빌드 26초 통과 (Next.js 16.4.6, Cache Components · Partial Prefetching 활성)
+- 환경 변수: Supabase 프로젝트가 아직 없어 설정하지 않았습니다(`supabaseConfigured: false`).
+
+### API · 페이지
+
+| 요청 | 기대 | 결과 |
+| --- | --- | --- |
+| `GET /` | 200, 표지 대표 수상 포함 | 200 ✅ |
+| `GET /projects/capteam` · `/projects/focuson` | 200 | 200 ✅ |
+| `GET /projects/nope` | 404 | 404 ✅ (첫 요청부터 404) |
+| `GET /api/health` | 200, `supabaseConfigured: false` | 200 ✅ |
+| `GET /images/*.webp`, `/_next/image` 4건 | 200 | 200 ✅ |
+| `POST /api/contact` (유효) | 503 `SERVICE_UNAVAILABLE` | 503 ✅ |
+| `POST /api/contact` (`text/plain`) | 415 | 415 ✅ |
+| `POST /api/contact` (깨진 JSON) | 400 `INVALID_JSON` | 400 ✅ |
+| `POST /api/contact` (필드 오류) | 503 (아래 참고) | 503 ✅ |
+| `GET /api/contact` | 405 | 405 ✅ |
+
+- 필드 오류가 400이 아니라 503인 이유: 입력 검증은 저장 서비스(`submitContactMessage`)에서 수행합니다. 그래서 저장소가 미설정이면 검증 전에 503으로 응답합니다. 415 · 413 · 깨진 JSON은 저장소 설정과 무관하게 먼저 거절합니다. 의도된 순서이므로 코드는 바꾸지 않았습니다.
+- 모바일 390×844에서 `/`, `/projects/capteam`, `/projects/focuson` 모두 가로 스크롤이 없습니다. 콘솔 오류는 위 테스트 요청의 4xx/5xx 응답 로그뿐입니다.
+
+### 동시성
+
+- 배포 환경은 Supabase 미설정이라 저장 경로 동시성은 배포 URL에서 재현할 수 없습니다. DB 제약 기반 판정은 4번(`pnpm test:db`, 같은 키 50건 동시 → 1건 저장)으로 검증되어 있습니다. Supabase 연결 후 배포 URL에서 다시 확인합니다.
+
+### 참고
+
+- 함수 리전이 기본값 `iad1`(미국 동부)이고, 정적 응답은 서울 엣지(`icn1`)에서 나갑니다. Supabase를 연결할 때 DB 리전과 함수 리전을 맞추는 것을 권장합니다(예: 둘 다 서울).
