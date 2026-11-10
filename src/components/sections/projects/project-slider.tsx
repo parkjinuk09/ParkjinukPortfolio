@@ -67,10 +67,6 @@ export function ProjectSlider({ cards }: { cards: ProjectCard[] }) {
                       sizes="(min-width: 1100px) 530px, (min-width: 768px) 45vw, 100vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black/30" />
-                    <p className="absolute bottom-5 left-6 font-display text-3xl font-bold text-white [text-shadow:0_2px_12px_rgb(0_0_0/0.5)]">
-                      {card.name}
-                    </p>
                   </div>
                   <div className={`flex flex-col gap-2 transition-opacity md:py-15 ${isActive ? "opacity-100" : "opacity-0"}`}>
                     <span className="text-xs text-pink">{card.tag}</span>

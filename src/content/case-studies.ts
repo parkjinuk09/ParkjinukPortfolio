@@ -5,7 +5,10 @@ const capTeam: CaseStudy = {
   order: "02",
   name: "CapTeam",
   summary: "흩어진 캡스톤 운영(팀·공지·채팅·활동 일지)을 하나의 도메인으로 묶은 학교 협업 플랫폼입니다",
-  screenshotLabel: "서비스 화면 — 로그인 · 공지 · 팀 채팅",
+  screenshotLabel: "CapTeam 서비스 첫 화면 — 설문 기반 캡스톤 팀 빌딩",
+  screenshotSrc: "/images/project-capteam-screen.webp",
+  screenshotWidth: 1048,
+  screenshotHeight: 524,
   service: {
     title: "학교 캡스톤 협업 플랫폼",
     description:
@@ -176,7 +179,10 @@ const focusOn: CaseStudy = {
   order: "03",
   name: "FocusOn",
   summary: "학습 목표와 현재 브라우징 맥락을 비교해 집중 흐름을 분석하는 Chrome 확장 + 데스크탑 대시보드입니다",
-  screenshotLabel: "Extension · Desktop 대시보드 화면",
+  screenshotLabel: "FocusOn 데스크탑 대시보드 홈 — 집중 달력과 지난 목표",
+  screenshotSrc: "/images/project-focuson-screen.webp",
+  screenshotWidth: 1342,
+  screenshotHeight: 694,
   service: {
     title: "학습 집중 흐름 분석 서비스",
     description:
