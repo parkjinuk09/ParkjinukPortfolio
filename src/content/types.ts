@@ -1,125 +1,88 @@
-/** 강조 표시가 필요한 문장은 조각 배열로 표현한다. strong 조각만 굵게 렌더링된다. */
-export type RichText = ReadonlyArray<string | { strong: string }>;
+/** 강조 표시가 필요한 문장은 조각 배열로 표현한다. strong 조각만 굵게, code 조각은 코드 글꼴로 렌더링된다. */
+export type RichText = ReadonlyArray<string | { strong: string } | { code: string }>;
 
-export interface TechItem {
-  name: string;
-}
-
-export interface ProfileLink {
+export interface LinkItem {
   label: string;
   href: string;
 }
 
+export interface ContactItem {
+  label: string;
+  value: string;
+  href?: string;
+}
+
 export interface Profile {
   name: string;
+  englishName: string;
   role: string;
-  tagline: string;
-  headline: string[];
-  email: string;
-  phone: string;
-  github: ProfileLink;
-  school: string;
-  department: string;
-  /** 프로필 사진 경로(public 기준). 없으면 사진 영역을 렌더링하지 않는다. */
-  photoSrc?: string;
-  summaryTitle: string;
+  /** 표지 대제목(영문). 글자 단위 애니메이션을 위해 한 줄 문자열로 둔다. */
+  heroTitle: string;
+  /** Notion 상단 인용 문구. 표지 설명으로 쓴다. */
+  motto: string;
   summary: RichText;
-  desiredRole: string;
-  mainSkills: TechItem[];
-  experiencedSkills: TechItem[];
-  education: { school: string; status: string };
-  closing: { headline: string[]; body: string[] };
+  contacts: ContactItem[];
+  github: LinkItem;
+  email: string;
+  primaryStack: string[];
+  alsoUsed: string[];
+  closing: { headline: string; body: string };
 }
 
-export interface IndexEntry {
-  number: string;
-  title: string;
-  description: string;
-  anchor: string;
-}
-
-export interface RoleGroup {
-  title: string;
-  items: string[];
-}
-
-export interface BeforeAfter {
-  before: string;
-  after: string;
-}
-
-export interface TroubleshootingCase {
-  number: string;
-  title: string;
-  paragraphs: RichText[];
-  code?: string;
-  beforeAfter: BeforeAfter;
-}
-
-export interface FlowStep {
-  title: string;
-  lines: string[];
-  highlighted?: boolean;
+/** 핵심 구현처럼 "라벨: 설명" 형태의 항목 */
+export interface LabeledItem {
+  label?: string;
+  text: RichText;
 }
 
 export interface DesignDecision {
+  title: RichText;
+  background: RichText;
+  choice: RichText;
+  code?: string;
+  reasons?: string[];
+  verification?: RichText;
+  followUp?: string;
+}
+
+export interface Troubleshooting {
   title: string;
-  description?: string;
-  background?: RichText;
-  choice?: RichText;
-  diagramCode?: string;
-  benefits?: string[];
-  flowInputs?: FlowStep[];
-  flowConnectorLabel?: string;
-  flow?: FlowStep[];
-  notes: string[];
+  problem: RichText[];
+  problemCode?: string;
+  cause: RichText[];
+  solution: RichText[];
+  solutionCode?: string;
+  /** 문단 하나 또는 목록 */
+  result?: RichText[];
+  resultAsList?: boolean;
+  lesson?: RichText[];
 }
 
-export interface ApiPolicyRow {
-  domain: string;
-  api: string;
-  constraint: string;
-}
-
-export interface ArchitectureNode {
+export interface ProjectArchitecture {
   title: string;
-  caption: string;
-}
-
-export interface Architecture {
-  client: ArchitectureNode;
-  clientProtocol: string;
-  hostLabel: string;
-  proxy: ArchitectureNode;
-  proxyLink: string;
-  app: ArchitectureNode;
-  appLink: string;
-  database: ArchitectureNode;
-  ci: ArchitectureNode;
-  ciLink: string;
-  deployTarget: ArchitectureNode;
-  notes: RichText[];
+  /** public 기준 이미지 경로. 없으면 코드로 그린 구성도 또는 설명만 표시한다. */
+  imageSrc?: string;
+  /** 코드로 그린 구성도를 쓸지 여부 (CapTeam) */
+  showDiagram?: boolean;
+  note?: RichText;
 }
 
 export interface Project {
   slug: string;
-  order: string;
+  number: string;
   name: string;
-  summary: string;
-  screenshotLabel: string;
-  /** 서비스 화면 이미지 경로. 없으면 이미지 영역을 렌더링하지 않는다. */
-  screenshotSrc?: string;
-  service: { title: string; description: string; link: ProfileLink };
+  /** 카드에 표시하는 대표 기술 태그 */
+  tag: string;
+  oneLiner: string;
   period: string;
-  periodNote?: string;
-  stack: TechItem[];
-  team: { type: string; role: string };
-  roles: RoleGroup[];
-  retrospective: RichText[];
-  architecture?: Architecture;
-  authFlow?: { title: string; steps: FlowStep[]; notes: string[] };
-  designDecision?: DesignDecision;
-  apiPolicy?: ApiPolicyRow[];
-  troubleshooting: TroubleshootingCase[];
-  lesson: RichText;
+  teamType: string;
+  role: string;
+  stack: string[];
+  link: LinkItem;
+  summary: { lead: string; items: string[] };
+  architecture: ProjectArchitecture;
+  coreImplementation: LabeledItem[];
+  designDecision: DesignDecision;
+  troubleshooting: Troubleshooting[];
+  lessons: RichText[];
 }
