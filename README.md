@@ -3,7 +3,7 @@
 Spring Boot 백엔드 개발자 박진욱의 포트폴리오 사이트입니다.
 
 - **내용**: Notion 「박진욱 (Backend · Software Engineer)」 페이지의 문구와 구성(소개 → Main Projects → Closing → Awards & Activities)을 따릅니다.
-- **디자인**: 다크 차콜 배경, 굵은 영문 대제목, 화면 전체 폭 레이아웃, 좌측 고정 + 우측 콘텐츠, 프로젝트 카드 슬라이더 구성입니다.
+- **디자인**: 참고 사이트(h-creations.com)의 구성·색상·모션을 따릅니다. 1100px 본문, 사진 배경 + 깜빡이는 별 표지, 글자 단위 등장, 1:3 About, 흑백 전환 프로젝트 슬라이더, 2열 이미지 카드, 흑백 사진 배경 연락 영역과 팝업 폼. 이미지는 직접 제공받은 사진(`public/images/`)만 사용합니다.
 - **프로젝트 상세**: 카드를 누르면 `/projects/[slug]`에서 Figma 포트폴리오 형식(개요 → 시스템 구성 → 인증 흐름 → 설계 결정 → API 정책 → 트러블슈팅)으로 보여줍니다.
 
 ## 기술 스택
@@ -40,7 +40,8 @@ docs/TESTING.md           # 테스트·검증 기록
 
 ### 이미지 추가
 
-서비스 화면 이미지는 `public/projects/`에 넣고 `src/content/case-studies.ts`의 `screenshotSrc`에 경로(예: `/projects/capteam.png`)를 지정하면 프로젝트 상세에 표시됩니다. 경로가 없으면 이미지 영역을 그리지 않습니다.
+- 메인 화면 이미지(표지, 프로젝트 카드, 트러블슈팅 카드, 연락 배경)는 제공받은 사진 한 장을 잘라 `public/images/`에 WebP로 넣었습니다. 바꾸려면 같은 이름으로 덮어쓰거나 `src/content/projects.ts`, `src/content/troubleshooting.ts`의 `imageSrc`를 바꾸면 됩니다.
+- 서비스 화면 캡처는 `src/content/case-studies.ts`의 `screenshotSrc`에 경로를 지정하면 프로젝트 상세에 표시됩니다. 경로가 없으면 이미지 영역을 그리지 않습니다.
 
 ### 데이터를 어디에 두는가
 
