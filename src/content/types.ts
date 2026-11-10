@@ -6,6 +6,22 @@ export interface LinkItem {
   href: string;
 }
 
+export type SocialKind = "github" | "blog" | "instagram" | "linkedin" | "email";
+
+export interface SocialLink {
+  kind: SocialKind;
+  label: string;
+  href: string;
+}
+
+/** About 요약: 한 문장을 "무엇을 고려하는지 / 무엇을 경험했는지"로 나눠 읽기 쉽게 보여준다. */
+export interface ProfileSummary {
+  considerationLead: string;
+  considerations: string[];
+  experienceLead: string;
+  experiences: string[];
+}
+
 export interface ContactItem {
   label: string;
   value: string;
@@ -24,7 +40,8 @@ export interface Profile {
   strengths: { title: string; description: string }[];
   /** Notion 상단 인용 문구. 표지 설명으로 쓴다. */
   motto: string;
-  summary: RichText;
+  summary: ProfileSummary;
+  socials: SocialLink[];
   contacts: ContactItem[];
   github: LinkItem;
   email: string;
@@ -50,14 +67,5 @@ export interface Project {
   stack: string[];
   link: LinkItem;
   /** 카드 이미지 (사용자가 제공한 사진을 잘라 만든 public 경로) */
-  imageSrc: string;
-}
-
-/** 메인 페이지 트러블슈팅 카드 (Notion 트러블슈팅 항목의 제목·문제 요약) */
-export interface TroubleshootingHighlight {
-  title: string;
-  excerpt: string;
-  projectName: string;
-  href: string;
   imageSrc: string;
 }
