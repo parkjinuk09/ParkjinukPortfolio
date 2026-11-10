@@ -19,14 +19,16 @@ function OverviewBlock({ title, children, delay = 0 }: { title: string; children
 export function ProjectOverview({ project }: { project: CaseStudy }) {
   return (
     <div>
-      {project.screenshotSrc && (
-        <Reveal className="relative mb-16 aspect-[16/9] overflow-hidden rounded-md bg-raised">
+      {project.screenshotSrc && project.screenshotWidth && project.screenshotHeight && (
+        <Reveal className="mb-16 overflow-hidden rounded-md border border-line bg-white">
+          {/* 실제 서비스 화면은 비율이 제각각이라 잘리지 않도록 원본 비율 그대로 보여준다. */}
           <Image
             src={project.screenshotSrc}
             alt={project.screenshotLabel}
-            fill
-            sizes="(min-width: 1152px) 1088px, 100vw"
-            className="object-cover"
+            width={project.screenshotWidth}
+            height={project.screenshotHeight}
+            sizes="(min-width: 1100px) 1100px, 100vw"
+            className="h-auto w-full"
           />
         </Reveal>
       )}
