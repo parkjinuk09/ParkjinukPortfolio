@@ -39,7 +39,7 @@ export function CaseStudyContent({ project }: { project: CaseStudy }) {
             <Reveal>
               <h3 className="mb-8 text-xl font-bold text-fg md:text-2xl">시스템 아키텍처</h3>
             </Reveal>
-            <ArchitectureDiagram architecture={project.architecture} />
+            <ArchitectureDiagram architecture={project.architecture} diagramId={project.slug} />
           </>
         )}
 
