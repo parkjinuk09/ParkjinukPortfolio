@@ -6,14 +6,13 @@ import { TechList } from "./tech-list";
 import type { CaseStudy } from "@/content/case-study-types";
 
 /**
- * 칸 이름은 내용보다 약하게(작은 회색 꼬리표) 둬서, 내용 제목과 같은 무게로 보이지 않게 한다.
- * 글자 위계: 칸 이름(12px 회색) < 설명(15px 회색) < 핵심 값(흰색, 크게)
+ * 칸 이름(SERVICE · ROLE · STACK): 16px 흰색 고정폭 글꼴. 굵기 없이 자간과 글꼴로 내용 제목(굵은 글씨)과 구분한다.
  */
 function OverviewLabel({ english, korean }: { english: string; korean: string }) {
   return (
-    <p className="mb-4 flex items-baseline gap-2 text-xs text-subtle">
+    <p className="mb-5 flex items-baseline gap-2 text-base text-fg">
       <span className="font-mono tracking-[0.2em] uppercase">{english}</span>
-      <span aria-hidden>·</span>
+      <span aria-hidden className="text-subtle">·</span>
       <span>{korean}</span>
     </p>
   );

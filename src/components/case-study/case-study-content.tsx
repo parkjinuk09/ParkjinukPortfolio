@@ -3,7 +3,6 @@ import { Reveal } from "@/components/motion/reveal";
 import { SectionTitle } from "./section-title";
 import type { CaseStudy } from "@/content/case-study-types";
 
-import { ApiPolicyTable } from "./api-policy-table";
 import { ArchitectureDiagram } from "./architecture-diagram";
 import { DesignDecisionBlock } from "./design-decision";
 import { ProjectOverview } from "./project-overview";
@@ -18,7 +17,7 @@ function Divider() {
   );
 }
 
-/** Figma 형식 프로젝트 상세(개요 → 구조 → 설계 결정 → API 정책 → 트러블슈팅) */
+/** Figma 형식 프로젝트 상세(개요 → 구조 → 설계 결정 → 트러블슈팅) */
 export function CaseStudyContent({ project }: { project: CaseStudy }) {
   return (
     <article id={project.slug}>
@@ -49,12 +48,6 @@ export function CaseStudyContent({ project }: { project: CaseStudy }) {
           </>
         )}
 
-        {project.apiPolicy && (
-          <>
-            <Divider />
-            <ApiPolicyTable rows={project.apiPolicy} />
-          </>
-        )}
 
         <Divider />
         <TroubleshootingList cases={project.troubleshooting} lesson={project.lesson} />

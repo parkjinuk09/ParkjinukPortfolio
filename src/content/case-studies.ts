@@ -268,16 +268,6 @@ const focusOn: CaseStudy = {
       "검증: 격리 PostgreSQL에서 동시 출발과 잠금 대기를 유도해 허용 응답과 스냅샷 정합성을 확인했습니다.",
     ],
   },
-  apiPolicy: [
-    {
-      domain: "사용자 설정",
-      api: "프로필 · 동의 · 집중 설정 · 분석 제외 도메인",
-      constraint: "도메인 정규화 → 중복 제거 → 개수 제한",
-    },
-    { domain: "학습 목표", api: "생성 · 조회 · 수정 · 삭제", constraint: "입력값 검증 + 소유권 검증, soft delete" },
-    { domain: "학습 세션", api: "세션 시작 · 활성 세션 조회", constraint: "사용자별 활성 세션 제약 + 멱등성 키" },
-    { domain: "스키마", api: "PostgreSQL 제약 · Flyway", constraint: "migration으로 스키마 이력 관리" },
-  ],
   troubleshooting: [
     {
       number: "01",

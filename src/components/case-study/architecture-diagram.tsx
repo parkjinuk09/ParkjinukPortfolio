@@ -15,8 +15,8 @@ const CAPTION_FONT_SIZE = 13;
 /** 로고 가운데에서 이름 · 설명 글자 기준선까지의 거리 */
 const LABEL_OFFSET = ICON_SIZE / 2 + 24;
 const CAPTION_OFFSET = LABEL_OFFSET + 20;
-/** 화살표가 로고 · 글자에 닿지 않도록 띄우는 간격 */
-const EDGE_GAP = 10;
+/** 화살표 끝이 로고 · 글자에 닿기 직전에 멈추도록 남기는 간격 */
+const EDGE_GAP = 6;
 
 const GROUP_BADGE_SIZE = 44;
 
@@ -28,15 +28,17 @@ function estimateTextWidth(text: string, fontSize: number) {
   return [...text].reduce((width, char) => width + (char.charCodeAt(0) > 0xff ? fontSize : fontSize * 0.58), 0);
 }
 
-/** 로고 가운데(anchor)를 기준으로 로고 + 이름 + 설명이 차지하는 영역. 아래쪽은 글자 때문에 위쪽보다 길다. */
+/**
+ * 로고 가운데(anchor)를 기준으로 한 구성 요소 영역. 로고(정사각형)와 그 아래 글자(로고보다 넓음) 두 부분으로 나눈다.
+ * 하나의 큰 사각형으로 보면 옆으로 나가는 선이 글자 폭만큼 일찍 끊겨 로고와 너무 떨어져 보인다.
+ */
 interface NodeBox {
   anchor: Point;
-  halfWidth: number;
-  top: number;
-  bottom: number;
+  iconHalf: number;
+  textHalfWidth: number;
+  textBottom: number;
 }
 
-/** 연결선을 이 영역 테두리에서 끊어 글자 위로 지나가지 않게 한다. */
 function getNodeBox(node: ArchitectureNode): NodeBox {
   const textWidth = Math.max(
     estimateTextWidth(node.label, LABEL_FONT_SIZE),
@@ -44,14 +46,14 @@ function getNodeBox(node: ArchitectureNode): NodeBox {
   );
   return {
     anchor: node.at,
-    halfWidth: Math.max(ICON_SIZE, textWidth) / 2,
-    top: ICON_SIZE / 2,
-    bottom: (node.caption ? CAPTION_OFFSET : LABEL_OFFSET) + 4,
+    iconHalf: ICON_SIZE / 2,
+    textHalfWidth: textWidth / 2,
+    textBottom: (node.caption ? CAPTION_OFFSET : LABEL_OFFSET) + 4,
   };
 }
 
 /**
- * 로고 가운데에서 target 쪽으로 나가는 직선이 영역 테두리(+간격)와 만나는 점.
+ * 로고 가운데에서 target 쪽으로 나가는 직선이 영역(로고 ∪ 글자)을 벗어나는 점(+간격).
  * 선을 로고 가운데끼리 이어서, 같은 높이의 로고는 설명 줄 수와 상관없이 수평선으로 연결된다.
  */
 function exitPoint(box: NodeBox, target: Point): Point {
@@ -59,13 +61,23 @@ function exitPoint(box: NodeBox, target: Point): Point {
   const dx = target[0] - cx;
   const dy = target[1] - cy;
   const length = Math.hypot(dx, dy) || 1;
-  const verticalExtent = dy < 0 ? box.top : box.bottom;
-  const scaleToEdge = Math.min(
-    dx === 0 ? Infinity : box.halfWidth / Math.abs(dx),
-    dy === 0 ? Infinity : verticalExtent / Math.abs(dy),
-  );
-  const gap = EDGE_GAP / length;
-  return [cx + dx * (scaleToEdge + gap), cy + dy * (scaleToEdge + gap)];
+
+  // 직선 위의 점 = anchor + (dx, dy) * t. 각 영역을 벗어나는 t를 구해 더 먼 쪽을 쓴다.
+  const exitX = (halfWidth: number) => (dx === 0 ? Infinity : halfWidth / Math.abs(dx));
+  const iconExit = Math.min(exitX(box.iconHalf), dy === 0 ? Infinity : box.iconHalf / Math.abs(dy));
+
+  let textExit = 0;
+  if (dy > 0) {
+    // 글자 영역은 로고 바로 아래(y: iconHalf ~ textBottom)에 있다. 선이 그 높이에 들어설 때 아직 글자 폭 안이면 통과하는 것이다.
+    const enterTextRow = box.iconHalf / dy;
+    const leaveTextColumn = exitX(box.textHalfWidth);
+    if (enterTextRow < leaveTextColumn) {
+      textExit = Math.min(box.textBottom / dy, leaveTextColumn);
+    }
+  }
+
+  const scaleToEdge = Math.max(iconExit, textExit) + EDGE_GAP / length;
+  return [cx + dx * scaleToEdge, cy + dy * scaleToEdge];
 }
 
 /** Devicon에 없는 AI(LLM)는 단순 선 아이콘으로 그린다(특정 회사 로고를 흉내 내지 않음). */

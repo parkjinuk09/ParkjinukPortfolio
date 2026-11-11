@@ -53,12 +53,6 @@ export interface DesignDecision {
   notes: string[];
 }
 
-export interface ApiPolicyRow {
-  domain: string;
-  api: string;
-  constraint: string;
-}
-
 /** 구성도에서 쓰는 아이콘. ai는 직접 그린 선 아이콘, 나머지는 public/icons/tech의 Devicon 파일 이름이다. */
 export type ArchitectureIcon =
   | "ai"
@@ -131,7 +125,6 @@ export interface CaseStudy {
   roles: RoleGroup[];
   architecture?: Architecture;
   designDecision?: DesignDecision;
-  apiPolicy?: ApiPolicyRow[];
   troubleshooting: TroubleshootingCase[];
   lesson: RichText;
 }
