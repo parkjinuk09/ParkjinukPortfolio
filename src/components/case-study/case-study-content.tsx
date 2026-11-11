@@ -37,7 +37,7 @@ export function CaseStudyContent({ project }: { project: CaseStudy }) {
           <>
             <Divider />
             <Reveal>
-              <h3 className="mb-8 text-xl font-bold text-fg md:text-2xl">시스템 구성</h3>
+              <h3 className="mb-8 text-xl font-bold text-fg md:text-2xl">시스템 아키텍처</h3>
             </Reveal>
             <ArchitectureDiagram architecture={project.architecture} />
           </>
