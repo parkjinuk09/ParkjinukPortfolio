@@ -2,7 +2,6 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { Reveal } from "@/components/motion/reveal";
-import { RichText } from "@/components/ui/rich-text";
 import { TechList } from "./tech-list";
 import type { CaseStudy } from "@/content/case-study-types";
 
@@ -32,7 +31,7 @@ function MetaItem({ label, children, className = "" }: { label: string; children
 
 /**
  * 프로젝트 개요: 처음 몇 초에 볼 내용(무엇을 · 언제 · 누구와 · 무슨 성과)을 맨 위에 모으고,
- * 그 아래 담당 역할(넓게) · 기술 스택(좁게), 마지막에 회고를 둔다.
+ * 그 아래 담당 역할(넓게) · 기술 스택(좁게, 백엔드 · 통신 · 개발 도구 · 인프라로 묶음)을 둔다.
  * 색 규칙: 흰색 = 핵심 값, 회색 = 설명, 민트 = 링크 · 역할 분류, 테두리 배지 = 수상 성과
  */
 export function ProjectOverview({ project }: { project: CaseStudy }) {
@@ -110,24 +109,17 @@ export function ProjectOverview({ project }: { project: CaseStudy }) {
 
         <Reveal delay={80}>
           <OverviewLabel english="Stack" korean="기술 스택" />
-          <TechList items={project.stack} />
+          <div className="space-y-6">
+            {project.stack.map((group) => (
+              <div key={group.title}>
+                <p className="mb-3 text-sm font-semibold text-mint">{group.title}</p>
+                <TechList items={group.items} />
+              </div>
+            ))}
+          </div>
         </Reveal>
       </div>
 
-      <Reveal className="mt-16">
-        <OverviewLabel english="Retrospective" korean="프로젝트 회고" />
-        <ul className="space-y-3 text-[15px] leading-relaxed text-muted">
-          {project.retrospective.map((line, lineIndex) => (
-            <li
-              key={lineIndex}
-              className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-subtle"
-            >
-              <RichText value={line} />
-            </li>
-          ))}
-        </ul>
-        {project.scopeNote && <p className="mt-5 text-xs text-subtle">* 범위 구분: {project.scopeNote}</p>}
-      </Reveal>
     </div>
   );
 }

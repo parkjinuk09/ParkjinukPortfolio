@@ -9,153 +9,167 @@ import type {
   Point,
 } from "@/content/case-study-types";
 
-/** 모든 노드를 같은 크기로 그려 칸 단위 배치가 어긋나지 않게 한다. */
-const NODE_WIDTH = 176;
-const NODE_HEIGHT = 128;
-const ICON_SIZE = 36;
-const EDGE_LABEL_HEIGHT = 22;
+const ICON_SIZE = 56;
+const LABEL_FONT_SIZE = 15;
+const CAPTION_FONT_SIZE = 13;
+/** 로고 가운데에서 이름 · 설명 글자 기준선까지의 거리 */
+const LABEL_OFFSET = ICON_SIZE / 2 + 24;
+const CAPTION_OFFSET = LABEL_OFFSET + 20;
+/** 화살표가 로고 · 글자에 닿지 않도록 띄우는 간격 */
+const EDGE_GAP = 10;
+
+const GROUP_BADGE_SIZE = 44;
 
 /** 휴대폰에서 설명 글자가 10px 아래로 줄지 않도록 구성도의 최소 폭을 둔다(넘치면 가로 스크롤). */
-const MIN_DIAGRAM_WIDTH = 920;
+const MIN_DIAGRAM_WIDTH = 880;
 
-/** 라벨 배경 폭 계산용 대략적인 글자 폭. 한글은 영문보다 넓다. */
+/** 글자 영역 폭 계산용 대략적인 글자 폭. 한글은 영문보다 넓다. */
 function estimateTextWidth(text: string, fontSize: number) {
-  return [...text].reduce((width, char) => width + (char.charCodeAt(0) > 0xff ? fontSize : fontSize * 0.6), 0);
+  return [...text].reduce((width, char) => width + (char.charCodeAt(0) > 0xff ? fontSize : fontSize * 0.58), 0);
 }
 
-/** Devicon에 없는 사용자 · AI는 같은 선 굵기의 단순 아이콘으로 그린다(브랜드 로고를 흉내 내지 않음). */
-function LineIcon({ icon, x, y }: { icon: "user" | "ai"; x: number; y: number }) {
+/** 로고 가운데(anchor)를 기준으로 로고 + 이름 + 설명이 차지하는 영역. 아래쪽은 글자 때문에 위쪽보다 길다. */
+interface NodeBox {
+  anchor: Point;
+  halfWidth: number;
+  top: number;
+  bottom: number;
+}
+
+/** 연결선을 이 영역 테두리에서 끊어 글자 위로 지나가지 않게 한다. */
+function getNodeBox(node: ArchitectureNode): NodeBox {
+  const textWidth = Math.max(
+    estimateTextWidth(node.label, LABEL_FONT_SIZE),
+    node.caption ? estimateTextWidth(node.caption, CAPTION_FONT_SIZE) : 0,
+  );
+  return {
+    anchor: node.at,
+    halfWidth: Math.max(ICON_SIZE, textWidth) / 2,
+    top: ICON_SIZE / 2,
+    bottom: (node.caption ? CAPTION_OFFSET : LABEL_OFFSET) + 4,
+  };
+}
+
+/**
+ * 로고 가운데에서 target 쪽으로 나가는 직선이 영역 테두리(+간격)와 만나는 점.
+ * 선을 로고 가운데끼리 이어서, 같은 높이의 로고는 설명 줄 수와 상관없이 수평선으로 연결된다.
+ */
+function exitPoint(box: NodeBox, target: Point): Point {
+  const [cx, cy] = box.anchor;
+  const dx = target[0] - cx;
+  const dy = target[1] - cy;
+  const length = Math.hypot(dx, dy) || 1;
+  const verticalExtent = dy < 0 ? box.top : box.bottom;
+  const scaleToEdge = Math.min(
+    dx === 0 ? Infinity : box.halfWidth / Math.abs(dx),
+    dy === 0 ? Infinity : verticalExtent / Math.abs(dy),
+  );
+  const gap = EDGE_GAP / length;
+  return [cx + dx * (scaleToEdge + gap), cy + dy * (scaleToEdge + gap)];
+}
+
+/** Devicon에 없는 AI(LLM)는 단순 선 아이콘으로 그린다(특정 회사 로고를 흉내 내지 않음). */
+function AiIcon({ x, y, size }: { x: number; y: number; size: number }) {
   return (
-    <svg x={x} y={y} width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24" fill="none" className="stroke-fg" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      {icon === "user" ? (
-        <>
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21a8 8 0 0 1 16 0" />
-        </>
-      ) : (
-        <>
-          <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
-          <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" />
-        </>
-      )}
+    <svg x={x} y={y} width={size} height={size} viewBox="0 0 24 24" fill="none" className="stroke-fg" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
+      <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" />
     </svg>
   );
 }
 
-function NodeIcon({ icon, x, y }: { icon: ArchitectureIcon; x: number; y: number }) {
-  if (icon === "user" || icon === "ai") return <LineIcon icon={icon} x={x} y={y} />;
-  return <image href={`/icons/tech/${icon}.svg`} x={x} y={y} width={ICON_SIZE} height={ICON_SIZE} />;
+function DiagramIcon({ icon, center, size }: { icon: ArchitectureIcon; center: Point; size: number }) {
+  const x = center[0] - size / 2;
+  const y = center[1] - size / 2;
+  if (icon === "ai") return <AiIcon x={x} y={y} size={size} />;
+  return <image href={`/icons/tech/${icon}.svg`} x={x} y={y} width={size} height={size} />;
 }
 
+/** 참고 구성도처럼 상자 없이 로고 아래에 이름과 역할을 적는다. */
 function DiagramNode({ node }: { node: ArchitectureNode }) {
   const [x, y] = node.at;
-  const centerX = x + NODE_WIDTH / 2;
-
   return (
     <g>
-      <rect x={x} y={y} width={NODE_WIDTH} height={NODE_HEIGHT} rx={10} className="fill-raised stroke-line" />
-      <NodeIcon icon={node.icon} x={centerX - ICON_SIZE / 2} y={y + 16} />
-      <text x={centerX} y={y + 76} textAnchor="middle" className="fill-fg text-[15px] font-semibold">
+      <DiagramIcon icon={node.icon} center={node.at} size={ICON_SIZE} />
+      <text x={x} y={y + LABEL_OFFSET} textAnchor="middle" className="fill-fg text-[15px] font-semibold">
         {node.label}
       </text>
-      {node.caption.map((line, lineIndex) => (
-        <text key={line} x={centerX} y={y + 98 + lineIndex * 17} textAnchor="middle" className="fill-muted text-[13px]">
-          {line}
+      {node.caption && (
+        <text x={x} y={y + CAPTION_OFFSET} textAnchor="middle" className="fill-muted text-[13px]">
+          {node.caption}
         </text>
-      ))}
+      )}
     </g>
   );
 }
 
-/** 그룹(배포 단위 · 계층)은 점선 테두리, 이름표는 위쪽 테두리에 걸쳐 둔다. */
+/** 배포 단위: 점선 둥근 테두리 + 왼쪽 위 테두리에 걸친 아이콘 배지와 이름 */
 function DiagramGroup({ group }: { group: ArchitectureGroup }) {
   const [x, y] = group.at;
   const [width, height] = group.size;
-  const labelWidth = estimateTextWidth(group.label, 12) + 20;
+  const badgeX = x + 28;
+  const badgeY = y - GROUP_BADGE_SIZE / 2;
+  const labelX = badgeX + GROUP_BADGE_SIZE + 12;
+  const labelWidth = estimateTextWidth(group.label, 13) + 16;
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} rx={14} fill="none" strokeDasharray="4 4" className="stroke-subtle/60" />
-      <rect x={x + 14} y={y - 11} width={labelWidth} height={22} rx={11} className="fill-surface stroke-line" />
-      <text x={x + 14 + labelWidth / 2} y={y + 4} textAnchor="middle" className="fill-muted font-mono text-[12px]">
+      <rect x={x} y={y} width={width} height={height} rx={36} fill="none" strokeDasharray="4 5" className="stroke-subtle" />
+      <rect x={badgeX} y={badgeY} width={GROUP_BADGE_SIZE} height={GROUP_BADGE_SIZE} rx={8} className="fill-raised stroke-line" />
+      <DiagramIcon icon={group.icon} center={[badgeX + GROUP_BADGE_SIZE / 2, y]} size={28} />
+      {/* 점선이 글자를 가로지르지 않도록 이름 뒤에 배경색을 깐다. */}
+      <rect x={labelX - 8} y={y - 11} width={labelWidth} height={22} className="fill-surface" />
+      <text x={labelX} y={y + 5} className="fill-muted text-[13px]">
         {group.label}
       </text>
     </g>
   );
 }
 
-function midpointOfFirstSegment(path: readonly Point[]): Point {
-  const [[x1, y1], [x2, y2]] = path;
-  return [(x1 + x2) / 2, (y1 + y2) / 2];
-}
-
-function DiagramEdge({ edge, markerId }: { edge: ArchitectureEdge; markerId: string }) {
-  const points = edge.path.map(([x, y]) => `${x},${y}`).join(" ");
-  const tone = edge.primary ? "mint" : "muted";
-  const marker = `url(#${markerId}-${tone})`;
+function DiagramEdge({ edge, boxes, markerId }: { edge: ArchitectureEdge; boxes: Map<string, NodeBox>; markerId: string }) {
+  const fromBox = boxes.get(edge.from);
+  const toBox = boxes.get(edge.to);
+  if (!fromBox || !toBox) {
+    // 데이터의 오타를 조용히 넘기지 않도록 개발 중 바로 드러낸다.
+    throw new Error(`구성도 연결선의 노드를 찾을 수 없습니다: ${edge.from} → ${edge.to}`);
+  }
+  const [x1, y1] = exitPoint(fromBox, toBox.anchor);
+  const [x2, y2] = exitPoint(toBox, fromBox.anchor);
+  const marker = `url(#${markerId})`;
 
   return (
-    <g>
-      <polyline
-        points={points}
-        fill="none"
-        strokeWidth={1.5}
-        strokeLinejoin="round"
-        strokeDasharray={edge.dashed ? "5 5" : undefined}
-        markerEnd={marker}
-        markerStart={edge.bidirectional ? marker : undefined}
-        className={edge.primary ? "stroke-mint" : "stroke-muted/70"}
-      />
-      {edge.label && <EdgeLabel text={edge.label} at={edge.labelAt ?? midpointOfFirstSegment(edge.path)} primary={edge.primary} />}
-    </g>
+    <line
+      x1={x1}
+      y1={y1}
+      x2={x2}
+      y2={y2}
+      strokeWidth={1.3}
+      markerEnd={marker}
+      markerStart={edge.oneWay ? undefined : marker}
+      className="stroke-zinc-300"
+    />
   );
 }
 
-/** 선 위에 얹는 라벨. 배경을 페이지 색으로 칠해 선이 글자를 가로지르지 않게 한다. */
-function EdgeLabel({ text, at, primary }: { text: string; at: Point; primary?: boolean }) {
-  const [x, y] = at;
-  const width = estimateTextWidth(text, 13) + 16;
-
-  return (
-    <g>
-      <rect x={x - width / 2} y={y - EDGE_LABEL_HEIGHT / 2} width={width} height={EDGE_LABEL_HEIGHT} rx={EDGE_LABEL_HEIGHT / 2} className="fill-surface" />
-      <text x={x} y={y + 4} textAnchor="middle" className={`text-[13px] ${primary ? "fill-mint" : "fill-muted"}`}>
-        {text}
-      </text>
-    </g>
-  );
-}
-
-/** 화살표 머리. 주 흐름(강조색)과 일반 흐름 두 가지를 둔다. 페이지에 구성도가 하나뿐이지만 id 충돌을 막으려 접두사를 받는다. */
-function ArrowMarkers({ markerId }: { markerId: string }) {
+function ArrowMarker({ markerId }: { markerId: string }) {
   return (
     <defs>
-      {(["mint", "muted"] as const).map((tone) => (
-        <marker
-          key={tone}
-          id={`${markerId}-${tone}`}
-          viewBox="0 0 10 10"
-          refX={9}
-          refY={5}
-          markerWidth={7}
-          markerHeight={7}
-          orient="auto-start-reverse"
-        >
-          <path d="M0 0L10 5L0 10z" className={tone === "mint" ? "fill-mint" : "fill-muted"} />
-        </marker>
-      ))}
+      <marker id={markerId} viewBox="0 0 10 10" refX={9} refY={5} markerWidth={8} markerHeight={8} orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" className="fill-zinc-300" />
+      </marker>
     </defs>
   );
 }
 
 /**
- * 시스템 아키텍처: 구성 요소(노드) · 배포 단위(그룹) · 요청 흐름(선)을 데이터로 받아 SVG로 그린다.
- * 휴대폰에서는 글자가 너무 작아지지 않도록 최소 폭을 두고 가로 스크롤로 본다.
+ * 시스템 아키텍처: 로고 중심 구성 요소 · 점선 배포 단위 · 양방향 직선 화살표로 그린다.
+ * 연결선은 두 구성 요소의 영역 테두리에서 시작 · 끝나도록 자동 계산하므로 데이터에는 어떤 요소를 잇는지만 적는다.
  */
 export function ArchitectureDiagram({ architecture, diagramId }: { architecture: Architecture; diagramId: string }) {
   const [viewWidth, viewHeight] = architecture.viewBox;
   const markerId = `${diagramId}-arrow`;
   const titleId = `${diagramId}-architecture-title`;
+  const boxes = new Map(architecture.nodes.map((node) => [node.id, getNodeBox(node)]));
 
   return (
     <div>
@@ -170,12 +184,12 @@ export function ArchitectureDiagram({ architecture, diagramId }: { architecture:
               className="block h-auto w-full p-4 md:p-6"
             >
               <title id={titleId}>{architecture.description}</title>
-              <ArrowMarkers markerId={markerId} />
+              <ArrowMarker markerId={markerId} />
               {architecture.groups.map((group) => (
                 <DiagramGroup key={group.label} group={group} />
               ))}
-              {architecture.edges.map((edge, edgeIndex) => (
-                <DiagramEdge key={edgeIndex} edge={edge} markerId={markerId} />
+              {architecture.edges.map((edge) => (
+                <DiagramEdge key={`${edge.from}-${edge.to}`} edge={edge} boxes={boxes} markerId={markerId} />
               ))}
               {architecture.nodes.map((node) => (
                 <DiagramNode key={node.id} node={node} />
