@@ -1,7 +1,9 @@
 import { PAGE_GUTTER } from "@/components/layout/container";
+import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
 import { TechChipList } from "@/components/ui/tech-chip";
 import type { Profile } from "@/content/types";
+import { roundDownToHundreds } from "@/lib/motion/count-up";
 
 function ValueLabel({ index }: { index: number }) {
   return <span className="text-[10px] text-zinc-500">value {String(index).padStart(2, "0")}</span>;
@@ -30,14 +32,19 @@ function SummaryGroup({ lead, items, emphasized = false }: { lead: string; items
 
 interface AboutSectionProps {
   profile: Profile;
-  awardCount: number;
 }
+
+/** 개발을 시작한 해. 숫자 애니메이션은 2000년부터 올라와 연도처럼 읽히게 한다. */
+const DEVELOPMENT_START_YEAR = 2023;
+const YEAR_COUNT_FROM = 2000;
 
 /**
  * About: 참고 사이트와 같이 인사말 → 왼쪽(요약 + 버튼 고정) / 오른쪽(수치 · 강점 · Stack) 3:1 구성.
- * 수치는 수상 목록 수와 개발을 시작한 연도(2023)를 쓴다.
+ * 수치는 GitHub 최근 1년 기여 수(백 단위로 내려 "900+")와 개발을 시작한 연도를 쓰고, 화면에 들어올 때마다 숫자가 오른다.
  */
-export function AboutSection({ profile, awardCount }: AboutSectionProps) {
+export function AboutSection({ profile }: AboutSectionProps) {
+  const contributions = profile.githubContributionsLastYear;
+
   return (
     <section id="about" className={`${PAGE_GUTTER} py-20 md:py-21`}>
       <Reveal>
@@ -72,18 +79,23 @@ export function AboutSection({ profile, awardCount }: AboutSectionProps) {
             <Reveal>
               <ValueLabel index={1} />
               <p className="mt-2 text-5xl leading-none font-semibold text-zinc-100">
-                {awardCount}
-                <span className="ml-1 text-2xl">회 수상</span>
+                <CountUp to={roundDownToHundreds(contributions)} />+
+                <span className="ml-2 text-2xl">contributions</span>
               </p>
               <p className="mt-6 leading-relaxed text-zinc-400">
-                교내 캡스톤 프로젝트 대상, 여수 해커톤 정보통신기획평가원장상(최우수상) 등 해커톤·프로젝트 대회에서 수상했습니다.
+                <a href={profile.github.href} target="_blank" rel="noreferrer" className="underline-offset-4 hover:text-zinc-200 hover:underline">
+                  GitHub
+                </a>
+                에서 지난 1년 동안 {contributions} contributions를 기록했습니다.
               </p>
             </Reveal>
             <Reveal delay={100}>
               <ValueLabel index={2} />
-              <p className="mt-2 text-5xl leading-none font-semibold text-zinc-100">2023 ~</p>
+              <p className="mt-2 text-5xl leading-none font-semibold text-zinc-100">
+                <CountUp from={YEAR_COUNT_FROM} to={DEVELOPMENT_START_YEAR} /> ~
+              </p>
               <p className="mt-6 leading-relaxed text-zinc-400">
-                2023년 개발을 시작해, 지금은 CapTeam · FocusOn 팀 프로젝트에서 Spring Boot 백엔드를 맡고 있습니다.
+                {DEVELOPMENT_START_YEAR}년 개발을 시작해, 지금은 CapTeam · FocusOn 팀 프로젝트에서 Spring Boot 백엔드를 맡고 있습니다.
               </p>
             </Reveal>
           </div>

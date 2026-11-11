@@ -32,7 +32,7 @@ export default function HomePage() {
       />
       <main className="relative overflow-hidden bg-charcoal">
         <HeroSection profile={profile} projects={projects} featuredAwards={featuredAwards} />
-        <AboutSection profile={profile} awardCount={achievementsSeed.awards.length} />
+        <AboutSection profile={profile} />
         <ProjectsSection projects={projects} description={projectsDescription} />
         <ProjectGridSection projects={projects} />
         <Suspense fallback={<AchievementsSectionSkeleton />}>

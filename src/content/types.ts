@@ -44,6 +44,8 @@ export interface Profile {
   socials: SocialLink[];
   contacts: ContactItem[];
   github: LinkItem;
+  /** GitHub 프로필의 "contributions in the last year" 값. 갱신할 때 이 숫자만 바꾼다. */
+  githubContributionsLastYear: number;
   email: string;
   primaryStack: string[];
   alsoUsed: string[];
