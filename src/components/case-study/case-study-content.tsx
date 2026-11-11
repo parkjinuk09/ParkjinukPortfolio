@@ -6,7 +6,6 @@ import type { CaseStudy } from "@/content/case-study-types";
 import { ApiPolicyTable } from "./api-policy-table";
 import { ArchitectureDiagram } from "./architecture-diagram";
 import { DesignDecisionBlock } from "./design-decision";
-import { FlowSteps } from "./flow-steps";
 import { ProjectOverview } from "./project-overview";
 import { TroubleshootingList } from "./troubleshooting-list";
 
@@ -19,7 +18,7 @@ function Divider() {
   );
 }
 
-/** Figma 형식 프로젝트 상세(개요 → 구조 → 인증 흐름 → 설계 결정 → API 정책 → 트러블슈팅) */
+/** Figma 형식 프로젝트 상세(개요 → 구조 → 설계 결정 → API 정책 → 트러블슈팅) */
 export function CaseStudyContent({ project }: { project: CaseStudy }) {
   return (
     <article id={project.slug}>
@@ -27,7 +26,7 @@ export function CaseStudyContent({ project }: { project: CaseStudy }) {
         <SectionTitle
           number={project.order}
           title={project.name}
-          eyebrow={`Project ${project.order}`}
+          eyebrow="Project"
           description={project.summary}
         />
 
@@ -40,21 +39,6 @@ export function CaseStudyContent({ project }: { project: CaseStudy }) {
               <h3 className="mb-8 text-xl font-bold text-fg md:text-2xl">시스템 아키텍처</h3>
             </Reveal>
             <ArchitectureDiagram architecture={project.architecture} diagramId={project.slug} />
-          </>
-        )}
-
-        {project.authFlow && (
-          <>
-            <Divider />
-            <Reveal>
-              <h3 className="mb-8 text-xl font-bold text-fg md:text-2xl">{project.authFlow.title}</h3>
-            </Reveal>
-            <FlowSteps steps={project.authFlow.steps} />
-            <ul className="mt-6 space-y-1 text-xs leading-relaxed text-subtle">
-              {project.authFlow.notes.map((note) => (
-                <li key={note}>* {note}</li>
-              ))}
-            </ul>
           </>
         )}
 
