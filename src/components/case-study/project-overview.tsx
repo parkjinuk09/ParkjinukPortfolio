@@ -111,7 +111,7 @@ export function ProjectOverview({ project }: { project: CaseStudy }) {
           <div className="space-y-6">
             {project.stack.map((group) => (
               <div key={group.title}>
-                <p className="mb-3 text-sm font-semibold text-mint">{group.title}</p>
+                <p className="mb-2 text-sm font-semibold text-mint">{group.title}</p>
                 <TechList items={group.items} />
               </div>
             ))}

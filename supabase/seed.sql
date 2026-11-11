@@ -5,7 +5,7 @@ insert into public.awards (display_order, period_label, title, project) values
   (2, '2026년 1학기', '교내 APC 동아리 해커톤 3위', 'DevPrep'),
   (3, '2026년 1학기', '교내 캡스톤 프로젝트 대상', 'CapTeam'),
   (4, '2026년 1학기', '교내 해커톤 트러블슈팅상', 'LogGuard'),
-  (5, '2026년 2학기', '여수 해커톤 정보통신기획평가원장상(최우수상)', '발주콕')
+  (5, '2026년 2학기', '여수 해커톤 정보통신기획평가원장상', '발주콕')
 on conflict (display_order) do update set
   period_label = excluded.period_label,
   title = excluded.title,
