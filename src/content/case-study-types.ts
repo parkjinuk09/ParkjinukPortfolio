@@ -53,23 +53,15 @@ export interface ApiPolicyRow {
   constraint: string;
 }
 
-export interface ArchitectureNode {
-  title: string;
-  caption: string;
-}
-
+/** 시스템 아키텍처: 직접 그린 구성도 이미지와, 이미지에 담긴 흐름을 글로 풀어 쓴 설명 */
 export interface Architecture {
-  client: ArchitectureNode;
-  clientProtocol: string;
-  hostLabel: string;
-  proxy: ArchitectureNode;
-  proxyLink: string;
-  app: ArchitectureNode;
-  appLink: string;
-  database: ArchitectureNode;
-  ci: ArchitectureNode;
-  ciLink: string;
-  deployTarget: ArchitectureNode;
+  image: {
+    src: string;
+    /** next/image가 레이아웃 이동 없이 공간을 잡도록 원본 크기를 둔다. */
+    width: number;
+    height: number;
+    alt: string;
+  };
   notes: RichText[];
 }
 
