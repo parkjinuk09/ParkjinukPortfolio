@@ -56,8 +56,8 @@ const capTeam: CaseStudy = {
     ["JWT 검증만으로 리소스 접근이 보장되지 않습니다. ", { strong: "팀 소속 검증" }, "이 별도로 필요했습니다."],
     ["배포 문제는 브라우저 · 프록시 · 애플리케이션 · DB의 ", { strong: "책임을 나눠" }, " 진단해야 했습니다."],
     ["기능 구현과 함께 ", { strong: "의사결정 근거를 공유" }, "하는 것이 협업의 핵심이었습니다."],
-    ["범위 구분: AI 기반 팀 추천과 팀 관리 일부는 후속 기능입니다."],
   ],
+  scopeNote: "AI 기반 팀 추천과 팀 관리 일부는 후속 기능입니다.",
   architecture: {
     description:
       "CapTeam 시스템 아키텍처: 사용자는 React 웹을 쓰고, Spring Boot가 설문 · 팀 생성을 처리하며 Python 분석 서버가 OpenAI로 팀 매칭 후보를 만든다. 데이터는 MySQL과 S3에 저장한다.",
@@ -256,8 +256,8 @@ const focusOn: CaseStudy = {
       "까지 함께 봐야 합니다.",
     ],
     ["JPA의 메서드 호출 순서와 ", { strong: "실제 SQL 실행 시점은 다를 수 있다" }, "는 것을 배웠습니다."],
-    ["범위 구분: 활동 분석과 AI 연동은 후속 개발 범위입니다."],
   ],
+  scopeNote: "활동 분석과 AI 연동은 후속 개발 범위입니다.",
   architecture: {
     description:
       "FocusOn 시스템 아키텍처: 사용자는 Electron 데스크탑 앱과 Chrome 확장을 쓰고, AWS EC2의 Docker Compose 위에서 Spring Boot가 인증 · 요청을 처리한다. Python 분석 서버가 목표 관련성 · 이탈을 판단하고 PostgreSQL · Redis에 저장하며, 로그인은 Google OAuth로 한다.",
