@@ -46,6 +46,7 @@ export const profile: Profile = {
     { label: "TEL", value: "010-7673-1674", href: "tel:01076731674" },
   ],
   github: { label: "github.com/parkjinuk09", href: "https://github.com/parkjinuk09" },
+  githubContributionsLastYear: 902,
   email: "parkjinuk09@gmail.com",
   primaryStack: ["Java", "Spring Boot", "MySQL", "PostgreSQL", "Redis", "Docker"],
   alsoUsed: ["AWS EC2", "React", "NestJS"],
