@@ -131,6 +131,8 @@ export interface CaseStudy {
   team: { type: string; role: string };
   roles: RoleGroup[];
   retrospective: RichText[];
+  /** 회고와 구분해 작게 보여주는 구현 범위 안내(예: 후속 기능) */
+  scopeNote?: string;
   architecture?: Architecture;
   authFlow?: { title: string; steps: FlowStep[]; notes: string[] };
   designDecision?: DesignDecision;
