@@ -5,19 +5,26 @@ import type { FlowStep } from "@/content/case-study-types";
 
 const STEP_DELAY_MS = 140;
 
-export function StepCard({ step }: { step: FlowStep }) {
+/** "POST /sessions"처럼 HTTP 메서드나 경로로 시작하는 줄은 API로 보고 고정폭 글꼴로 구분한다. */
+const API_LINE_PATTERN = /^(GET|POST|PUT|PATCH|DELETE)\b|^\//;
+
+/** 단계 카드. order가 있으면 진행 순서 번호를 붙인다. */
+export function StepCard({ step, order }: { step: FlowStep; order?: number }) {
   return (
     <div
-      className={`h-full rounded-md border px-4 py-4 ${
+      className={`h-full rounded-md border px-5 py-5 ${
         step.highlighted ? "border-mint bg-mint/10" : "border-line bg-surface"
       }`}
     >
-      <p className="text-sm font-bold text-fg">{step.title}</p>
-      {step.lines.map((line) => (
-        <p key={line} className="mt-1 text-xs leading-relaxed text-muted">
-          {line}
-        </p>
-      ))}
+      {order !== undefined && <p className="mb-2 font-mono text-xs text-mint">{String(order).padStart(2, "0")}</p>}
+      <p className="text-base font-semibold text-fg">{step.title}</p>
+      <div className="mt-2 space-y-1">
+        {step.lines.map((line) => (
+          <p key={line} className={`text-sm leading-relaxed text-zinc-300 ${API_LINE_PATTERN.test(line) ? "font-mono text-[13px]" : ""}`}>
+            {line}
+          </p>
+        ))}
+      </div>
     </div>
   );
 }
@@ -38,7 +45,7 @@ export function FlowSteps({ steps }: { steps: FlowStep[] }) {
             </div>
           )}
           <Reveal delay={stepIndex * STEP_DELAY_MS} className="md:flex-1">
-            <StepCard step={step} />
+            <StepCard step={step} order={stepIndex + 1} />
           </Reveal>
         </Fragment>
       ))}
