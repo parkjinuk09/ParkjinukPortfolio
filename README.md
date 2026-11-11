@@ -42,6 +42,7 @@ docs/TESTING.md           # 테스트·검증 기록
 
 - 메인 화면 이미지(표지, 프로젝트 카드, 연락 배경)는 제공받은 사진 한 장을 잘라 `public/images/`에 WebP로 넣었습니다. 바꾸려면 같은 이름으로 덮어쓰거나 `src/content/projects.ts`의 `imageSrc`를 바꾸면 됩니다.
 - 기술 스택 로고는 [Devicon](https://devicon.dev)(MIT, `public/icons/tech/LICENSE-devicon.txt`)의 컬러 SVG입니다. 평소에는 흑백, 마우스를 올리면 원래 색으로 보입니다.
+- 프로젝트 상세의 시스템 아키텍처는 이미지가 아니라 `src/content/case-studies.ts`의 노드 · 그룹 · 연결선 좌표 데이터를 `architecture-diagram.tsx`가 SVG로 그립니다. Electron 아이콘은 어두운 배경에서 보이도록 색을 밝게 바꿨습니다.
 - 서비스 화면 캡처는 `src/content/case-studies.ts`의 `screenshotSrc`에 경로를 지정하면 프로젝트 상세에 표시됩니다. 경로가 없으면 이미지 영역을 그리지 않습니다.
 
 ### 데이터를 어디에 두는가
