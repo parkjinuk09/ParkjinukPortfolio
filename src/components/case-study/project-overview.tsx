@@ -6,16 +6,35 @@ import { RichText } from "@/components/ui/rich-text";
 import { TechList } from "./tech-list";
 import type { CaseStudy } from "@/content/case-study-types";
 
-function OverviewBlock({ title, children, delay = 0 }: { title: string; children: ReactNode; delay?: number }) {
+/**
+ * 칸 이름은 내용보다 약하게(작은 회색 꼬리표) 둬서, 내용 제목과 같은 무게로 보이지 않게 한다.
+ * 글자 위계: 칸 이름(12px 회색) < 설명(15px 회색) < 핵심 값(흰색, 크게)
+ */
+function OverviewLabel({ english, korean }: { english: string; korean: string }) {
   return (
-    <Reveal delay={delay}>
-      <h3 className="mb-3 text-base font-bold text-fg">{title}</h3>
-      {children}
-    </Reveal>
+    <p className="mb-4 flex items-baseline gap-2 text-xs text-subtle">
+      <span className="font-mono tracking-[0.2em] uppercase">{english}</span>
+      <span aria-hidden>·</span>
+      <span>{korean}</span>
+    </p>
   );
 }
 
-/** 프로젝트 개요(P02, P05): 서비스·기간·기술·구성원·역할·회고 */
+/** 요약 줄의 한 칸: 작은 이름 + 흰색 값 */
+function MetaItem({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
+  return (
+    <div className={className}>
+      <dt className="text-xs text-subtle">{label}</dt>
+      <dd className="mt-1.5 text-[15px] font-medium text-fg">{children}</dd>
+    </div>
+  );
+}
+
+/**
+ * 프로젝트 개요: 처음 몇 초에 볼 내용(무엇을 · 언제 · 누구와 · 무슨 성과)을 맨 위에 모으고,
+ * 그 아래 담당 역할(넓게) · 기술 스택(좁게), 마지막에 회고를 둔다.
+ * 색 규칙: 흰색 = 핵심 값, 회색 = 설명, 민트 = 링크 · 역할 분류, 테두리 배지 = 수상 성과
+ */
 export function ProjectOverview({ project }: { project: CaseStudy }) {
   return (
     <div>
@@ -33,59 +52,82 @@ export function ProjectOverview({ project }: { project: CaseStudy }) {
         </Reveal>
       )}
 
-      <div className="grid gap-x-16 gap-y-12 md:grid-cols-2">
-        <OverviewBlock title="서비스">
-          <p className="text-sm font-semibold text-fg">{project.service.title}</p>
-          <p className="mt-2 text-sm leading-relaxed text-muted">{project.service.description}</p>
-          <a
-            href={project.service.link.href}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-3 inline-block text-sm font-medium text-mint underline-offset-4 hover:underline"
-          >
-            {project.service.link.label} ↗
-          </a>
-        </OverviewBlock>
+      <Reveal>
+        <OverviewLabel english="Service" korean="서비스" />
+        <h2 className="text-2xl leading-snug font-semibold text-fg md:text-[1.75rem]">{project.service.title}</h2>
+        {project.periodNote && (
+          <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-mint/40 bg-mint/10 px-3 py-1 text-sm font-semibold text-mint">
+            <span aria-hidden>★</span>
+            {project.periodNote}
+          </p>
+        )}
+        <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-muted">{project.service.description}</p>
+      </Reveal>
 
-        <OverviewBlock title="작업 기간" delay={80}>
-          <p className="font-mono text-sm text-fg">{project.period}</p>
-          {project.periodNote && <p className="mt-2 text-sm font-semibold text-mint">{project.periodNote}</p>}
-        </OverviewBlock>
+      <Reveal delay={80}>
+        <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-line py-6 md:grid-cols-4">
+          <MetaItem label="작업 기간">
+            <span className="font-mono">{project.period}</span>
+          </MetaItem>
+          <MetaItem label="구성">{project.team.type}</MetaItem>
+          <MetaItem label="담당">{project.team.role}</MetaItem>
+          {/* 저장소 주소처럼 긴 링크는 휴대폰에서 두 칸 폭을 써서 중간에 끊기지 않게 한다. */}
+          <MetaItem label="링크" className="col-span-2 md:col-span-1">
+            <a
+              href={project.service.link.href}
+              target="_blank"
+              rel="noreferrer"
+              className="break-words text-mint underline-offset-4 hover:underline"
+            >
+              {project.service.link.label} ↗
+            </a>
+          </MetaItem>
+        </dl>
+      </Reveal>
 
-        <OverviewBlock title="기술 스택">
-          <TechList items={project.stack} />
-        </OverviewBlock>
-
-        <OverviewBlock title="구성원" delay={80}>
-          <p className="text-sm font-semibold text-fg">{project.team.type}</p>
-          <p className="mt-1 text-sm text-muted">{project.team.role}</p>
-        </OverviewBlock>
-
-        <OverviewBlock title="역할">
-          <div className="space-y-5">
+      <div className="mt-16 grid gap-14 lg:grid-cols-[2fr_1fr] lg:gap-16">
+        <Reveal>
+          <OverviewLabel english="Role" korean="담당 역할" />
+          <div className="space-y-8">
             {project.roles.map((group) => (
               <div key={group.title}>
-                <p className="text-sm font-semibold text-fg">{group.title}</p>
-                <ul className="mt-2 space-y-1 text-sm leading-relaxed text-muted">
+                {/* 역할 분류는 한글 이름도 있어 자간을 넓히지 않는다(한글에 넓은 자간을 주면 글자가 흩어져 보임). */}
+                <p className="text-sm font-semibold text-mint">{group.title}</p>
+                <ul className="mt-3 space-y-2 text-[15px] leading-relaxed text-zinc-200">
                   {group.items.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li
+                      key={item}
+                      className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-subtle"
+                    >
+                      {item}
+                    </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-        </OverviewBlock>
+        </Reveal>
 
-        <OverviewBlock title="프로젝트 회고" delay={80}>
-          <ul className="space-y-3 text-sm leading-relaxed text-muted">
-            {project.retrospective.map((line, lineIndex) => (
-              <li key={lineIndex} className="relative pl-4 before:absolute before:top-[0.6em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-subtle">
-                <RichText value={line} />
-              </li>
-            ))}
-          </ul>
-        </OverviewBlock>
+        <Reveal delay={80}>
+          <OverviewLabel english="Stack" korean="기술 스택" />
+          <TechList items={project.stack} />
+        </Reveal>
       </div>
+
+      <Reveal className="mt-16">
+        <OverviewLabel english="Retrospective" korean="프로젝트 회고" />
+        <ul className="space-y-3 text-[15px] leading-relaxed text-muted">
+          {project.retrospective.map((line, lineIndex) => (
+            <li
+              key={lineIndex}
+              className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-subtle"
+            >
+              <RichText value={line} />
+            </li>
+          ))}
+        </ul>
+        {project.scopeNote && <p className="mt-5 text-xs text-subtle">* 범위 구분: {project.scopeNote}</p>}
+      </Reveal>
     </div>
   );
 }
