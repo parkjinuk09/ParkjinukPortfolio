@@ -59,12 +59,32 @@ const capTeam: CaseStudy = {
     ["범위 구분: AI 기반 팀 추천과 팀 관리 일부는 후속 기능입니다."],
   ],
   architecture: {
-    image: {
-      src: "/images/capteam-architecture.webp",
-      width: 1414,
-      height: 722,
-      alt: "CapTeam 시스템 아키텍처: React 클라이언트, Spring Boot, Python 분석 서버와 OpenAI, MySQL, S3",
-    },
+    description:
+      "CapTeam 시스템 아키텍처: 사용자는 React 웹을 쓰고, Spring Boot가 설문 · 팀 생성을 처리하며 Python 분석 서버가 OpenAI로 팀 매칭 후보를 만든다. 데이터는 MySQL과 S3에 저장한다.",
+    viewBox: [1090, 590],
+    groups: [
+      { label: "Client", at: [14, 220], size: [478, 168] },
+      { label: "Backend", at: [584, 20], size: [208, 368] },
+    ],
+    nodes: [
+      { id: "user", at: [30, 240], icon: "user", label: "사용자", caption: ["학생 · 교사", "로그인 후 이용"] },
+      { id: "react", at: [300, 240], icon: "react", label: "React 웹", caption: ["로그인 · 설문 · 팀 생성", "채팅 · 공지 · 일지"] },
+      { id: "python", at: [600, 40], icon: "python", label: "Python 분석 서버", caption: ["학생 분석", "팀 매칭 후보 · 이유"] },
+      { id: "spring", at: [600, 240], icon: "spring", label: "Spring Boot", caption: ["설문 · 팀 생성", "비즈니스 로직"] },
+      { id: "openai", at: [880, 40], icon: "ai", label: "OpenAI API", caption: ["학생 성향 분석", "후보 생성"] },
+      { id: "mysql", at: [880, 240], icon: "mysql", label: "MySQL", caption: ["사용자 · 팀 · 설문", "데이터 저장"] },
+      { id: "s3", at: [880, 440], icon: "aws", label: "Amazon S3", caption: ["파일 · 로그", "저장"] },
+    ],
+    edges: [
+      { path: [[206, 304], [300, 304]] },
+      { path: [[476, 290], [600, 290]], label: "REST · STOMP", primary: true },
+      { path: [[600, 318], [476, 318]], label: "팀 매칭 결과", labelAt: [538, 340] },
+      { path: [[648, 240], [648, 168]], label: "분석 요청", labelAt: [648, 196] },
+      { path: [[728, 168], [728, 240]], label: "후보 · 이유", labelAt: [728, 214] },
+      { path: [[776, 104], [880, 104]], label: "분석 요청", bidirectional: true },
+      { path: [[776, 304], [880, 304]], label: "저장" },
+      { path: [[688, 368], [688, 504], [880, 504]], label: "파일 · 로그", labelAt: [784, 504] },
+    ],
     notes: [
       ["사용자는 ", { strong: "React 웹" }, "에서 로그인 · 설문 · 팀 생성 · 채팅 · 공지 · 일지를 이용합니다."],
       [
@@ -239,12 +259,33 @@ const focusOn: CaseStudy = {
     ["범위 구분: 활동 분석과 AI 연동은 후속 개발 범위입니다."],
   ],
   architecture: {
-    image: {
-      src: "/images/focuson-architecture.webp",
-      width: 2000,
-      height: 927,
-      alt: "FocusOn 시스템 아키텍처: Electron 데스크탑과 Chrome 확장, AWS EC2 Docker Compose 위의 Spring Boot · Python · PostgreSQL · Redis, Google OAuth",
-    },
+    description:
+      "FocusOn 시스템 아키텍처: 사용자는 Electron 데스크탑 앱과 Chrome 확장을 쓰고, AWS EC2의 Docker Compose 위에서 Spring Boot가 인증 · 요청을 처리한다. Python 분석 서버가 목표 관련성 · 이탈을 판단하고 PostgreSQL · Redis에 저장하며, 로그인은 Google OAuth로 한다.",
+    viewBox: [1090, 590],
+    groups: [
+      { label: "Client", at: [284, 20], size: [208, 368] },
+      { label: "AWS EC2 · Docker Compose", at: [584, 20], size: [488, 368] },
+    ],
+    nodes: [
+      { id: "user", at: [30, 140], icon: "user", label: "사용자", caption: ["학습 세션", "시작 · 종료"] },
+      { id: "electron", at: [300, 40], icon: "electron", label: "Electron 데스크탑", caption: ["세션 제어", "로컬 카메라 분석"] },
+      { id: "chrome", at: [300, 240], icon: "chrome", label: "Chrome 확장", caption: ["탭 이동 흐름", "수집"] },
+      { id: "python", at: [600, 40], icon: "python", label: "Python 분석 서버", caption: ["목표 관련성", "이탈 판단"] },
+      { id: "spring", at: [600, 240], icon: "spring", label: "Spring Boot", caption: ["사용자 인증", "요청 처리"] },
+      { id: "postgresql", at: [880, 40], icon: "postgresql", label: "PostgreSQL", caption: ["사용자 · 학습 기록", "AI 분석 결과"] },
+      { id: "redis", at: [880, 240], icon: "redis", label: "Redis", caption: ["연결 코드", "분석 캐시"] },
+      { id: "google", at: [600, 440], icon: "google", label: "Google OAuth", caption: ["소셜 로그인", "계정 확인"] },
+    ],
+    edges: [
+      { path: [[206, 204], [250, 204], [250, 104], [300, 104]] },
+      { path: [[250, 204], [250, 304], [300, 304]] },
+      { path: [[476, 104], [540, 104], [540, 290], [600, 290]], label: "REST API", labelAt: [540, 197], primary: true },
+      { path: [[476, 318], [600, 318]], label: "수집 데이터", primary: true },
+      { path: [[688, 240], [688, 168]], label: "분석 요청", labelAt: [688, 204] },
+      { path: [[776, 270], [828, 270], [828, 104], [880, 104]], label: "저장", labelAt: [828, 187] },
+      { path: [[776, 318], [880, 318]], label: "캐시" },
+      { path: [[688, 368], [688, 440]], label: "로그인", labelAt: [688, 404], dashed: true, bidirectional: true },
+    ],
     notes: [
       [
         "사용자는 ",
