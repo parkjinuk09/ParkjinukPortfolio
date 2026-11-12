@@ -15,11 +15,11 @@ export interface SocialLink {
 }
 
 /** About 요약: 한 문장을 "무엇을 고려하는지 / 무엇을 경험했는지"로 나눠 읽기 쉽게 보여준다. */
+/** About 왼쪽 한 문장 소개: 앞 문장 + 강조할 키워드 + 뒷 문장 */
 export interface ProfileSummary {
-  considerationLead: string;
-  considerations: string[];
-  experienceLead: string;
-  experiences: string[];
+  before: string;
+  keywords: string[];
+  after: string;
 }
 
 export interface ContactItem {
