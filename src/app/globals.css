@@ -164,12 +164,25 @@ body {
   }
 }
 
+/* 기술 스택 말풍선: 참고 사이트처럼 살짝 작게 · 아래에서 시작해 제자리로 나타난다. */
+.tooltip-in {
+  animation: tooltip-in 0.18s ease-out;
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.95);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
   .reveal,
+  .tooltip-in,
   .letter-rise,
   .hero-photo,
   .popup-backdrop {

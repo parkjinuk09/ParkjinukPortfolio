@@ -31,7 +31,7 @@ interface AboutSectionProps {
 }
 
 /** 개발을 시작한 해. 숫자 애니메이션은 2000년부터 올라와 연도처럼 읽히게 한다. */
-const DEVELOPMENT_START_YEAR = 2023;
+const DEVELOPMENT_START_YEAR = 2025;
 const YEAR_COUNT_FROM = 2000;
 
 /**

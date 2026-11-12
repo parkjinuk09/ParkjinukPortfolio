@@ -21,7 +21,7 @@ export const profile: Profile = {
       description: "결과 화면을 사용자 입장에서 확인하고, 문제를 짚어 작은 단위로 고칩니다.",
     },
   ],
-  motto: "AI는 도구로 활용하되, 기술적 판단과 검증은 스스로 책임지는 개발자입니다.",
+  motto: "AI는 도구로 활용하되, 기술적 판단과 검증은 스스로 책임집니다.",
   summary: {
     considerationLead: "요구사항을 API로 옮길 때 함께 고려합니다",
     considerations: ["데이터 정합성", "인증·인가", "동시성", "운영 환경"],
@@ -47,8 +47,20 @@ export const profile: Profile = {
   github: { label: "github.com/parkjinuk09", href: "https://github.com/parkjinuk09" },
   githubContributionsLastYear: 902,
   email: "parkjinuk09@gmail.com",
-  primaryStack: ["Java", "Spring Boot", "MySQL", "PostgreSQL", "Redis", "Docker"],
-  alsoUsed: ["AWS EC2", "React", "NestJS"],
+  // 사용 수준은 실제 프로젝트에서 맡은 범위 기준으로 한 줄씩 적는다.
+  primaryStack: [
+    { name: "Java", level: "주력 언어 · 객체지향 설계와 예외 처리로 서비스 로직 작성" },
+    { name: "Spring Boot", level: "CapTeam · FocusOn 백엔드 담당 · Security(JWT) · JPA · STOMP 구현" },
+    { name: "MySQL", level: "CapTeam 테이블 설계 · 제약조건 · JPA 연동" },
+    { name: "PostgreSQL", level: "FocusOn DB · Flyway 마이그레이션 · 제약조건으로 동시 요청 정합성 확보" },
+    { name: "Redis", level: "FocusOn 연결 코드 · 분석 캐시 저장" },
+    { name: "Docker", level: "Compose로 서버 · DB 구성, EC2 배포 환경 구성" },
+  ],
+  alsoUsed: [
+    { name: "AWS EC2", level: "Nginx · HTTPS 도메인 연결, GitHub Actions 자동 배포" },
+    { name: "React", level: "API 연동 확인 · 간단한 화면 구성" },
+    { name: "NestJS", level: "모듈 구조 이해 · 기본 CRUD API 작성" },
+  ],
   closing: {
     headline:
       "단순히 기능을 만드는 개발자가 아니라, 서비스가 예상대로 동작하지 않을 때 원인을 재현하고 시스템의 안정성을 높일 수 있는 개발자가 되고자 합니다.",
