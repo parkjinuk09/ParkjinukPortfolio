@@ -31,7 +31,6 @@ export interface ContactItem {
 export interface AiPractice {
   title: string;
   description: string;
-  evidence: { label: string; href: string };
 }
 
 export interface Profile {
@@ -43,8 +42,7 @@ export interface Profile {
   /** 표지 대제목(영문). 글자 단위 애니메이션을 위해 한 줄 문자열로 둔다. */
   heroTitle: string;
   /** About 영역의 강점 카드 (Notion 「배운 점」 문장 기준) */
-  strengths: { title: string; description: string }[];
-  /** AI 활용 방식. 원칙마다 실제로 적용한 근거(PR · 기록 문서) 링크를 하나씩 붙인다. */
+  /** AI 활용 방식: 원칙 이름과 한 문장 요약 */
   aiPractices: AiPractice[];
   /** Notion 상단 인용 문구. 표지 설명으로 쓴다. */
   motto: string;

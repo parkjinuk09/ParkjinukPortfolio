@@ -5,10 +5,6 @@ import { TechChipList } from "@/components/ui/tech-chip";
 import type { Profile } from "@/content/types";
 import { roundDownToHundreds } from "@/lib/motion/count-up";
 
-function ValueLabel({ index }: { index: number }) {
-  return <span className="text-[10px] text-zinc-500">value {String(index).padStart(2, "0")}</span>;
-}
-
 /** 요약 한 묶음: 짧은 안내 문장 + 키워드 목록. 긴 문장을 키워드로 나눠 한눈에 읽히게 한다. */
 function SummaryGroup({ lead, items, emphasized = false }: { lead: string; items: string[]; emphasized?: boolean }) {
   return (
@@ -77,8 +73,7 @@ export function AboutSection({ profile }: AboutSectionProps) {
         <div className="flex flex-col gap-16 md:gap-24">
           <div className="grid gap-12 md:grid-cols-2">
             <Reveal>
-              <ValueLabel index={1} />
-              <p className="mt-2 text-5xl leading-none font-semibold text-zinc-100">
+              <p className="text-5xl leading-none font-semibold text-zinc-100">
                 <CountUp to={roundDownToHundreds(contributions)} />+
                 <span className="ml-2 text-2xl">contributions</span>
               </p>
@@ -90,8 +85,7 @@ export function AboutSection({ profile }: AboutSectionProps) {
               </p>
             </Reveal>
             <Reveal delay={100}>
-              <ValueLabel index={2} />
-              <p className="mt-2 text-5xl leading-none font-semibold text-zinc-100">
+              <p className="text-5xl leading-none font-semibold text-zinc-100">
                 <CountUp from={YEAR_COUNT_FROM} to={DEVELOPMENT_START_YEAR} /> ~
               </p>
               <p className="mt-6 leading-relaxed text-zinc-400">
@@ -100,17 +94,7 @@ export function AboutSection({ profile }: AboutSectionProps) {
             </Reveal>
           </div>
 
-          <div className="grid gap-10 md:grid-cols-3">
-            {profile.strengths.map((strength, index) => (
-              <Reveal key={strength.title} delay={index * 100}>
-                <ValueLabel index={index + 1} />
-                <h3 className="mt-2 text-xl font-semibold text-zinc-100">{strength.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-zinc-400">{strength.description}</p>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* AI 활용: 원칙만 적으면 태도에 그치므로, 각 원칙을 실제로 적용한 PR · 기록 문서를 근거로 붙인다. */}
+          {/* AI 활용: 절차 설계 · 최종 판단 · 결과 검수를 직접 맡는다는 점을 세 줄 요약으로 보여준다. */}
           <div>
             <Reveal>
               <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">How I work with AI</h3>
@@ -121,19 +105,8 @@ export function AboutSection({ profile }: AboutSectionProps) {
             <div className="mt-10 grid gap-10 md:grid-cols-3">
               {profile.aiPractices.map((practice, index) => (
                 <Reveal key={practice.title} delay={index * 100}>
-                  <ValueLabel index={index + 1} />
-                  <h4 className="mt-2 text-xl font-semibold text-zinc-100">{practice.title}</h4>
+                  <h4 className="text-xl font-semibold text-zinc-100">{practice.title}</h4>
                   <p className="mt-4 text-sm leading-relaxed text-zinc-400">{practice.description}</p>
-                  <a
-                    href={practice.evidence.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-4 block text-sm leading-relaxed text-mint underline-offset-4 hover:underline"
-                  >
-                    {/* 화살표를 글자와 같은 줄 흐름에 둬서, 문구가 두 줄이 돼도 마지막 글자 바로 뒤에 붙게 한다. */}
-                    {practice.evidence.label}
-                    <span aria-hidden> ↗</span>
-                  </a>
                 </Reveal>
               ))}
             </div>
