@@ -110,6 +110,35 @@ export function AboutSection({ profile }: AboutSectionProps) {
             ))}
           </div>
 
+          {/* AI 활용: 원칙만 적으면 태도에 그치므로, 각 원칙을 실제로 적용한 PR · 기록 문서를 근거로 붙인다. */}
+          <div>
+            <Reveal>
+              <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">How I work with AI</h3>
+              <p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">
+                구현은 AI에게 맡기되 작업 절차를 설계하고, 최종 판단을 내리고, 결과물을 검수하는 일은 직접 합니다. 이 사이트도 이 방식으로 만들었습니다.
+              </p>
+            </Reveal>
+            <div className="mt-10 grid gap-10 md:grid-cols-3">
+              {profile.aiPractices.map((practice, index) => (
+                <Reveal key={practice.title} delay={index * 100}>
+                  <ValueLabel index={index + 1} />
+                  <h4 className="mt-2 text-xl font-semibold text-zinc-100">{practice.title}</h4>
+                  <p className="mt-4 text-sm leading-relaxed text-zinc-400">{practice.description}</p>
+                  <a
+                    href={practice.evidence.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 block text-sm leading-relaxed text-mint underline-offset-4 hover:underline"
+                  >
+                    {/* 화살표를 글자와 같은 줄 흐름에 둬서, 문구가 두 줄이 돼도 마지막 글자 바로 뒤에 붙게 한다. */}
+                    {practice.evidence.label}
+                    <span aria-hidden> ↗</span>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+
           <div>
             <Reveal>
               <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">Stack</h3>
