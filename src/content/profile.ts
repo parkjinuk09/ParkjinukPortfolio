@@ -23,10 +23,9 @@ export const profile: Profile = {
   ],
   motto: "AI는 도구로 활용하되, 기술적 판단과 검증은 스스로 책임집니다.",
   summary: {
-    considerationLead: "요구사항을 API로 옮길 때 함께 고려합니다",
-    considerations: ["데이터 정합성", "인증·인가", "동시성", "운영 환경"],
-    experienceLead: "Spring Boot 중심 팀 프로젝트에서 경험했습니다",
-    experiences: ["ERD", "API 명세", "JWT 인증", "채팅", "배포"],
+    before: "요구사항을 API로 옮길 때",
+    keywords: ["데이터 정합성", "인증·인가", "동시성", "운영 환경"],
+    after: "을 함께 고려합니다.",
   },
   socials: [
     { kind: "github", label: "GitHub", href: "https://github.com/parkjinuk09" },
@@ -47,19 +46,19 @@ export const profile: Profile = {
   github: { label: "github.com/parkjinuk09", href: "https://github.com/parkjinuk09" },
   githubContributionsLastYear: 902,
   email: "parkjinuk09@gmail.com",
-  // 사용 수준은 실제 프로젝트에서 맡은 범위 기준으로 한 줄씩 적는다.
+  // 말풍선에는 프로젝트 이름 없이 "무엇을 할 수 있는 수준인지"만 한 줄로 적는다.
   primaryStack: [
-    { name: "Java", level: "주력 언어 · 객체지향 설계와 예외 처리로 서비스 로직 작성" },
-    { name: "Spring Boot", level: "CapTeam · FocusOn 백엔드 담당 · Security(JWT) · JPA · STOMP 구현" },
-    { name: "MySQL", level: "CapTeam 테이블 설계 · 제약조건 · JPA 연동" },
-    { name: "PostgreSQL", level: "FocusOn DB · Flyway 마이그레이션 · 제약조건으로 동시 요청 정합성 확보" },
-    { name: "Redis", level: "FocusOn 연결 코드 · 분석 캐시 저장" },
-    { name: "Docker", level: "Compose로 서버 · DB 구성, EC2 배포 환경 구성" },
+    { name: "Java", level: "객체지향 설계와 예외 처리로 서비스 로직을 작성할 수 있는 수준" },
+    { name: "Spring Boot", level: "Security · JPA · WebSocket으로 API 서버를 설계하고 구현할 수 있는 수준" },
+    { name: "MySQL", level: "테이블 설계와 제약조건 · 인덱스를 적용할 수 있는 수준" },
+    { name: "PostgreSQL", level: "마이그레이션 관리와 제약조건으로 정합성을 지킬 수 있는 수준" },
+    { name: "Redis", level: "캐시와 만료 시간 기반 임시 데이터에 사용할 수 있는 수준" },
+    { name: "Docker", level: "Compose로 서버 · DB 실행 환경을 구성할 수 있는 수준" },
   ],
   alsoUsed: [
-    { name: "AWS EC2", level: "Nginx · HTTPS 도메인 연결, GitHub Actions 자동 배포" },
-    { name: "React", level: "API 연동 확인 · 간단한 화면 구성" },
-    { name: "NestJS", level: "모듈 구조 이해 · 기본 CRUD API 작성" },
+    { name: "AWS EC2", level: "Nginx · HTTPS 설정과 자동 배포를 구성할 수 있는 수준" },
+    { name: "React", level: "API 연동과 기본 화면 구성을 할 수 있는 수준" },
+    { name: "NestJS", level: "모듈 구조를 이해하고 기본 CRUD API를 작성할 수 있는 수준" },
   ],
   closing: {
     headline:
