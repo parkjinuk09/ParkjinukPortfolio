@@ -28,6 +28,12 @@ export interface ContactItem {
   href?: string;
 }
 
+/** 기술 스택 한 항목: 이름과 마우스를 올렸을 때 보여줄 사용 수준 한 줄 */
+export interface StackSkill {
+  name: string;
+  level: string;
+}
+
 export interface AiPractice {
   title: string;
   description: string;
@@ -53,8 +59,8 @@ export interface Profile {
   /** GitHub 프로필의 "contributions in the last year" 값. 갱신할 때 이 숫자만 바꾼다. */
   githubContributionsLastYear: number;
   email: string;
-  primaryStack: string[];
-  alsoUsed: string[];
+  primaryStack: StackSkill[];
+  alsoUsed: StackSkill[];
   closing: { headline: string; body: string };
 }
 
