@@ -28,6 +28,12 @@ export interface ContactItem {
   href?: string;
 }
 
+export interface AiPractice {
+  title: string;
+  description: string;
+  evidence: { label: string; href: string };
+}
+
 export interface Profile {
   name: string;
   englishName: string;
@@ -38,6 +44,8 @@ export interface Profile {
   heroTitle: string;
   /** About 영역의 강점 카드 (Notion 「배운 점」 문장 기준) */
   strengths: { title: string; description: string }[];
+  /** AI 활용 방식. 원칙마다 실제로 적용한 근거(PR · 기록 문서) 링크를 하나씩 붙인다. */
+  aiPractices: AiPractice[];
   /** Notion 상단 인용 문구. 표지 설명으로 쓴다. */
   motto: string;
   summary: ProfileSummary;
