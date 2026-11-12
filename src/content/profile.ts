@@ -7,48 +7,18 @@ export const profile: Profile = {
   role: "Backend · Software Engineer",
   heroEyebrow: "판단과 검증을 책임지는 개발자",
   heroTitle: "Back-end Developer",
-  strengths: [
-    {
-      title: "데이터 정합성",
-      description:
-        "동시 요청에 대한 정합성은 서비스 검증뿐 아니라 데이터베이스 제약과 잠금, 실제 PostgreSQL 검증까지 함께 살핍니다.",
-    },
-    {
-      title: "인증·인가",
-      description: "JWT 검증만으로 리소스 접근 권한이 보장되지 않기 때문에, 요청 대상의 소속과 소유를 별도로 확인합니다.",
-    },
-    {
-      title: "운영 환경",
-      description: "배포 문제는 브라우저, 프록시, 애플리케이션, 데이터베이스의 책임을 구분해 진단합니다.",
-    },
-  ],
   aiPractices: [
     {
       title: "규칙부터 정하기",
-      description:
-        "AI에게 작업을 맡기기 전에 이슈 → 브랜치 → PR 흐름을 정하고, 테스트를 통과한 뒤 결과를 기록하고 커밋합니다. AI가 제안한 변경도 같은 기준으로 검증합니다.",
-      evidence: {
-        label: "TESTING.md · 변경마다 남긴 테스트 · 판단 기록",
-        href: "https://github.com/parkjinuk09/ParkjinukPortfolio/blob/main/docs/TESTING.md",
-      },
+      description: "작업 흐름과 검증 기준을 먼저 정하고, AI가 만든 변경도 테스트를 통과해야 커밋합니다.",
     },
     {
       title: "판단은 직접 하기",
-      description:
-        "무엇을 보여주고 뺄지는 직접 결정합니다. 큰 변경은 선택지와 근거를 비교한 뒤 선택하고, 추천안도 사용성에 맞지 않으면 조정합니다.",
-      evidence: {
-        label: "PR #27 · 로고 추천안 대신 한 줄 나열을 선택",
-        href: "https://github.com/parkjinuk09/ParkjinukPortfolio/pull/27",
-      },
+      description: "무엇을 넣고 뺄지는 직접 정하고, 추천안도 근거를 비교해 고릅니다.",
     },
     {
       title: "결과 화면으로 검수하기",
-      description:
-        "코드뿐 아니라 결과 화면을 사용자 관점에서 확인합니다. “어디를 봐야 할지 모르겠다”처럼 문제를 구체적으로 짚고, 작은 단위로 반복 수정해 완성도를 높입니다.",
-      evidence: {
-        label: "PR #21 · 받은 피드백으로 상세 페이지 정보 위계 정리",
-        href: "https://github.com/parkjinuk09/ParkjinukPortfolio/pull/21",
-      },
+      description: "결과 화면을 사용자 입장에서 확인하고, 문제를 짚어 작은 단위로 고칩니다.",
     },
   ],
   motto: "AI는 도구로 활용하되, 기술적 판단과 검증은 스스로 책임지는 개발자입니다.",
