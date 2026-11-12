@@ -5,27 +5,6 @@ import { TechChipList } from "@/components/ui/tech-chip";
 import type { Profile } from "@/content/types";
 import { roundDownToHundreds } from "@/lib/motion/count-up";
 
-/** 요약 한 묶음: 짧은 안내 문장 + 키워드 목록. 긴 문장을 키워드로 나눠 한눈에 읽히게 한다. */
-function SummaryGroup({ lead, items, emphasized = false }: { lead: string; items: string[]; emphasized?: boolean }) {
-  return (
-    <div>
-      <p className="text-sm text-zinc-500">{lead}</p>
-      <ul className="mt-3 flex flex-wrap gap-2">
-        {items.map((item) => (
-          <li
-            key={item}
-            className={`rounded-full border px-3 py-1 text-sm ${
-              emphasized ? "border-zinc-50/30 font-semibold text-zinc-50" : "border-zinc-50/10 text-zinc-300"
-            }`}
-          >
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 interface AboutSectionProps {
   profile: Profile;
 }
@@ -54,10 +33,18 @@ export function AboutSection({ profile }: AboutSectionProps) {
       <div className="mt-12 grid gap-14 md:mt-16 md:gap-20 lg:grid-cols-[1fr_3fr] lg:gap-16">
         <div className="lg:sticky lg:top-40 lg:self-start">
           <Reveal>
-            <SummaryGroup lead={profile.summary.considerationLead} items={profile.summary.considerations} emphasized />
-            <div className="mt-8">
-              <SummaryGroup lead={profile.summary.experienceLead} items={profile.summary.experiences} />
-            </div>
+            {/* 상자 대신 문장으로 읽히게 하고, 고려하는 네 가지만 흰색 굵은 글씨로 강조한다. */}
+            <p className="text-lg leading-relaxed text-zinc-400">
+              {profile.summary.before}{" "}
+              {/* 키워드 하나가 두 줄로 쪼개지지 않도록 키워드마다 줄바꿈을 막고, 구분점 앞뒤에서만 줄이 바뀌게 한다. */}
+              {profile.summary.keywords.map((keyword, index) => (
+                <span key={keyword}>
+                  {index > 0 && " · "}
+                  <strong className="font-semibold whitespace-nowrap text-zinc-50">{keyword}</strong>
+                </span>
+              ))}
+              {profile.summary.after}
+            </p>
           </Reveal>
           <Reveal delay={100}>
             <a
