@@ -22,6 +22,35 @@ export const profile: Profile = {
       description: "배포 문제는 브라우저, 프록시, 애플리케이션, 데이터베이스의 책임을 구분해 진단합니다.",
     },
   ],
+  aiPractices: [
+    {
+      title: "규칙부터 정하기",
+      description:
+        "AI에게 작업을 맡기기 전에 이슈 → 브랜치 → PR 흐름을 정하고, 테스트를 통과한 뒤 결과를 기록하고 커밋합니다. AI가 제안한 변경도 같은 기준으로 검증합니다.",
+      evidence: {
+        label: "TESTING.md · 변경마다 남긴 테스트 · 판단 기록",
+        href: "https://github.com/parkjinuk09/ParkjinukPortfolio/blob/main/docs/TESTING.md",
+      },
+    },
+    {
+      title: "판단은 직접 하기",
+      description:
+        "무엇을 보여주고 뺄지는 직접 결정합니다. 큰 변경은 선택지와 근거를 비교한 뒤 선택하고, 추천안도 사용성에 맞지 않으면 조정합니다.",
+      evidence: {
+        label: "PR #27 · 로고 추천안 대신 한 줄 나열을 선택",
+        href: "https://github.com/parkjinuk09/ParkjinukPortfolio/pull/27",
+      },
+    },
+    {
+      title: "결과 화면으로 검수하기",
+      description:
+        "코드뿐 아니라 결과 화면을 사용자 관점에서 확인합니다. “어디를 봐야 할지 모르겠다”처럼 문제를 구체적으로 짚고, 작은 단위로 반복 수정해 완성도를 높입니다.",
+      evidence: {
+        label: "PR #21 · 받은 피드백으로 상세 페이지 정보 위계 정리",
+        href: "https://github.com/parkjinuk09/ParkjinukPortfolio/pull/21",
+      },
+    },
+  ],
   motto: "AI는 도구로 활용하되, 기술적 판단과 검증은 스스로 책임지는 개발자입니다.",
   summary: {
     considerationLead: "요구사항을 API로 옮길 때 함께 고려합니다",
