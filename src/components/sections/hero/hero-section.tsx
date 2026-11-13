@@ -7,6 +7,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { SocialLinks } from "@/components/ui/social-links";
 import type { Profile, Project } from "@/content/types";
 import type { Award } from "@/features/achievements/types";
+import { formatStackLine } from "@/lib/profile/stack-line";
 
 import { HeroBackground } from "./hero-background";
 
@@ -101,7 +102,7 @@ export function HeroSection({ profile, projects, featuredAwards }: HeroSectionPr
 
         <Reveal delay={afterTitle} className="mt-10 flex flex-col gap-2">
           <p className="text-indigo-100">{profile.motto}</p>
-          <p className="text-zinc-500">{profile.primaryStack.join(" ㆍ ")}</p>
+          <p className="text-zinc-500">{formatStackLine(profile.primaryStack)}</p>
         </Reveal>
 
         <Reveal delay={afterTitle + 150} className="grid grid-cols-1 gap-10 py-10 md:grid-cols-2">
