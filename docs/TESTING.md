@@ -483,3 +483,15 @@ CapTeam · FocusOn 상세 페이지의 "시스템 아키텍처"를 코드로 그
 | typecheck / lint / build | 통과 |
 | `pnpm test` / `pnpm test:db` | 23건 / 8건 통과 |
 | 1440px · iPhone 13 | 말풍선 9개 화면 안쪽, 콘솔 오류 · 가로 스크롤 없음 |
+
+## 27. 버그 수정: 첫 화면 기술 목록이 `[object Object]`로 표시 (2026-11-13)
+
+| 문제 | 원인 | 수정 |
+| --- | --- | --- |
+| 첫 화면 소개 문구 아래 기술 목록이 `[object Object] · [object Object] …`로 보임 | 24절에서 `primaryStack`을 문자열 배열 → `{ name, level }` 객체 배열로 바꿨는데, 첫 화면(`hero-section.tsx`)은 여전히 `primaryStack.join()`으로 객체를 그대로 이어 붙임. 객체 배열의 `join`도 타입 오류가 아니라서 typecheck에서 걸리지 않았고, 당시 화면 확인은 Stack 영역만 함 | 이름만 뽑아 잇는 `formatStackLine()`을 만들어 첫 화면에서 사용. 실제 프로필 데이터로 `[object Object]`가 나오지 않는지 확인하는 단위 테스트 2건 추가 |
+
+| 항목 | 결과 |
+| --- | --- |
+| typecheck / lint / build | 통과 |
+| `pnpm test` / `pnpm test:db` | 25건(2건 추가) / 8건 통과 |
+| `/`, `/projects/capteam`, `/projects/focuson` HTML | `object Object` 0건, 첫 화면 "Java ㆍ Spring Boot ㆍ MySQL ㆍ PostgreSQL ㆍ Redis ㆍ Docker" |
