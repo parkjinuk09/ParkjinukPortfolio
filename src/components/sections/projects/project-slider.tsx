@@ -64,7 +64,7 @@ export function ProjectSlider({ cards }: { cards: ProjectCard[] }) {
                       src={card.imageSrc}
                       alt={`${card.name} 대표 이미지`}
                       fill
-                      sizes="(min-width: 1100px) 530px, (min-width: 768px) 45vw, 100vw"
+                      sizes="(min-width: 1320px) 590px, (min-width: 768px) 45vw, 100vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
