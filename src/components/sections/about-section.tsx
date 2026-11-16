@@ -81,44 +81,47 @@ export function AboutSection({ profile }: AboutSectionProps) {
             </Reveal>
           </div>
 
-          {/* AI 활용: 원칙마다 한 문장 설명 + 실제로 하는 일을 붙여, 태도가 아니라 작업 방식으로 읽히게 한다. */}
+          {/* AI 활용: 세 원칙을 세로 카드 3개로 나란히 두고, 확인 가능한 결과 · 근거만 덧붙인다. */}
           <div>
             <Reveal>
               <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">How I work with AI</h3>
-              <p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">
-                AI에게 맡기는 기준을 먼저 설계하고, 검증과 기본기는 직접 책임집니다.
-              </p>
+              <p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">AI에게는 실행을 맡기고, 기준 · 판단 · 책임은 제가 가집니다.</p>
             </Reveal>
-            {/* 항목마다 문장이 길어 세 칸으로 나누면 줄이 너무 짧아지므로, 번호 · 제목(왼쪽)과 내용(오른쪽)을 한 줄씩 쌓는다. */}
-            <ol className="mt-10 divide-y divide-zinc-50/10 border-y border-zinc-50/10">
+            <ul className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
               {profile.aiPractices.map((practice, index) => (
-                <Reveal as="li" key={practice.title} delay={index * 80} className="grid gap-4 py-8 md:grid-cols-[2fr_3fr] md:gap-10">
-                  <div>
-                    <p className="font-mono text-sm text-mint">{String(index + 1).padStart(2, "0")}</p>
-                    <h4 className="mt-2 text-lg leading-snug font-semibold text-zinc-50 md:text-xl">{practice.title}</h4>
-                  </div>
-                  <div>
-                    <p className="leading-relaxed text-zinc-300">{practice.description}</p>
-                    <ul className="mt-4 space-y-2 text-sm leading-relaxed text-zinc-400">
-                      {practice.points.map((point) => (
-                        <li
-                          key={point}
-                          className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-zinc-500"
-                        >
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                    {practice.result && (
-                      <p className="mt-4 text-sm text-zinc-200">
-                        <span className="mr-2 font-semibold text-mint">결과</span>
-                        {practice.result}
-                      </p>
-                    )}
-                  </div>
+                <Reveal as="li" key={practice.title} delay={index * 100} className="flex flex-col border-t border-zinc-50/15 pt-6">
+                  <p className="font-mono text-sm text-mint">{String(index + 1).padStart(2, "0")}</p>
+                  <h4 className="mt-2 text-xl font-semibold text-zinc-50">{practice.title}</h4>
+                  <p className="mt-3 leading-relaxed text-zinc-300">{practice.description}</p>
+                  <ul className="mt-4 space-y-2 text-sm leading-relaxed text-zinc-400">
+                    {practice.points.map((point) => (
+                      <li
+                        key={point}
+                        className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-zinc-500"
+                      >
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                  {practice.result && (
+                    <p className="mt-4 text-sm leading-relaxed text-zinc-200">
+                      <span className="mr-2 font-semibold text-mint">결과</span>
+                      {practice.result}
+                    </p>
+                  )}
+                  {practice.evidence && (
+                    <a
+                      href={practice.evidence.href}
+                      {...(practice.evidence.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
+                      className="mt-3 text-sm text-zinc-400 underline-offset-4 hover:text-mint hover:underline"
+                    >
+                      근거: {practice.evidence.label}
+                      <span aria-hidden> ↗</span>
+                    </a>
+                  )}
                 </Reveal>
               ))}
-            </ol>
+            </ul>
           </div>
 
           <div>
