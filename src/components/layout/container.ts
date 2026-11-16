@@ -1,5 +1,6 @@
 /**
- * 참고 사이트의 grid-layout과 같은 본문 폭.
- * 최대 1100px로 가운데 정렬하고, 그보다 좁은 화면에서는 좌우에 화면 폭의 약 8.4%(데스크톱) 여백을 둔다.
+ * 본문 폭. 일반적인 데스크톱 기준(1440px 화면에 1200~1280px 본문)을 따라 본문은 최대 1240px로 둔다.
+ * 좌우 여백은 태블릿 · 데스크톱에서 화면 폭의 6%(1440px 화면에서 약 86~100px), 휴대폰은 20px.
+ * 최대 폭에 여백(6vw × 2)을 더해 두어, 화면이 좁아져도 여백이 갑자기 0으로 붙지 않게 한다.
  */
-export const PAGE_GUTTER = "mx-auto w-full max-w-[1100px] px-5 md:px-[8.4vw] xl:px-0";
+export const PAGE_GUTTER = "mx-auto w-full max-w-[calc(1240px_+_12vw)] px-5 md:px-[6vw]";

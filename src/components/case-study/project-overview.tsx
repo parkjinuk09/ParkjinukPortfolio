@@ -44,7 +44,7 @@ export function ProjectOverview({ project }: { project: CaseStudy }) {
             alt={project.screenshotLabel}
             width={project.screenshotWidth}
             height={project.screenshotHeight}
-            sizes="(min-width: 1100px) 1100px, 100vw"
+            sizes="(min-width: 1320px) 1240px, 100vw"
             className="h-auto w-full"
           />
         </Reveal>
