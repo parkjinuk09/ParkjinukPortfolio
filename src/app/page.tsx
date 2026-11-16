@@ -11,7 +11,7 @@ import { ProjectGridSection } from "@/components/sections/projects/project-grid-
 import { ProjectsSection } from "@/components/sections/projects/projects-section";
 import { navItems } from "@/content/navigation";
 import { profile } from "@/content/profile";
-import { projects, projectsDescription } from "@/content/projects";
+import { projects, projectsDescription, mainProjects, otherProjects } from "@/content/projects";
 import { achievementsSeed } from "@/features/achievements/seed-data";
 
 /** 표지에 보여줄 대표 수상 프로젝트. 최근 수상이 위에 오도록 순서를 지정한다. */
@@ -33,8 +33,8 @@ export default function HomePage() {
       <main className="relative overflow-hidden bg-charcoal">
         <HeroSection profile={profile} projects={projects} featuredAwards={featuredAwards} />
         <AboutSection profile={profile} />
-        <ProjectsSection projects={projects} description={projectsDescription} />
-        <ProjectGridSection projects={projects} />
+        <ProjectsSection projects={mainProjects} description={projectsDescription} />
+        <ProjectGridSection projects={otherProjects} />
         <Suspense fallback={<AchievementsSectionSkeleton />}>
           <AchievementsSection />
         </Suspense>

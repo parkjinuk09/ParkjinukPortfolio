@@ -25,12 +25,12 @@ export function ContactSection({ profile }: { profile: Profile }) {
         <div className="absolute inset-0 bg-linear-to-l from-charcoal via-charcoal/50 to-transparent" />
       </div>
 
-      <div className={`${PAGE_GUTTER} relative mb-5 grid py-25 md:grid-cols-2`}>
+      <div className={`${PAGE_GUTTER} relative mb-5 grid py-25 md:grid-cols-[3fr_2fr]`}>
         <Reveal className="z-10 flex w-full flex-col gap-10">
-          <h2 className="text-[clamp(1.5rem,2vw,1.9rem)] leading-normal font-semibold text-zinc-50">{profile.closing.headline}</h2>
-          <p className="max-w-[500px] leading-relaxed text-zinc-400">{profile.closing.body}</p>
+          <h2 className="text-[clamp(1.75rem,2.8vw,2.5rem)] leading-snug font-semibold text-zinc-50">{profile.closing.headline}</h2>
+          <p className="max-w-[560px] text-lg leading-relaxed text-zinc-400">{profile.closing.body}</p>
           <div>
-            <div className="mb-10 flex flex-col border-l border-zinc-50/20 pl-5 text-sm text-zinc-300 md:gap-1 [&>a]:py-1.5 md:[&>a]:py-0">
+            <div className="mb-10 flex flex-col border-l border-zinc-50/20 pl-5 text-lg text-zinc-300 md:gap-1.5 [&>a]:py-1.5 md:[&>a]:py-0">
               {phone?.href && (
                 <a href={phone.href} className="hover:text-zinc-50">
                   {phone.value}

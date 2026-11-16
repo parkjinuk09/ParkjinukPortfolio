@@ -43,7 +43,7 @@ export function ContactPopup() {
         ref={openButtonRef}
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 border border-zinc-50/15 p-4 px-5 text-sm text-zinc-50 transition-colors hover:border-zinc-50/50"
+        className="flex items-center gap-2 border border-zinc-50/15 p-4 px-6 text-base text-zinc-50 transition-colors hover:border-zinc-50/50"
       >
         메시지 남기기
         <span aria-hidden>›</span>
