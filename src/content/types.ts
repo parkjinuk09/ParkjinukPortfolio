@@ -34,16 +34,31 @@ export interface StackSkill {
   level: string;
 }
 
-/**
- * AI 활용 원칙 하나: 제목 · 한 문장 설명 · 실제로 하는 일 · (확인 가능한 것만) 결과와 근거 링크.
- * 결과 · 근거는 숫자나 공개 문서로 확인할 수 있을 때만 적는다.
- */
-export interface AiPractice {
+/** AI 활용 흐름 한 단계: 이름과 실제로 하는 일 */
+export interface AiWorkflowStep {
   title: string;
-  description: string;
-  points: string[];
-  result?: string;
-  evidence?: LinkItem;
+  detail: string;
+}
+
+/** AI 활용 흐름이 실제로 적용된 사례 하나: 측정값(전 → 후) · 원인 · 해결 · 검증 · 근거 링크 */
+export interface AiWorkflowCase {
+  project: string;
+  metricLabel: string;
+  before: string;
+  after: string;
+  /** 같은 조건에서 잰 값인지 보여주는 측정 조건 */
+  condition: string;
+  title: string;
+  cause: string;
+  fix: string;
+  verification: string;
+  link: LinkItem;
+}
+
+export interface AiWorkflow {
+  summary: string;
+  steps: AiWorkflowStep[];
+  case: AiWorkflowCase;
 }
 
 export interface Profile {
@@ -56,7 +71,7 @@ export interface Profile {
   heroTitle: string;
   /** About 영역의 강점 카드 (Notion 「배운 점」 문장 기준) */
   /** AI 활용 방식: 원칙 이름과 한 문장 요약 */
-  aiPractices: AiPractice[];
+  aiWorkflow: AiWorkflow;
   /** Notion 상단 인용 문구. 표지 설명으로 쓴다. */
   motto: string;
   summary: ProfileSummary;

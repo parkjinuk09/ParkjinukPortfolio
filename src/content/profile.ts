@@ -7,31 +7,27 @@ export const profile: Profile = {
   role: "Backend · Software Engineer",
   heroEyebrow: "판단과 검증을 책임지는 개발자",
   heroTitle: "Back-end Developer",
-  // 순서: 면접관이 가장 경계하는 "AI 의존"에 답하도록 검증 · 책임 → 규칙 설계 → 이해 · 기본기 순으로 둔다.
-  aiPractices: [
-    {
-      title: "검증까지 한 흐름으로",
-      description: "테스트 실행은 AI에게 맡기고, 테스트 기준 설계 · 결과 검토 · 머지 판단은 제가 합니다.",
-      points: ["구현 → API · 동시성 테스트 → 문서화 → 커밋을 한 흐름으로 운영", "실패는 어디서 · 왜 · 어떻게 터졌는지 기록한 뒤 수정"],
-      result: "AI Todo 부하 테스트에서 경쟁 상태를 찾아 실패율 0.2% → 0%",
-      // 결과 문장과 같은 사례를 가리키도록 해당 프로젝트 상세의 트러블슈팅으로 연결한다.
-      evidence: { label: "AI Todo 트러블슈팅 02", href: "/projects/ai-todo#troubleshooting" },
+  // 원칙을 나열하는 대신 "기준 설계 → AI 구현 → 직접 검증" 흐름과, 그 흐름이 실제로 적용된 사례 하나를 보여준다.
+  aiWorkflow: {
+    summary: "AI로 구현 속도를 높이고, 설계와 검증의 책임은 직접 집니다.",
+    steps: [
+      { title: "기준 설계", detail: "아키텍처 · API 계약 · 테스트 기준" },
+      { title: "AI 구현", detail: "기준에 따른 구현 · 자동 테스트" },
+      { title: "직접 검증", detail: "코드 리뷰 · API 검증 · DB 정합성" },
+    ],
+    case: {
+      project: "AI Todo Assistant",
+      metricLabel: "부하 테스트 실패율",
+      before: "0.2%",
+      after: "0%",
+      condition: "k6 · 동시 사용자 50명 · 30초",
+      title: "경쟁 상태 해결",
+      cause: "두 요청이 동시에 \"저장본 없음\"을 확인하는 check-then-act",
+      fix: "확인과 저장을 한 문장으로 합친 UPSERT(ON CONFLICT)",
+      verification: "같은 조건으로 부하 테스트를 다시 실행해 실패 0건",
+      link: { label: "트러블슈팅 자세히 보기", href: "/projects/ai-todo#troubleshooting" },
     },
-    {
-      title: "규칙부터 설계",
-      description: "코드를 바로 만들게 하지 않고, 아키텍처 · 보안 · 코딩 규칙을 먼저 문서로 정해 작업 기준으로 씁니다.",
-      points: [
-        "계층 책임 · DTO / Entity 분리 · 트랜잭션 경계를 미리 명시",
-        "하드코딩 · 빈 catch · 민감정보 로그 · 범위 밖 리팩터링 금지",
-      ],
-    },
-    {
-      title: "이해는 직접",
-      description: "생성된 코드를 복사하지 않고, 원리를 이해하는 데 AI를 씁니다.",
-      points: ["새 개념은 정의 → 쓰는 이유 → 동작 원리 → 예제 → 활용 순서로 학습"],
-      result: "JPA flush 시점을 이해하고 FocusOn 재저장 500 에러의 원인을 찾아 수정",
-    },
-  ],
+  },
   motto: "AI는 도구로 활용하되, 기술적 판단과 검증은 스스로 책임집니다.",
   summary: {
     before: "요구사항을 API로 옮길 때",
