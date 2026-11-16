@@ -1,9 +1,92 @@
+import Link from "next/link";
+
 import { PAGE_GUTTER } from "@/components/layout/container";
 import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
 import { TechChipList } from "@/components/ui/tech-chip";
-import type { Profile } from "@/content/types";
+import type { AiWorkflow, Profile } from "@/content/types";
 import { roundDownToHundreds } from "@/lib/motion/count-up";
+
+const CASE_ROW_LABELS = [
+  ["원인", "cause"],
+  ["해결", "fix"],
+  ["검증", "verification"],
+] as const;
+
+/**
+ * How I work with AI.
+ * - 세 단계는 같은 머리줄(번호 + 선 + 화살표)을 써서 제목 · 설명의 시작 높이가 모두 같다. 마지막 단계는 선 대신 빈 자리를 둔다.
+ * - 사례는 왼쪽(수치) : 오른쪽(무엇을 해결했는지) = 2 : 3으로, 두 칸 모두 같은 크기의 작은 제목에서 시작해 윗선이 맞는다.
+ */
+function AiWorkflowBlock({ workflow }: { workflow: AiWorkflow }) {
+  const { case: workflowCase } = workflow;
+
+  return (
+    <div>
+      <Reveal>
+        <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">How I work with AI</h3>
+        <p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">{workflow.summary}</p>
+      </Reveal>
+
+      <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-0">
+        {workflow.steps.map((step, index) => {
+          const isLast = index === workflow.steps.length - 1;
+          return (
+            <Reveal as="li" key={step.title} delay={index * 100} className="md:pr-8">
+              <div className="flex h-6 items-center gap-4">
+                <span className="font-mono text-sm text-mint">{String(index + 1).padStart(2, "0")}</span>
+                {!isLast && (
+                  <span aria-hidden className="hidden flex-1 items-center gap-1 text-zinc-500 md:flex">
+                    <span className="h-px flex-1 bg-zinc-50/20" />
+                    <span className="text-xs">→</span>
+                  </span>
+                )}
+              </div>
+              <p className="mt-4 text-xl font-semibold text-zinc-50">{step.title}</p>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{step.detail}</p>
+            </Reveal>
+          );
+        })}
+      </ol>
+
+      <Reveal className="mt-14 border-t border-zinc-50/15 pt-10">
+        <div className="flex items-baseline justify-between gap-4">
+          <h4 className="text-xl font-semibold text-zinc-50">실제 문제 해결 사례</h4>
+          <span className="text-sm text-mint">{workflowCase.project}</span>
+        </div>
+
+        <div className="mt-8 grid gap-10 md:grid-cols-[2fr_3fr] md:gap-16">
+          <div>
+            <p className="text-sm text-zinc-400">{workflowCase.metricLabel}</p>
+            <p className="mt-3 text-5xl leading-none font-semibold whitespace-nowrap text-zinc-100">
+              {workflowCase.before} <span className="text-3xl text-zinc-500">→</span> <span className="text-mint">{workflowCase.after}</span>
+            </p>
+            {/* 0%는 이 조건에서 실패가 관측되지 않았다는 뜻이므로 조건을 숫자 바로 아래에 붙여 둔다. */}
+            <p className="mt-4 text-sm text-zinc-500">{workflowCase.condition}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-zinc-400">{workflowCase.title}</p>
+            <dl className="mt-3 space-y-3">
+              {CASE_ROW_LABELS.map(([label, key]) => (
+                <div key={key} className="grid grid-cols-[2.5rem_1fr] gap-3 leading-relaxed">
+                  <dt className="font-semibold text-mint">{label}</dt>
+                  <dd className="text-zinc-200">{workflowCase[key]}</dd>
+                </div>
+              ))}
+            </dl>
+            <Link
+              href={workflowCase.link.href}
+              className="mt-6 ml-[calc(2.5rem_+_0.75rem)] inline-block text-sm text-zinc-400 underline-offset-4 transition-colors hover:text-mint hover:underline"
+            >
+              {workflowCase.link.label} <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  );
+}
 
 interface AboutSectionProps {
   profile: Profile;
@@ -81,48 +164,8 @@ export function AboutSection({ profile }: AboutSectionProps) {
             </Reveal>
           </div>
 
-          {/* AI 활용: 세 원칙을 세로 카드 3개로 나란히 두고, 확인 가능한 결과 · 근거만 덧붙인다. */}
-          <div>
-            <Reveal>
-              <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">How I work with AI</h3>
-              <p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">AI에게는 실행을 맡기고, 기준 · 판단 · 책임은 제가 가집니다.</p>
-            </Reveal>
-            <ul className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
-              {profile.aiPractices.map((practice, index) => (
-                <Reveal as="li" key={practice.title} delay={index * 100} className="flex flex-col border-t border-zinc-50/15 pt-6">
-                  <p className="font-mono text-sm text-mint">{String(index + 1).padStart(2, "0")}</p>
-                  <h4 className="mt-2 text-xl font-semibold text-zinc-50">{practice.title}</h4>
-                  <p className="mt-3 leading-relaxed text-zinc-300">{practice.description}</p>
-                  <ul className="mt-4 space-y-2 text-sm leading-relaxed text-zinc-400">
-                    {practice.points.map((point) => (
-                      <li
-                        key={point}
-                        className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-zinc-500"
-                      >
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                  {practice.result && (
-                    <p className="mt-4 text-sm leading-relaxed text-zinc-200">
-                      <span className="mr-2 font-semibold text-mint">결과</span>
-                      {practice.result}
-                    </p>
-                  )}
-                  {practice.evidence && (
-                    <a
-                      href={practice.evidence.href}
-                      {...(practice.evidence.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
-                      className="mt-3 text-sm text-zinc-400 underline-offset-4 hover:text-mint hover:underline"
-                    >
-                      근거: {practice.evidence.label}
-                      <span aria-hidden> ↗</span>
-                    </a>
-                  )}
-                </Reveal>
-              ))}
-            </ul>
-          </div>
+          {/* AI 활용: 박스 없이 세 단계 흐름(선 · 화살표)과 실제 사례 하나(전 → 후 수치 + 원인 · 해결 · 검증)를 보여준다. */}
+          <AiWorkflowBlock workflow={profile.aiWorkflow} />
 
           <div>
             <Reveal>
