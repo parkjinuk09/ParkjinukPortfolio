@@ -519,3 +519,33 @@ CapTeam · FocusOn 상세 페이지의 "시스템 아키텍처"를 코드로 그
 | `pnpm test` / `pnpm test:db` | 25건 / 8건 통과 |
 | `/projects/ai-todo` 200, 없는 주소 404 | 확인 |
 | 1440px · iPhone 13 | 슬라이더 3장 · 카드 3개 · 목차 3개, 로고 · 핵심 성과 표시, 콘솔 오류 · 가로 스크롤 · `[object Object]` 없음 |
+
+## 29. Main / Other Projects 분리 · 연락 영역 글씨 확대 (2026-11-16)
+
+| 변경 | 기준 · 이유 |
+| --- | --- |
+| 위쪽 슬라이더 제목 Projects → Main Projects, CapTeam · FocusOn 2개만 | 요청. 프로젝트마다 `category: "main" \| "other"`를 두고 나눔 |
+| 아래 카드 목록 제목 Main Projects → Other Projects, AI Todo Assistant만 | 위아래에 같은 프로젝트가 반복되지 않도록 Main에 없는 프로젝트만 둠 |
+| 상단 메뉴: Work → Main Projects(#projects), Main Projects → Other Projects(#other-projects) | 섹션 이름과 메뉴 이름을 맞춤 |
+| Projects 설명 문장을 Spring Boot 팀 프로젝트 기준으로 되돌림 | Main에 두 팀 프로젝트만 남아서 |
+| 연락 영역: 제목 최대 30 → 40px, 설명 16 → 18px, 연락처 14 → 18px, 버튼 14 → 16px, 글 영역 폭 1/2 → 3/5 | 요청. 제목이 커져 줄이 너무 많아지지 않게 폭도 넓힘 |
+
+| 항목 | 결과 |
+| --- | --- |
+| typecheck / lint / build | 통과 |
+| `pnpm test` / `pnpm test:db` | 25건 / 8건 통과 |
+| 1440px · iPhone 13 | 슬라이더 2장(CapTeam · FocusOn), Other 1장(AI Todo), 메뉴 링크 이동 확인, 콘솔 오류 · 가로 스크롤 없음 |
+
+## 30. How I work with AI 내용 교체 (2026-11-16)
+
+| 변경 | 기준 · 이유 |
+| --- | --- |
+| 세 원칙을 사용자가 준 문구로 교체: 규칙을 먼저 설계 / 검증까지 한 흐름 / 이해 도구 · 기본기 직접 증명 | 요청. 원칙마다 한 문장 설명 + 실제로 하는 일 목록(+ 결과)을 데이터(`points`, `result`)로 둠 |
+| 세 칸 카드 → 번호 · 제목(왼쪽) / 내용(오른쪽) 줄 단위 배치 | 문장이 길어져 세 칸이면 한 줄이 너무 짧아짐 |
+| 소개 문장 "구현은 AI에게 맡기되…이 사이트도 이 방식으로" → "AI에게 맡기는 기준을 먼저 설계하고, 검증과 기본기는 직접 책임집니다." | 3번 원칙(복사하지 않고 이해 · 기본기 직접 증명)과 앞 문장이 어긋나지 않게 맞춤 |
+
+| 항목 | 결과 |
+| --- | --- |
+| typecheck / lint / build | 통과 |
+| `pnpm test` / `pnpm test:db` | 25건 / 8건 통과 |
+| 1440px · iPhone 13 | 원칙 3개 표시, 콘솔 오류 · 가로 스크롤 없음 |
