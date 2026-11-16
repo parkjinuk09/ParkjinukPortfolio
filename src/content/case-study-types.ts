@@ -56,9 +56,11 @@ export interface DesignDecision {
 /** 구성도에서 쓰는 아이콘. ai는 직접 그린 선 아이콘, 나머지는 public/icons/tech의 Devicon 파일 이름이다. */
 export type ArchitectureIcon =
   | "ai"
+  | "apple"
   | "aws"
   | "chrome"
   | "electron"
+  | "fastapi"
   | "google"
   | "mysql"
   | "postgresql"
@@ -106,6 +108,20 @@ export interface Architecture {
   notes: RichText[];
 }
 
+/** 핵심 성과 한 줄: 개선 전 → 후와 변화량 */
+export interface ResultMetric {
+  label: string;
+  before: string;
+  after: string;
+  change?: string;
+}
+
+export interface CaseStudyResults {
+  /** 측정 조건(도구 · 동시 사용자 · 시간 · 데이터 양) */
+  condition: string;
+  metrics: ResultMetric[];
+}
+
 export interface CaseStudy {
   slug: string;
   order: string;
@@ -117,12 +133,15 @@ export interface CaseStudy {
   /** next/image가 레이아웃 이동 없이 공간을 잡도록 원본 크기를 함께 둔다. */
   screenshotWidth?: number;
   screenshotHeight?: number;
-  service: { title: string; description: string; link: ProfileLink };
+  /** 앱 로고처럼 서비스를 대표하는 작은 정사각형 이미지 */
+  logoSrc?: string;
+  service: { title: string; description: string; link: ProfileLink; repository?: ProfileLink };
   period: string;
   periodNote?: string;
   stack: TechGroup[];
   team: { type: string; role: string };
   roles: RoleGroup[];
+  results?: CaseStudyResults;
   architecture?: Architecture;
   designDecision?: DesignDecision;
   troubleshooting: TroubleshootingCase[];

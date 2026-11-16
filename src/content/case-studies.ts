@@ -302,4 +302,203 @@ const focusOn: CaseStudy = {
   ],
 };
 
-export const caseStudies: CaseStudy[] = [capTeam, focusOn];
+/**
+ * AI Todo Assistant: 사용자가 정리한 프로젝트 설명(2026.11.16) 기준.
+ * 구현은 Claude Code로 했고 사용자는 기획 · 방향 결정 · 문제 발견 · 결과 검증을 맡았으므로, 역할도 그 기준으로 적는다.
+ */
+const aiTodo: CaseStudy = {
+  slug: "ai-todo",
+  order: "04",
+  name: "AI Todo Assistant",
+  summary: "말로 할 일을 추가 · 수정 · 완료하는 개인용 AI 비서입니다. 내 맥의 로컬 AI 모델로 외부 API 키 없이 동작합니다",
+  screenshotLabel: "AI Todo Assistant 할 일 화면 — 오늘 · 다가오는 일 자동 분류",
+  screenshotSrc: "/images/project-ai-todo-screen.webp",
+  screenshotWidth: 1600,
+  screenshotHeight: 1034,
+  logoSrc: "/images/project-ai-todo-logo.webp",
+  service: {
+    title: "말로 관리하는 개인용 AI 할 일 비서",
+    description:
+      "\"다음주 화요일 7시 발표 준비 추가\"처럼 말하면 할 일을 추가 · 수정 · 완료 · 삭제합니다. Claude Code(AI 코딩 도구)로 구현하고, 기획 · 방향 결정 · 문제 발견 · 결과 검증을 직접 맡았습니다. 배포본은 로컬 모델이 없어 비서 기능만 꺼져 있습니다.",
+    link: { label: "ai-todo-web-rho.vercel.app", href: "https://ai-todo-web-rho.vercel.app" },
+    repository: { label: "github.com/parkjinuk09/ai-todo-assistant", href: "https://github.com/parkjinuk09/ai-todo-assistant" },
+  },
+  period: "2026.11.15 ~ 11.16",
+  stack: [
+    {
+      title: "백엔드",
+      items: [{ name: "FastAPI" }, { name: "SQLAlchemy 2.0" }, { name: "Pydantic v2" }, { name: "PostgreSQL 16" }, { name: "Redis 7" }],
+    },
+    { title: "AI", items: [{ name: "Ollama (qwen2.5:7b)" }, { name: "Tool calling" }] },
+    {
+      title: "프론트엔드 · 앱",
+      items: [{ name: "React 19" }, { name: "Vite" }, { name: "Tailwind CSS v4" }, { name: "PWA" }, { name: "Swift (AppKit)" }],
+    },
+    {
+      title: "테스트 · 배포",
+      items: [{ name: "pytest" }, { name: "k6" }, { name: "GitHub Actions" }, { name: "Vercel" }, { name: "Neon" }, { name: "Upstash" }],
+    },
+  ],
+  team: { type: "개인 프로젝트", role: "기획 · 방향 결정 · 검증" },
+  roles: [
+    {
+      title: "기획 · 방향 결정",
+      items: [
+        "할 일 · 캘린더 · 월간 기록 · 맥 빠른 추가(⌘⇧D) 기능 범위 기획",
+        "외부 AI API를 쓸 수 없게 되자 로컬 모델(Ollama)로 전환 결정",
+        "AI 권한을 5개 함수로 제한하고, 계산 · 조회는 코드가 맡도록 원칙 설정",
+      ],
+    },
+    {
+      title: "문제 발견 · 검증",
+      items: [
+        "k6 부하 테스트로 병목 · 경쟁 상태 · 캐시 몰림 발견",
+        "단계별 측정으로 실제 병목(응답 변환 · 검증) 확인",
+        "pytest 37개 · GitHub Actions로 회귀 검증",
+      ],
+    },
+    {
+      title: "구현 방식",
+      items: ["Claude Code로 구현, 이슈 → PR 단위로 작업 (커밋 17개)"],
+    },
+  ],
+  results: {
+    condition: "k6 · 동시 사용자 50명 · 30초 · 할 일 3,000개",
+    metrics: [
+      { label: "처리량", before: "85.9 RPS", after: "372.6 RPS", change: "4.3배" },
+      { label: "p95 응답시간", before: "1,072ms", after: "252ms", change: "76% 감소" },
+      { label: "읽기 전용 처리량", before: "92.0 RPS", after: "864.3 RPS", change: "9.4배" },
+      { label: "부하 시 실패율", before: "0.2%", after: "0%" },
+      { label: "지난 달 리포트 AI 호출", before: "요청마다", after: "월 1회" },
+    ],
+  },
+  architecture: {
+    description:
+      "AI Todo Assistant 시스템 아키텍처: React 웹(PWA)과 Mac 앱이 FastAPI 서버로 요청하고, FastAPI는 로컬 Ollama 모델로 의도를 파악하며 PostgreSQL에 할 일을, Redis에 응답 캐시와 락을 둔다.",
+    viewBox: [1000, 520],
+    groups: [],
+    nodes: [
+      { id: "react", at: [120, 140], icon: "react", label: "React 웹 (PWA)", caption: "할 일 · 캘린더 · 월간 기록" },
+      { id: "mac", at: [120, 370], icon: "apple", label: "Mac 앱 (Swift)", caption: "⌘⇧D 빠른 추가" },
+      { id: "fastapi", at: [470, 250], icon: "fastapi", label: "API 서버 (FastAPI)", caption: "검증 · 캐시 규칙 한 곳" },
+      { id: "ollama", at: [840, 80], icon: "ai", label: "LLM (Ollama)", caption: "qwen2.5:7b · 의도 파악" },
+      { id: "postgresql", at: [840, 250], icon: "postgresql", label: "Main DB (PostgreSQL)", caption: "할 일 · 통계 계산" },
+      { id: "redis", at: [840, 420], icon: "redis", label: "Cache (Redis)", caption: "응답 캐시 · 락" },
+    ],
+    edges: [
+      { from: "react", to: "fastapi" },
+      { from: "mac", to: "fastapi" },
+      { from: "fastapi", to: "ollama" },
+      { from: "fastapi", to: "postgresql" },
+      { from: "fastapi", to: "redis" },
+    ],
+    notes: [
+      [
+        "사용자는 ",
+        { strong: "React 웹(PWA)" },
+        "과 ",
+        { strong: "Mac 메뉴 막대 앱" },
+        "을 씁니다. Mac 앱은 어느 앱에서든 ⌘⇧D로 한 줄을 입력하면 결과를 맥 알림으로 알려 줍니다.",
+      ],
+      [
+        "AI 비서 경로와 일반 API가 ",
+        { strong: "같은 서비스 코드" },
+        "를 써서 검증 · 캐시 규칙이 한 곳에 있습니다.",
+      ],
+      [
+        "AI는 내 맥에서 도는 ",
+        { strong: "Ollama 로컬 모델" },
+        "로 의도만 파악하고, 숫자 계산과 조회는 ",
+        { strong: "PostgreSQL" },
+        "이, 응답 캐시와 재계산 락은 ",
+        { strong: "Redis" },
+        "가 맡습니다.",
+      ],
+      ["배포본은 Vercel · Neon(Postgres) · Upstash(Redis)로 운영하며, 로컬 모델이 없어 비서 기능만 꺼집니다."],
+    ],
+  },
+  designDecision: {
+    title: "설계 결정 — 계산 · 조회는 코드가, 의도 파악만 AI가",
+    description:
+      "작은 로컬 모델은 \"다음주 화요일\"을 일요일로 계산하거나, \"추가했어\"라고 답하고 실제로는 실행하지 않는 경우가 있었습니다.",
+    flowInputs: [{ title: "사용자 문장", lines: ["다음주 화요일 7시", "발표 준비 추가"] }],
+    flowConnectorLabel: "요청",
+    flow: [
+      { title: "날짜 미리 계산", lines: ["서버가 \"다음주 화요일\"을", "실제 날짜로 계산해 전달"] },
+      { title: "AI는 의도만 파악", lines: ["허용된 5개 함수 중", "무엇을 할지만 결정"], highlighted: true },
+      { title: "실행 확인", lines: ["실제 반영 여부를 확인하고", "안 됐으면 다시 시키거나 정직하게 답변"] },
+    ],
+    notes: [
+      "AI에게 DB를 직접 주지 않고 추가 · 조회 · 수정 · 완료 · 삭제 5개 함수만 허용합니다.",
+      "조회 질문은 AI 없이 DB에서 바로 답하고, 월간 통계 숫자도 DB가 계산해 AI에게는 결과만 줘서 회고 문장만 쓰게 합니다(숫자 환각 방지).",
+      "결과: 같은 문장 세트 기준 실제 반영률 1/6 → 6/6.",
+    ],
+  },
+  troubleshooting: [
+    {
+      number: "01",
+      title: "Redis 캐시를 붙였는데 빨라지지 않았습니다",
+      paragraphs: [
+        ["캐시 적중률이 44%인데도 ", { strong: "p95 응답시간이 그대로" }, "였습니다(1,667 → 1,677ms)."],
+        [
+          "단계별로 측정해 보니 DB 조회는 47ms뿐이었고, 진짜 병목은 캐시에서 꺼낸 뒤에도 반복되던 ",
+          { strong: "JSON 변환 · 검증(CPU 작업)" },
+          "이었습니다. Python은 CPU 작업을 한 번에 하나씩 처리(GIL)해서 처리량이 막혔습니다.",
+        ],
+        ["변환이 끝난 ", { strong: "응답 바이트를 그대로 캐시" }, "하고 그대로 응답하도록 바꿔 55 → 372 RPS가 됐습니다."],
+      ],
+      beforeAfter: {
+        before: "캐시 적중 후에도 매번 JSON 변환 · 검증 (55 RPS)",
+        after: "변환이 끝난 응답 바이트를 캐시해 그대로 응답 (372 RPS)",
+      },
+    },
+    {
+      number: "02",
+      title: "부하 테스트에서만 500 에러가 났습니다",
+      paragraphs: [
+        ["동시 요청 시 ", { strong: "0.2%가 중복 키 에러" }, "로 실패했습니다."],
+        [
+          "두 요청이 동시에 \"저장본 없음\"을 확인하고 둘 다 저장을 시도하는 ",
+          { strong: "check-then-act 경쟁 상태" },
+          "였습니다.",
+        ],
+        [
+          "확인과 저장을 하나로 합친 ",
+          { strong: "UPSERT(INSERT … ON CONFLICT DO UPDATE)" },
+          "로 바꿔 실패율 0%가 됐고, 같은 요청을 반복해도 결과가 같은지 확인하는 테스트를 추가했습니다.",
+        ],
+      ],
+      beforeAfter: {
+        before: "저장본이 있는지 확인 → 없으면 저장 (두 요청이 동시에 저장 시도)",
+        after: "INSERT … ON CONFLICT DO UPDATE 한 번으로 확인과 저장을 처리",
+      },
+    },
+    {
+      number: "03",
+      title: "캐시가 비는 순간 같은 무거운 계산이 몰렸습니다",
+      paragraphs: [
+        ["할 일 추가로 캐시가 지워진 직후, ", { strong: "50개 요청이 동시에 같은 무거운 계산" }, "을 시작했습니다(cache stampede)."],
+        [
+          { strong: "Redis SET NX 락" },
+          "으로 한 요청만 다시 계산하고, 나머지는 기다렸다가 캐시를 쓰게 했습니다.",
+        ],
+        [
+          "락에는 유효기간(TTL)을 두고, 너무 오래 기다리면 직접 계산하도록 해 ",
+          { strong: "가용성을 우선" },
+          "했습니다.",
+        ],
+      ],
+      beforeAfter: {
+        before: "캐시 삭제 직후 50개 요청이 모두 같은 계산을 DB에서 실행",
+        after: "SET NX 락으로 한 요청만 계산, 나머지는 대기 후 캐시 사용 (락 TTL · 대기 초과 시 직접 계산)",
+      },
+    },
+  ],
+  lesson: [
+    "외부 AI API를 쓸 수 없게 됐을 때, ",
+    { strong: "처음부터 AI 호출 부분을 분리해 둔 덕분에" },
+    " 설정 3줄만 바꿔 로컬 모델로 전환할 수 있었습니다. 캐시 무효화도 버전 번호를 1 올리는 것만으로 관련 캐시 전체를 한 번에 처리하도록 단순하게 유지했습니다.",
+  ],
+};
+
+export const caseStudies: CaseStudy[] = [capTeam, focusOn, aiTodo];
