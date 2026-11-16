@@ -34,12 +34,16 @@ export interface StackSkill {
   level: string;
 }
 
-/** AI 활용 원칙 하나: 제목 · 한 문장 설명 · 실제로 하는 일 목록 · (있으면) 결과 */
+/**
+ * AI 활용 원칙 하나: 제목 · 한 문장 설명 · 실제로 하는 일 · (확인 가능한 것만) 결과와 근거 링크.
+ * 결과 · 근거는 숫자나 공개 문서로 확인할 수 있을 때만 적는다.
+ */
 export interface AiPractice {
   title: string;
   description: string;
   points: string[];
   result?: string;
+  evidence?: LinkItem;
 }
 
 export interface Profile {
