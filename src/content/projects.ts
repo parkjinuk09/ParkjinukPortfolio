@@ -28,7 +28,21 @@ export const projects: Project[] = [
     link: { label: "FocusOn GitHub", href: "https://github.com/What-a-move/FocusOn" },
     imageSrc: "/images/project-focuson-thumb.webp",
   },
+  {
+    slug: "ai-todo",
+    number: "03",
+    name: "AI Todo Assistant",
+    tag: "FastAPI",
+    oneLiner: "말로 할 일을 추가 · 수정 · 완료하는 개인용 AI 비서. 내 맥의 로컬 AI 모델(Ollama)로 외부 API 키 없이 동작",
+    period: "2026.11",
+    teamType: "개인 프로젝트",
+    role: "기획 · 방향 결정 · 검증",
+    stack: ["FastAPI", "PostgreSQL", "Redis", "Ollama", "React", "Swift"],
+    link: { label: "AI Todo Assistant GitHub", href: "https://github.com/parkjinuk09/ai-todo-assistant" },
+    imageSrc: "/images/project-ai-todo-thumb.webp",
+  },
 ];
 
 /** Projects 영역 설명 (Notion 상단 요약 문장) */
-export const projectsDescription = "Spring Boot 중심의 팀 프로젝트에서 ERD · API 명세 · JWT 인증 · 채팅 · 배포를 경험했습니다.";
+export const projectsDescription =
+  "Spring Boot 팀 프로젝트에서 ERD · API 명세 · JWT 인증 · 채팅 · 배포를, FastAPI 개인 프로젝트에서 캐시 · 부하 테스트 · 동시성 문제 해결을 경험했습니다.";

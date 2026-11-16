@@ -52,7 +52,12 @@ export function ProjectOverview({ project }: { project: CaseStudy }) {
 
       <Reveal>
         <OverviewLabel english="Service" korean="서비스" />
-        <h2 className="text-2xl leading-snug font-semibold text-fg md:text-[1.75rem]">{project.service.title}</h2>
+        <div className="flex items-center gap-4">
+          {project.logoSrc && (
+            <Image src={project.logoSrc} alt={`${project.name} 앱 로고`} width={56} height={56} className="h-12 w-12 shrink-0 md:h-14 md:w-14" />
+          )}
+          <h2 className="text-2xl leading-snug font-semibold text-fg md:text-[1.75rem]">{project.service.title}</h2>
+        </div>
         {project.periodNote && (
           <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-mint/40 bg-mint/10 px-3 py-1 text-sm font-semibold text-mint">
             <span aria-hidden>★</span>
@@ -71,14 +76,20 @@ export function ProjectOverview({ project }: { project: CaseStudy }) {
           <MetaItem label="담당">{project.team.role}</MetaItem>
           {/* 저장소 주소처럼 긴 링크는 휴대폰에서 두 칸 폭을 써서 중간에 끊기지 않게 한다. */}
           <MetaItem label="링크" className="col-span-2 md:col-span-1">
-            <a
-              href={project.service.link.href}
-              target="_blank"
-              rel="noreferrer"
-              className="break-words text-mint underline-offset-4 hover:underline"
-            >
-              {project.service.link.label} ↗
-            </a>
+            {/* 배포 주소와 코드 저장소가 따로 있으면 한 칸에 위아래로 둔다. */}
+            {[project.service.link, project.service.repository].flatMap((link) =>
+              link ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block break-words text-mint underline-offset-4 hover:underline"
+                >
+                  {link.label} ↗
+                </a>
+              ) : [],
+            )}
           </MetaItem>
         </dl>
       </Reveal>

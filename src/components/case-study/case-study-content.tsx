@@ -6,6 +6,7 @@ import type { CaseStudy } from "@/content/case-study-types";
 import { ArchitectureDiagram } from "./architecture-diagram";
 import { DesignDecisionBlock } from "./design-decision";
 import { ProjectOverview } from "./project-overview";
+import { ResultsTable } from "./results-table";
 import { TroubleshootingList } from "./troubleshooting-list";
 
 /** 하위 블록 사이 간격과 구분선. 블록이 데이터에 없으면 구분선도 그리지 않는다. */
@@ -17,7 +18,7 @@ function Divider() {
   );
 }
 
-/** Figma 형식 프로젝트 상세(개요 → 구조 → 설계 결정 → 트러블슈팅) */
+/** Figma 형식 프로젝트 상세(개요 → 핵심 성과 → 구조 → 설계 결정 → 트러블슈팅) */
 export function CaseStudyContent({ project }: { project: CaseStudy }) {
   return (
     <article id={project.slug}>
@@ -30,6 +31,13 @@ export function CaseStudyContent({ project }: { project: CaseStudy }) {
         />
 
         <ProjectOverview project={project} />
+
+        {project.results && (
+          <>
+            <Divider />
+            <ResultsTable results={project.results} />
+          </>
+        )}
 
         {project.architecture && (
           <>
@@ -47,7 +55,6 @@ export function CaseStudyContent({ project }: { project: CaseStudy }) {
             <DesignDecisionBlock decision={project.designDecision} />
           </>
         )}
-
 
         <Divider />
         <TroubleshootingList cases={project.troubleshooting} lesson={project.lesson} />
