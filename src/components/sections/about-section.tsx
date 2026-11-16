@@ -87,41 +87,38 @@ export function AboutSection({ profile }: AboutSectionProps) {
               <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">How I work with AI</h3>
               <p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">AI에게는 실행을 맡기고, 기준 · 판단 · 책임은 제가 가집니다.</p>
             </Reveal>
-            <ul className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
-              {profile.aiPractices.map((practice, index) => (
-                <Reveal as="li" key={practice.title} delay={index * 100} className="flex flex-col border-t border-zinc-50/15 pt-6">
-                  <p className="font-mono text-sm text-mint">{String(index + 1).padStart(2, "0")}</p>
-                  <h4 className="mt-2 text-xl font-semibold text-zinc-50">{practice.title}</h4>
-                  <p className="mt-3 leading-relaxed text-zinc-300">{practice.description}</p>
-                  <ul className="mt-4 space-y-2 text-sm leading-relaxed text-zinc-400">
-                    {practice.points.map((point) => (
-                      <li
-                        key={point}
-                        className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-zinc-500"
-                      >
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                  {practice.result && (
-                    <p className="mt-4 text-sm leading-relaxed text-zinc-200">
-                      <span className="mr-2 font-semibold text-mint">결과</span>
-                      {practice.result}
-                    </p>
-                  )}
-                  {practice.evidence && (
-                    <a
-                      href={practice.evidence.href}
-                      {...(practice.evidence.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
-                      className="mt-3 text-sm text-zinc-400 underline-offset-4 hover:text-mint hover:underline"
-                    >
-                      근거: {practice.evidence.label}
-                      <span aria-hidden> ↗</span>
-                    </a>
-                  )}
+            {/* 미리보기: 박스 없이 세 단계를 선과 화살표로 잇는다. */}
+            <ol className="mt-12 grid gap-8 md:grid-cols-3 md:gap-0">
+              {[
+                { title: "기준 설계", body: "구조와 검증 기준을 먼저 정의" },
+                { title: "AI 구현", body: "정한 기준대로 구현 · 테스트 실행" },
+                { title: "직접 검증", body: "결과를 분석하고 머지 여부 판단" },
+              ].map((step, index) => (
+                <Reveal as="li" key={step.title} delay={index * 100} className="relative md:pr-10">
+                  <div className="flex items-center gap-4">
+                    <p className="shrink-0 text-xl font-semibold text-zinc-50">{step.title}</p>
+                    {index < 2 && (
+                      <span aria-hidden className="hidden flex-1 items-center text-zinc-500 md:flex">
+                        <span className="h-px flex-1 bg-zinc-50/20" />
+                        <span className="-ml-1 text-sm">→</span>
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-400">{step.body}</p>
                 </Reveal>
               ))}
-            </ul>
+            </ol>
+
+            <Reveal className="mt-12 grid gap-6 border-t border-zinc-50/15 pt-10 md:grid-cols-[auto_1fr] md:items-end md:gap-16">
+              <p className="text-5xl leading-none font-semibold whitespace-nowrap text-zinc-100">
+                0.2% <span className="text-zinc-500">→</span> <span className="text-mint">0%</span>
+              </p>
+              <div className="text-sm leading-relaxed">
+                <p className="text-base font-semibold text-zinc-50">AI Todo · 부하 테스트 실패율</p>
+                <p className="mt-1 text-zinc-400">경쟁 상태(check-then-act)를 찾아 UPSERT로 수정</p>
+                <p className="mt-1 text-zinc-500">k6 · 동시 사용자 50명 · 30초 · 같은 조건에서 재측정</p>
+              </div>
+            </Reveal>
           </div>
 
           <div>
