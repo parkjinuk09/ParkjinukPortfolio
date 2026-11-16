@@ -28,7 +28,7 @@ export function ProjectIndexGrid({ projects }: { projects: ProjectIndexCard[] })
 
   return (
     <div className="relative grid gap-8 md:gap-20 xl:grid-cols-[1fr_3fr] xl:gap-30">
-      <nav aria-label="Main Projects 목차" className="xl:mb-9">
+      <nav aria-label="Other Projects 목차" className="xl:mb-9">
         <div className="xl:sticky xl:top-40">
           <p className="font-mono text-xs text-zinc-500">
             Projects <span className="text-zinc-300">({projects.length})</span>

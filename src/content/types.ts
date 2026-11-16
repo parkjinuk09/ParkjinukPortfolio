@@ -82,4 +82,6 @@ export interface Project {
   link: LinkItem;
   /** 카드 이미지 (사용자가 제공한 사진을 잘라 만든 public 경로) */
   imageSrc: string;
+  /** main: 위쪽 Main Projects 슬라이더, other: 아래쪽 Other Projects 카드 목록 */
+  category: "main" | "other";
 }
