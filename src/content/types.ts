@@ -34,9 +34,12 @@ export interface StackSkill {
   level: string;
 }
 
+/** AI 활용 원칙 하나: 제목 · 한 문장 설명 · 실제로 하는 일 목록 · (있으면) 결과 */
 export interface AiPractice {
   title: string;
   description: string;
+  points: string[];
+  result?: string;
 }
 
 export interface Profile {

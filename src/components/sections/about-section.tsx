@@ -81,22 +81,44 @@ export function AboutSection({ profile }: AboutSectionProps) {
             </Reveal>
           </div>
 
-          {/* AI 활용: 절차 설계 · 최종 판단 · 결과 검수를 직접 맡는다는 점을 세 줄 요약으로 보여준다. */}
+          {/* AI 활용: 원칙마다 한 문장 설명 + 실제로 하는 일을 붙여, 태도가 아니라 작업 방식으로 읽히게 한다. */}
           <div>
             <Reveal>
               <h3 className="font-display text-3xl leading-relaxed font-semibold text-zinc-50">How I work with AI</h3>
               <p className="mt-3 max-w-2xl leading-relaxed text-zinc-400">
-                구현은 AI에게 맡기되 작업 절차를 설계하고, 최종 판단을 내리고, 결과물을 검수하는 일은 직접 합니다. 이 사이트도 이 방식으로 만들었습니다.
+                AI에게 맡기는 기준을 먼저 설계하고, 검증과 기본기는 직접 책임집니다.
               </p>
             </Reveal>
-            <div className="mt-10 grid gap-10 md:grid-cols-3">
+            {/* 항목마다 문장이 길어 세 칸으로 나누면 줄이 너무 짧아지므로, 번호 · 제목(왼쪽)과 내용(오른쪽)을 한 줄씩 쌓는다. */}
+            <ol className="mt-10 divide-y divide-zinc-50/10 border-y border-zinc-50/10">
               {profile.aiPractices.map((practice, index) => (
-                <Reveal key={practice.title} delay={index * 100}>
-                  <h4 className="text-xl font-semibold text-zinc-100">{practice.title}</h4>
-                  <p className="mt-4 text-sm leading-relaxed text-zinc-400">{practice.description}</p>
+                <Reveal as="li" key={practice.title} delay={index * 80} className="grid gap-4 py-8 md:grid-cols-[2fr_3fr] md:gap-10">
+                  <div>
+                    <p className="font-mono text-sm text-mint">{String(index + 1).padStart(2, "0")}</p>
+                    <h4 className="mt-2 text-lg leading-snug font-semibold text-zinc-50 md:text-xl">{practice.title}</h4>
+                  </div>
+                  <div>
+                    <p className="leading-relaxed text-zinc-300">{practice.description}</p>
+                    <ul className="mt-4 space-y-2 text-sm leading-relaxed text-zinc-400">
+                      {practice.points.map((point) => (
+                        <li
+                          key={point}
+                          className="relative pl-4 before:absolute before:top-[0.65em] before:left-0 before:h-1 before:w-1 before:rounded-full before:bg-zinc-500"
+                        >
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                    {practice.result && (
+                      <p className="mt-4 text-sm text-zinc-200">
+                        <span className="mr-2 font-semibold text-mint">결과</span>
+                        {practice.result}
+                      </p>
+                    )}
+                  </div>
                 </Reveal>
               ))}
-            </div>
+            </ol>
           </div>
 
           <div>
