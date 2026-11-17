@@ -18,7 +18,8 @@ insert into public.activities (display_order, period_label, category, title) val
   (4, '2026.07', '교내 활동', '교내 포트폴리오 대회 참가'),
   (5, '2026.07', '교내 활동', 'APC 동아리 해커톤 참가'),
   (6, '2026.09', '발표', '이음 컨퍼런스 연사 — 개발 학습 경험 발표'),
-  (7, '2026.10', '국제교류', '일본 치바상업고등학교 국제교류')
+  (7, '2026.10', '국제교류', '일본 치바상업고등학교 국제교류'),
+  (8, '2026.10', '대외 활동', '시민 의견 전달 서비스 「조정훈의 조정중」 개발 · 조정훈 의원 대면 발표 및 피드백 (팀 StarBurst)')
 on conflict (display_order) do update set
   period_label = excluded.period_label,
   category = excluded.category,

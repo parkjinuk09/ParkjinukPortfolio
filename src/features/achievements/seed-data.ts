@@ -26,5 +26,11 @@ export const achievementsSeed: Achievements = {
     { displayOrder: 5, periodLabel: "2026.07", category: "교내 활동", title: "APC 동아리 해커톤 참가" },
     { displayOrder: 6, periodLabel: "2026.09", category: "발표", title: "이음 컨퍼런스 연사 — 개발 학습 경험 발표" },
     { displayOrder: 7, periodLabel: "2026.10", category: "국제교류", title: "일본 치바상업고등학교 국제교류" },
+    {
+      displayOrder: 8,
+      periodLabel: "2026.10",
+      category: "대외 활동",
+      title: "시민 의견 전달 서비스 「조정훈의 조정중」 개발 · 조정훈 의원 대면 발표 및 피드백 (팀 StarBurst)",
+    },
   ],
 };
