@@ -501,4 +501,168 @@ const aiTodo: CaseStudy = {
   ],
 };
 
-export const caseStudies: CaseStudy[] = [capTeam, focusOn, aiTodo];
+/**
+ * AnyThingISee Web: 사용자가 정리한 프로젝트 설명(2026.11.20) 기준. 자료에 없는 수치는 넣지 않는다.
+ */
+const anyThingISee: CaseStudy = {
+  slug: "anythingisee",
+  order: "05",
+  name: "AnyThingISee Web",
+  summary: "Windows용 디스어셈블러 · 디컴파일러 AnyThingISee의 공식 소개 · 다운로드 사이트입니다. 다운로드 집계와 관리자 통계까지 직접 운영합니다",
+  screenshotLabel: "AnyThingISee 공식 사이트 첫 화면 — 소개 · 다운로드 · 최신 릴리스",
+  screenshotSrc: "/images/project-anythingisee-screen.webp",
+  screenshotWidth: 1600,
+  screenshotHeight: 1000,
+  service: {
+    title: "실제 배포 중인 Windows 프로그램의 공식 웹사이트",
+    description:
+      "AnyThingISee Free Edition의 소개 · 성능 비교 · 다운로드 · 릴리스 노트 · 문의를 한곳에서 제공합니다. 한국어 · 영어 · 일본어를 지원하며, 기획 · 디자인 · 프론트 · 백엔드 · DB · 배포를 혼자 진행했습니다(커밋 44개, PR 40개 머지).",
+    link: { label: "kkinomalo.com", href: "https://kkinomalo.com" },
+    repository: { label: "github.com/kkinomalo/AnyThingISee-web", href: "https://github.com/kkinomalo/AnyThingISee-web" },
+  },
+  period: "2026.11",
+  stack: [
+    {
+      title: "프론트엔드",
+      items: [{ name: "Next.js 16 (App Router)" }, { name: "React 19" }, { name: "TypeScript" }, { name: "Tailwind CSS 4" }, { name: "next-intl" }],
+    },
+    {
+      title: "백엔드 · DB",
+      items: [{ name: "Supabase (PostgreSQL · Auth · RLS)" }, { name: "Zod" }, { name: "Resend" }],
+    },
+    {
+      title: "테스트 · 배포",
+      items: [{ name: "Vitest" }, { name: "GitHub Actions CI" }, { name: "Vercel (icn1 · Cron · Web Analytics)" }],
+    },
+  ],
+  team: { type: "개인 프로젝트", role: "기획 · 디자인 · 프론트 · 백엔드 · DB · 배포" },
+  roles: [
+    {
+      title: "서비스",
+      items: [
+        "서비스 소개 · 다른 디스어셈블러와 성능 비교 · FAQ",
+        "GitHub Releases API 연동: 다운로드 페이지, 릴리스 노트 목록 · 상세",
+        "Google · GitHub · 이메일 로그인 (Supabase Auth)",
+        "문의 폼 + 메일 알림 (Resend)",
+      ],
+    },
+    {
+      title: "운영 · 관리자",
+      items: ["다운로드 통계 그래프 · CSV 내보내기 · 문의 목록", "SEO: sitemap · robots · 언어별 hreflang · canonical · OG 이미지"],
+    },
+    {
+      title: "개발 방식",
+      items: [
+        "이슈 → feat/<번호> 브랜치 → dev PR → main 배포",
+        "PR마다 GitHub Actions에서 lint · 타입 검사 · 테스트 · 빌드 자동 실행",
+        "언어별 문구 키가 다르면 테스트가 실패하도록 해 번역 누락 방지",
+      ],
+    },
+  ],
+  architecture: {
+    description:
+      "AnyThingISee Web 시스템 아키텍처: 브라우저가 Vercel(서울 리전)의 Next.js로 요청하고, Next.js는 Supabase(PostgreSQL · Auth)에 기록 · 조회하며 GitHub Releases API에서 릴리스 정보를, Resend로 문의 알림 메일을 보낸다. Vercel Cron이 하루 1번 GitHub 다운로드 수를 저장한다.",
+    viewBox: [1000, 540],
+    groups: [{ label: "Vercel · 서울 리전(icn1)", icon: "vercel", at: [230, 40], size: [300, 470] }],
+    nodes: [
+      { id: "browser", at: [100, 200], icon: "browser", label: "브라우저", caption: "한국어 · 영어 · 일본어" },
+      { id: "nextjs", at: [380, 170], icon: "nextjs", label: "Next.js (App Router)", caption: "페이지 · API · 관리자" },
+      { id: "cron", at: [380, 410], icon: "vercel", label: "Vercel Cron", caption: "하루 1번 다운로드 수 저장" },
+      { id: "supabase", at: [820, 410], icon: "supabase", label: "Supabase", caption: "PostgreSQL · Auth · RLS" },
+      { id: "github", at: [820, 240], icon: "github", label: "GitHub Releases API", caption: "릴리스 · 다운로드 파일" },
+      { id: "resend", at: [820, 70], icon: "mail", label: "Resend", caption: "문의 알림 메일" },
+    ],
+    edges: [
+      { from: "browser", to: "nextjs" },
+      { from: "nextjs", to: "supabase" },
+      { from: "nextjs", to: "github" },
+      { from: "nextjs", to: "resend", oneWay: true },
+      { from: "cron", to: "github" },
+      { from: "cron", to: "supabase", oneWay: true },
+    ],
+    notes: [
+      [
+        "다운로드 링크는 자체 API를 거쳐 기록한 뒤 ",
+        { strong: "GitHub 파일로 302 리다이렉트" },
+        "합니다. 릴리스 정보는 GitHub Releases API에서 가져옵니다.",
+      ],
+      [
+        { strong: "Vercel Cron" },
+        "이 하루 1번 GitHub의 공식 download_count를 날짜별로 저장해, 자체 집계와 교차 확인합니다. (날짜, 버전, 파일) 기준 UPSERT라 같은 날 여러 번 실행돼도 중복이 없고, 엔드포인트는 Bearer 비밀값으로 보호합니다.",
+      ],
+      [
+        "GitHub API가 실패해도 ",
+        { strong: "기본 릴리스 정보로 대체" },
+        "해 빌드와 페이지가 멈추지 않습니다.",
+      ],
+      ["모든 테이블에 RLS를 적용하고, 문의가 들어오면 Resend로 알림 메일을 보냅니다."],
+    ],
+  },
+  designDecision: {
+    title: "설계 결정 — 기록 실패가 다운로드를 막지 않게",
+    description: "다운로드 수를 직접 집계해야 하지만, 기록 과정의 DB 오류나 지연 때문에 사용자의 다운로드가 늦어지거나 막히면 안 됩니다.",
+    flowInputs: [{ title: "다운로드 클릭", lines: ["/api/download/", "[tag]/[file]"] }],
+    flowConnectorLabel: "요청",
+    flow: [
+      { title: "바로 302 응답", lines: ["GitHub 파일 주소로", "리다이렉트"], highlighted: true },
+      { title: "응답 뒤에 기록", lines: ["Next.js after()로 처리", "DB 오류여도 다운로드 정상"] },
+      { title: "기록 대상 거르기", lines: ["봇 · HEAD 요청(링크 미리보기)은", "기록하지 않음"] },
+    ],
+    notes: [
+      "IP · User-Agent 원문은 저장하지 않고, IP + UA + 날짜 + 서버 비밀값의 SHA-256 해시로 중복만 판별합니다. 날짜가 섞여 있어 다음 날이면 같은 사람도 다른 값이 되므로 장기 추적이 불가능합니다.",
+      "관리자는 사용자가 스스로 바꿀 수 없는 Supabase app_metadata.role로 지정하고, 관리자가 아니면 403이 아니라 404를 반환해 관리자 기능의 존재 자체를 숨깁니다.",
+      "문의는 같은 방문자 해시 기준 10분에 3건까지만 접수해 스팸을 막습니다.",
+    ],
+  },
+  troubleshooting: [
+    {
+      number: "01",
+      title: "CI 빌드가 GitHub API 403으로 실패했습니다",
+      paragraphs: [
+        ["GitHub Actions에서 빌드할 때 릴리스 정보를 가져오는 요청이 ", { strong: "403" }, "으로 실패했습니다."],
+        ["GitHub Actions 공유 러너의 IP가 GitHub API의 ", { strong: "익명 요청 한도" }, "에 자주 걸리는 것이 원인이었습니다."],
+        [
+          "CI에서는 ",
+          { strong: "GITHUB_TOKEN으로 인증" },
+          "해 요청하고, API가 실패해도 기본값으로 대체하는 코드를 추가했습니다.",
+        ],
+      ],
+      beforeAfter: {
+        before: "익명 요청 → 공유 러너 IP의 한도 초과로 403, 빌드 실패",
+        after: "GITHUB_TOKEN 인증 요청 + 실패 시 기본 릴리스 정보로 대체",
+      },
+    },
+    {
+      number: "02",
+      title: "메일 도메인 인증 전에는 알림 메일이 가지 않았습니다",
+      paragraphs: [
+        ["발신 도메인 인증이 끝나기 전에는 Resend로 보내는 ", { strong: "문의 알림 메일이 발송되지 않았습니다" }, "."],
+        ["도메인 인증 전에는 ", { strong: "Resend 테스트 발신 주소로 자동 전환" }, "하도록 했습니다."],
+      ],
+      beforeAfter: {
+        before: "인증 전 도메인으로 발신 시도 → 알림 메일 미발송",
+        after: "인증 전에는 테스트 발신 주소로 자동 전환",
+      },
+    },
+    {
+      number: "03",
+      title: "응답 속도를 개선했습니다",
+      paragraphs: [
+        ["서버 리전을 ", { strong: "서울(icn1)" }, "로 옮겨 DB · 사용자와의 거리를 줄였습니다."],
+        ["로그인 확인을 모든 페이지가 아니라 ", { strong: "필요한 페이지에서만" }, " 하도록 바꿨습니다."],
+        ["관리자 데이터를 불러오는 동안 빈 화면 대신 로딩 화면을 보여줍니다."],
+      ],
+      beforeAfter: {
+        before: "기본 리전 · 모든 페이지에서 로그인 확인 · 로딩 중 빈 화면",
+        after: "서울 리전 · 필요한 페이지만 로그인 확인 · 로딩 화면 표시",
+      },
+    },
+  ],
+  lesson: [
+    "성능 비교 수치는 ",
+    { strong: "직접 측정한 값만 게시하고 측정 방법을 문서로 남겼습니다" },
+    ". 언어별 문구 키가 서로 다르면 테스트가 실패하도록 해 번역 누락도 PR 단계에서 막습니다.",
+  ],
+};
+
+export const caseStudies: CaseStudy[] = [capTeam, focusOn, aiTodo, anyThingISee];

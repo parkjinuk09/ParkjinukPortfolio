@@ -80,20 +80,33 @@ function exitPoint(box: NodeBox, target: Point): Point {
   return [cx + dx * scaleToEdge, cy + dy * scaleToEdge];
 }
 
-/** Devicon에 없는 AI(LLM)는 단순 선 아이콘으로 그린다(특정 회사 로고를 흉내 내지 않음). */
-function AiIcon({ x, y, size }: { x: number; y: number; size: number }) {
+type LineIconName = "ai" | "browser" | "mail";
+
+/** Devicon에 없는 구성 요소는 같은 굵기의 단순 선 아이콘으로 그린다(특정 회사 로고를 흉내 내지 않음). */
+const LINE_ICON_PATHS: Record<LineIconName, string[]> = {
+  ai: ["M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z", "M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"],
+  browser: ["M3 5h18v14H3z", "M3 9h18", "M6 7h.01", "M8.5 7h.01"],
+  mail: ["M3 5h18v14H3z", "M3 6l9 7 9-7"],
+};
+
+function LineIcon({ icon, x, y, size }: { icon: LineIconName; x: number; y: number; size: number }) {
   return (
     <svg x={x} y={y} width={size} height={size} viewBox="0 0 24 24" fill="none" className="stroke-fg" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
-      <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" />
+      {LINE_ICON_PATHS[icon].map((path) => (
+        <path key={path} d={path} />
+      ))}
     </svg>
   );
+}
+
+function isLineIcon(icon: ArchitectureIcon): icon is LineIconName {
+  return icon in LINE_ICON_PATHS;
 }
 
 function DiagramIcon({ icon, center, size }: { icon: ArchitectureIcon; center: Point; size: number }) {
   const x = center[0] - size / 2;
   const y = center[1] - size / 2;
-  if (icon === "ai") return <AiIcon x={x} y={y} size={size} />;
+  if (isLineIcon(icon)) return <LineIcon icon={icon} x={x} y={y} size={size} />;
   return <image href={`/icons/tech/${icon}.svg`} x={x} y={y} width={size} height={size} />;
 }
 

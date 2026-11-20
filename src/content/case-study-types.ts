@@ -53,9 +53,15 @@ export interface DesignDecision {
   notes: string[];
 }
 
-/** 구성도에서 쓰는 아이콘. ai는 직접 그린 선 아이콘, 나머지는 public/icons/tech의 Devicon 파일 이름이다. */
+/** 구성도에서 쓰는 아이콘. ai · browser · mail은 직접 그린 선 아이콘, 나머지는 public/icons/tech의 Devicon 파일 이름이다. */
 export type ArchitectureIcon =
   | "ai"
+  | "browser"
+  | "mail"
+  | "github"
+  | "nextjs"
+  | "supabase"
+  | "vercel"
   | "apple"
   | "aws"
   | "chrome"
