@@ -44,6 +44,20 @@ export const projects: Project[] = [
     imageSrc: "/images/project-ai-todo-thumb.webp",
     category: "other",
   },
+  {
+    slug: "anythingisee",
+    number: "04",
+    name: "AnyThingISee Web",
+    tag: "Next.js",
+    oneLiner: "Windows용 디스어셈블러 · 디컴파일러 AnyThingISee의 공식 소개 · 다운로드 사이트. 다운로드 집계와 관리자 통계까지 직접 운영",
+    period: "2026.11",
+    teamType: "개인 프로젝트",
+    role: "기획 · 디자인 · 프론트 · 백엔드 · DB · 배포",
+    stack: ["Next.js", "TypeScript", "Supabase(PostgreSQL)", "Vercel"],
+    link: { label: "AnyThingISee Web", href: "https://kkinomalo.com" },
+    imageSrc: "/images/project-anythingisee-thumb.webp",
+    category: "other",
+  },
 ];
 
 /** Projects 영역 설명 (Notion 상단 요약 문장) */
