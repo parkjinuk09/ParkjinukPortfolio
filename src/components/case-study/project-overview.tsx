@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { Reveal } from "@/components/motion/reveal";
+import { ScreenshotGallery } from "./screenshot-gallery";
 import { TechList } from "./tech-list";
 import type { CaseStudy } from "@/content/case-study-types";
 
@@ -37,15 +38,18 @@ export function ProjectOverview({ project }: { project: CaseStudy }) {
   return (
     <div>
       {project.screenshotSrc && project.screenshotWidth && project.screenshotHeight && (
-        <Reveal className="mb-16 overflow-hidden rounded-md border border-line bg-white">
-          {/* 실제 서비스 화면은 비율이 제각각이라 잘리지 않도록 원본 비율 그대로 보여준다. */}
-          <Image
-            src={project.screenshotSrc}
-            alt={project.screenshotLabel}
-            width={project.screenshotWidth}
-            height={project.screenshotHeight}
-            sizes="(min-width: 1320px) 1240px, 100vw"
-            className="h-auto w-full"
+        <Reveal className="mb-16">
+          {/* 대표 화면 + 추가 화면을 넘겨보기로 묶는다. 화면이 하나면 화살표 없이 원본 비율 그대로 보인다. */}
+          <ScreenshotGallery
+            screenshots={[
+              {
+                src: project.screenshotSrc,
+                width: project.screenshotWidth,
+                height: project.screenshotHeight,
+                label: project.screenshotLabel,
+              },
+              ...(project.extraScreenshots ?? []),
+            ]}
           />
         </Reveal>
       )}

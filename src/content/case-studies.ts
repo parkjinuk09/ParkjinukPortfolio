@@ -513,6 +513,20 @@ const anyThingISee: CaseStudy = {
   screenshotSrc: "/images/project-anythingisee-screen.webp",
   screenshotWidth: 1600,
   screenshotHeight: 1000,
+  extraScreenshots: [
+    {
+      src: "/images/project-anythingisee-features.webp",
+      width: 1600,
+      height: 1000,
+      label: "기능 소개 — C 의사코드 · 흐름 그래프",
+    },
+    {
+      src: "/images/project-anythingisee-login.webp",
+      width: 1600,
+      height: 1000,
+      label: "로그인 — Google · GitHub · 이메일",
+    },
+  ],
   service: {
     title: "실제 배포 중인 Windows 프로그램의 공식 웹사이트",
     description:
