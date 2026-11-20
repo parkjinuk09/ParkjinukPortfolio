@@ -128,6 +128,14 @@ export interface CaseStudyResults {
   metrics: ResultMetric[];
 }
 
+/** 프로젝트 화면 한 장 */
+export interface Screenshot {
+  src: string;
+  width: number;
+  height: number;
+  label: string;
+}
+
 export interface CaseStudy {
   slug: string;
   order: string;
@@ -139,6 +147,8 @@ export interface CaseStudy {
   /** next/image가 레이아웃 이동 없이 공간을 잡도록 원본 크기를 함께 둔다. */
   screenshotWidth?: number;
   screenshotHeight?: number;
+  /** 대표 화면 뒤에 이어서 넘겨볼 화면들. 있으면 화면 영역 양옆에 화살표가 생긴다. */
+  extraScreenshots?: Screenshot[];
   /** 앱 로고처럼 서비스를 대표하는 작은 정사각형 이미지 */
   logoSrc?: string;
   service: { title: string; description: string; link: ProfileLink; repository?: ProfileLink };
